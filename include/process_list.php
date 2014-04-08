@@ -10,7 +10,17 @@ if ( isset( $_POST['type'] ) )
 	$type = $_POST['type'];
 
 	if ( $type == 'computers' )
-		$prep_stmt = "SELECT tag_num, serial FROM equipment e, computer c WHERE c.computer_tag = e.tag_num ORDER BY tag_num DESC";
+	{
+		$prep_stmt = "SELECT e.tag_num, e.serial, c.hostname, c.os FROM equipment e, computer c WHERE c.computer_tag = e.tag_num ORDER BY tag_num DESC";
+/*		$prep_stmt = "SELECT e.tag_num, e.serial, CONCAT( e.make, ' ', e.model ), e.department, e.location, CONCAT( e.building, ' ', e.room ), c.hostname, c.os, eqprinter.printer, eqnotes.notes, eqnet.mac, eqnet.wmac, eqnet.ip, p.purchase_order, p.purchase_date, p.purchased_by
+					  FROM equipment e, computer c, eq_printer eqprinter, eq_notes eqnotes, eq_network eqnet, purchase p
+					  WHERE e.tag_num = c.computer_tag AND e.tag_num = eqprinter.tag_num AND e.tag_num = eqnotes.tag_num
+							AND e.tag_num = eqnet.tag_num AND e.purchase_id = p.purchase_id
+					  ORDER BY tag_num DESC";
+
+*/
+
+	}
 
 	if ( $type == 'printers' )
 		$prep_stmt = "SELECT * FROM equipment e, network_printer p WHERE p.printer_tag = e.tag_num";		
@@ -29,11 +39,11 @@ if ( isset( $_POST['type'] ) )
     if ( $stmt ) 
 	{
         $stmt->execute();
-        $stmt->bind_result( $tag, $serial );
+        $stmt->bind_result( $tag, $serial, $hostname, $os );
 
 		printf( "Results: <br>");
 		while ( $stmt->fetch() )
-			printf("%s, %s <br>", $tag, $serial);
+			printf("%s, %s, %s, %s <br>", $tag, $serial, $hostname, $os);
     }
 
 	else echo "failure";
