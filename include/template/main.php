@@ -55,30 +55,36 @@
 <td>54321</td>
 <td>ad33dXd33Rz</td>
 <td>Apple MacBook Pro</td>
-<td>UH 201.11</td>
+<td>Off Campus</td>
 <td>English</td>
 <td>John Smith</td>
 </tr>
 <tr>
 <td><i class="fa fa-plus-square-o fa-fw"></i></td>
-<td>Josephin Tan</td>
-<td>$150</td>
-<td>-</td>
-<td>Annie</td>
+<td>36412</td>
+<td>SH72x98s1</td>
+<td>Dell Optiplex 9020</td>
+<td>UH 401.01</td>
+<td>Communication</td>
+<td>Annie MacDonald</td>
 </tr>
 <tr>
 <td><i class="fa fa-plus-square-o fa-fw"></i></td>
+<td>51223</td>
+<td>SHs9kdsS9s23</td>
+<td>Apple iMac 27"</td>
+<td>PA 134</td>
+<td>Theatre</td>
 <td>Joyce Ming</td>
-<td>$200</td>
-<td>$35</td>
-<td>Andy</td>
 </tr>
 <tr>
 <td><i class="fa fa-plus-square-o fa-fw"></i></td>
-<td>James A. Pentel</td>
-<td>$175</td>
-<td>$25</td>
-<td>Annie</td>
+<td>12342</td>
+<td>23kdksa0asd</td>
+<td>Dell GX620</td>
+<td>UH 201.11</td>
+<td>Philosophy</td>
+<td>James Pentel</td>
 </tr>
 </tbody>
 </table>

@@ -10,7 +10,7 @@ if ( isset( $_POST['type'] ) )
 	$type = $_POST['type'];
 
 	if ( $type == 'computers' )
-		$prep_stmt = "SELECT tag_num FROM equipment e, computer c WHERE c.computer_tag = e.tag_num";
+		$prep_stmt = "SELECT tag_num, serial FROM equipment e, computer c WHERE c.computer_tag = e.tag_num ORDER BY tag_num DESC";
 
 	if ( $type == 'printers' )
 		$prep_stmt = "SELECT * FROM equipment e, network_printer p WHERE p.printer_tag = e.tag_num";		
@@ -29,10 +29,11 @@ if ( isset( $_POST['type'] ) )
     if ( $stmt ) 
 	{
         $stmt->execute();
-        $stmt->bind_result( $tag );
+        $stmt->bind_result( $tag, $serial );
 
+		printf( "Results: <br>");
 		while ( $stmt->fetch() )
-			printf("%s <br>", $tag);
+			printf("%s, %s <br>", $tag, $serial);
     }
 
 	else echo "failure";
