@@ -49,7 +49,7 @@ if( $logged )
       	  <div class="form-group" id="username_input">
             <label class="col-xs-1 control-label text-right" for="username">Username</label>
             <div class="col-xs-3">
-              <input id="user" name="user" type="text" class="form-control" value="<?php echo $_GET['user']; ?>">
+              <input id="user" name="user" type="text" class="form-control" value="<? echo $_GET['user']; ?>">
             </div>
 			<div class="col-xs-3 control-label"><span class="pull-left" id="username_error"></span>
 			</div>
