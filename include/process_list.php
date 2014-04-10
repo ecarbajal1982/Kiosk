@@ -11,44 +11,90 @@ if ( isset( $_POST['type'] ) )
 
 	if ( $type == 'computers' )
 	{
-		$prep_stmt = "SELECT e.tag_num, e.serial, c.hostname, c.os FROM equipment e, computer c WHERE c.computer_tag = e.tag_num ORDER BY tag_num DESC";
-/*		$prep_stmt = "SELECT e.tag_num, e.serial, CONCAT( e.make, ' ', e.model ), e.department, e.location, CONCAT( e.building, ' ', e.room ), c.hostname, c.os, eqprinter.printer, eqnotes.notes, eqnet.mac, eqnet.wmac, eqnet.ip, p.purchase_order, p.purchase_date, p.purchased_by
-					  FROM equipment e, computer c, eq_printer eqprinter, eq_notes eqnotes, eq_network eqnet, purchase p
-					  WHERE e.tag_num = c.computer_tag AND e.tag_num = eqprinter.tag_num AND e.tag_num = eqnotes.tag_num
-							AND e.tag_num = eqnet.tag_num AND e.purchase_id = p.purchase_id
-					  ORDER BY tag_num DESC";
+		$computer_stmt = "SELECT e.tag_num, e.serial, CONCAT( e.make, ' ', e.model ), c.os, c.hostname, e.department, e.location, CONCAT( e.building, ' ', e.room_num )
+											FROM equipment e, computer c 
+											WHERE c.computer_tag = e.tag_num
+											ORDER BY tag_num DESC";
 
-*/
 
-	}
-
-	if ( $type == 'printers' )
-		$prep_stmt = "SELECT * FROM equipment e, network_printer p WHERE p.printer_tag = e.tag_num";		
-
-	if ( $type == 'users' )
-		$prep_stmt = "SELECT * FROM user GROUP BY 'f_name', 'l_name' ORDER BY 'l_name' ASC";
-
-	if ( $type == 'purchases' )
-		$prep_stmt = "SELECT * FROM purchase";
-
-	if ( $type == 'software' )
-		$prep_stmt = "SELECT * FROM software";
-
-    $stmt = $mysqli->prepare( $prep_stmt );
+		$stmt = $mysqli->prepare( $computer_stmt );
  
     if ( $stmt ) 
-	{
-        $stmt->execute();
-        $stmt->bind_result( $tag, $serial, $hostname, $os );
+		{
+    	$stmt->execute();
+			$stmt->store_result();
+      $stmt->bind_result( $tag, $serial, $makemodel, $os, $hostname, $department, $offcampus, $location );
 
-		printf( "Results: <br>");
-		while ( $stmt->fetch() )
-			printf("%s, %s, %s, %s <br>", $tag, $serial, $hostname, $os);
+			printf( "Number of Results: %d", $stmt->num_rows );
+			printf( "<table id='custom_table' summary='Search Results'>
+							 	 <thead>
+									 <tr>
+										 <th></th>
+										 <th scope='col'>Property Tag</th>
+										 <th scope='col'>Serial Number</th>
+										 <th scope='col'>Make & Model</th>
+										 <th scope='col'>Location</th>
+										 <th scope='col'>Department</th>
+										 <th scope='col'>Users</th>
+									 </tr>
+								 </thead>
+								 <tbody>" );
+
+			while ( $stmt->fetch() )
+			{
+				printf( "<tr>
+									 <td><i class='fa fa-plus-square-o fa-fw'></i></td>
+									 <td>%s</td>
+									 <td>%s</td>
+									 <td>%s</td>", $tag, $serial, $makemodel );
+
+				if ( $offcampus == 'off' )
+					printf( "<td>Off Campus</td>" );
+
+				else if ( $offcampus == 'on' )
+					printf( "<td>%s</td>", $location );
+
+				else
+					printf( "<td>Unknown</td>" );
+
+				printf( "<td>%s</td>", $department );
+
+				$mysqli2 = inventory_db_connect();
+
+				if ( $stmt2 = $mysqli2->prepare( "SELECT CONCAT( u.f_name, ' ', u.l_name )
+																					FROM user u, uses us
+																					WHERE u.user_id = us.user_id AND us.tag_num = ?" ) )
+				{
+					$stmt2->bind_param( "s", $tag );
+					$stmt2->execute();
+					$stmt2->store_result();
+					$stmt2->bind_result( $user );
+
+					if ( $stmt2->num_rows == 0 )
+						printf( "<td></td>" );
+										
+					else if ( $stmt2->num_rows == 1 )
+					{
+						$stmt2->fetch();
+						printf( "<td>%s</td>", $user );
+					}
+	
+					else if ( $stmt2->num_rows > 1 )
+					{
+						$stmt2->fetch();
+						printf( "<td>%s", $user );
+						while ( $stmt2->fetch() )
+							printf( "<br>%s", $user );
+
+						printf( "</td></tr>" );
+					}
+				}	
+			}
+			
+			printf( "</tbody></table>" );
+
     }
-
-	else echo "failure";
-
-
+	}
 }
 
 ?>

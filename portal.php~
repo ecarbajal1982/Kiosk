@@ -49,7 +49,7 @@ if ( !( $logged ) )
 
 	<!-- Main Section -->
     <div id="main_content">
-	  <? include "include/template/main.php"; ?>
+	  <?php include "include/template/main.php"; ?>
 
 
     </div><!-- end main section -->

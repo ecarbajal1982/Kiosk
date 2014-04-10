@@ -1,0 +1,26 @@
+#custom_table
+{
+	font-family:"Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size:14px;
+	background:#fff;
+	width:100%;
+	border-collapse:collapse;
+	text-align:left;
+}
+#custom_table th
+{
+	font-size:14px;
+	font-weight:normal;
+	color:#039;
+	border-bottom:2px solid #6678b1;
+	padding:10px 8px;
+}
+#custom_table td
+{
+	color:#669;
+	padding:9px 8px 0;
+}
+#custom_table tbody tr:hover td
+{
+	color:#009;
+}

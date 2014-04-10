@@ -25,6 +25,7 @@ if ( !( $logged ) )
   <!-- CSS -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/main.css">
 
   <!-- Javascript -->
   <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
