@@ -11,9 +11,12 @@ if ( isset( $_POST['type'] ) )
 
 	if ( $type == 'computers' )
 	{
-		$computer_stmt = "SELECT e.tag_num, e.serial, CONCAT( e.make, ' ', e.model ), c.os, c.hostname, e.department, e.location, CONCAT( e.building, ' ', e.room_num )
-											FROM equipment e, computer c 
-											WHERE c.computer_tag = e.tag_num
+		$computer_stmt = "SELECT e.tag_num, e.serial, CONCAT( e.make, ' ', e.model ), c.os,
+														 c.hostname, e.department, e.location, CONCAT( e.building, ' ', e.room_num )
+											FROM equipment e, computer c, uses us, user u
+											WHERE c.computer_tag = e.tag_num AND us.tag_num = e.tag_num
+														AND us.user_id = u.user_id AND u.l_name IS NOT NULL
+											GROUP BY e.tag_num
 											ORDER BY tag_num DESC";
 
 
@@ -26,7 +29,7 @@ if ( isset( $_POST['type'] ) )
       $stmt->bind_result( $tag, $serial, $makemodel, $os, $hostname, $department, $offcampus, $location );
 
 			printf( "Number of Results: %d", $stmt->num_rows );
-			printf( "<table id='custom_table' summary='Search Results'>
+			printf( "<table id='custom_table' class='tablesorter' summary='Search Results'>
 							 	 <thead>
 									 <tr>
 										 <th></th>
@@ -61,14 +64,14 @@ if ( isset( $_POST['type'] ) )
 
 				$mysqli2 = inventory_db_connect();
 
-				if ( $stmt2 = $mysqli2->prepare( "SELECT CONCAT( u.f_name, ' ', u.l_name )
+				if ( $stmt2 = $mysqli2->prepare( "SELECT CONCAT( u.f_name, ' ', u.l_name ), u.l_name
 																					FROM user u, uses us
 																					WHERE u.user_id = us.user_id AND us.tag_num = ?" ) )
 				{
 					$stmt2->bind_param( "s", $tag );
 					$stmt2->execute();
 					$stmt2->store_result();
-					$stmt2->bind_result( $user );
+					$stmt2->bind_result( $user, $l_name );
 
 					if ( $stmt2->num_rows == 0 )
 						printf( "<td></td>" );
@@ -84,14 +87,74 @@ if ( isset( $_POST['type'] ) )
 						$stmt2->fetch();
 						printf( "<td>%s", $user );
 						while ( $stmt2->fetch() )
-							printf( "<br>%s", $user );
+							printf( ", %s", $user );
 
 						printf( "</td></tr>" );
 					}
 				}	
 			}
 			
-			printf( "</tbody></table>" );
+			printf( "</tbody></table><script>$( '#custom_table' ).tablesorter();</script>" );
+
+    }
+	}
+
+if ( $type == 'labs' )
+	{
+		$lab_stmt = "SELECT e.tag_num, e.serial, CONCAT( e.make, ' ', e.model ), c.os,
+														 c.hostname, e.department, e.location, CONCAT( e.building, ' ', e.room_num )
+											FROM equipment e, computer c, uses us, user u
+											WHERE c.computer_tag = e.tag_num AND us.tag_num = e.tag_num
+														AND us.user_id = u.user_id AND u.l_name IS NULL
+											GROUP BY e.tag_num
+											ORDER BY e.building, e.room_num DESC";
+
+
+		$stmt = $mysqli->prepare( $lab_stmt );
+ 
+    if ( $stmt ) 
+		{
+    	$stmt->execute();
+			$stmt->store_result();
+      $stmt->bind_result( $tag, $serial, $makemodel, $os, $hostname, $department, $offcampus, $location );
+
+			printf( "Number of Results: %d", $stmt->num_rows );
+			printf( "<table id='custom_table' class='tablesorter' summary='Search Results'>
+							 	 <thead>
+									 <tr>
+										 <th></th>
+										 <th scope='col'>Property Tag</th>
+										 <th scope='col'>Serial Number</th>
+										 <th scope='col'>Make & Model</th>
+										 <th scope='col'>Location</th>
+										 <th scope='col'>Department</th>
+									 </tr>
+								 </thead>
+								 <tbody>" );
+
+			while ( $stmt->fetch() )
+			{
+				printf( "<tr>
+									 <td><i class='fa fa-plus-square-o fa-fw'></i></td>
+									 <td>%s</td>
+									 <td>%s</td>
+									 <td>%s</td>", $tag, $serial, $makemodel );
+
+				if ( $offcampus == 'off' )
+					printf( "<td>Off Campus</td>" );
+
+				else if ( $offcampus == 'on' )
+					printf( "<td>%s</td>", $location );
+
+				else
+					printf( "<td>Unknown</td>" );
+
+				printf( "<td>%s</td></tr>", $department );
+
+				
+			}
+			
+			printf( "</tbody></table><script>$( '#custom_table' ).tablesorter();</script>" );
 
     }
 	}

@@ -21,28 +21,26 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">List All <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onClick="get_list( 'computers' );">
-                <span class="glyphicon glyphicon-hdd"></span>&nbsp; Computers/Tablets</a>
+              <li><a href="#" onClick="get_list( 'computers' );"><i class="fa fa-desktop"></i>&nbsp; Computers/Tablets</a>
               </li>
-              <li><a href="#" onClick="get_list( 'printers' );">
-                <span class="glyphicon glyphicon-print"></span>&nbsp; Network Printers</a>
+              <li><a href="#" onClick="get_list( 'labs' );"><i class="fa fa-users"></i>&nbsp; Computer Labs</a>
               </li>
-              <li><a href="#" onClick="get_list( 'users' );">
-                <span class="glyphicon glyphicon-user"></span>&nbsp; Faculty/Staff Users</a>
+              <li><a href="#" onClick="get_list( 'printers' );"><span class="glyphicon glyphicon-print"></span>&nbsp; Network Printers</a>
               </li>
-              <li><a href="#" onClick="get_list( 'users' );">
-                <span class="glyphicon glyphicon-barcode"></span>&nbsp; Purchase Orders</a>
+              <li><a href="#" onClick="get_list( 'users' );"><span class="glyphicon glyphicon-user"></span>&nbsp; Faculty/Staff Users</a>
               </li>
-		      <? if ( $_SESSION['role'] > 1 ) : ?>
+              <li><a href="#" onClick="get_list( 'users' );"><span class="glyphicon glyphicon-barcode"></span>&nbsp; Purchase Orders</a>
+              </li>
+		      <?php if ( $_SESSION['role'] > 1 ) : ?>
 			    <li class='divider'></li>
                 <li><a href="#" onClick="get_list( 'software' );">
-                  <span class='glyphicon glyphicon-lock'></span>&nbsp; Software Licenses</a>
+                  <i class="fa fa-key"></i>&nbsp; Software Licenses</a>
                 </li>
-		      <? endif; ?>
+		      <?php endif; ?>
             </ul>
           </li>
         </ul>
-	    <?
+	    <?php
 	  		if ( $_SESSION['role'] == 4 )
 				echo '<ul class="nav navbar-nav">
       				    <li class="dropdown">
@@ -62,12 +60,12 @@
 -->
         <ul class="nav navbar-nav navbar-right text-right">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><? echo $_SESSION['username']; ?> &nbsp;<span class="glyphicon glyphicon-cog"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['username']; ?> &nbsp;<span class="glyphicon glyphicon-cog"></span></a>
             <ul class="dropdown-menu">
               <li><a href="#">View User Log &nbsp;<span class="glyphicon glyphicon-list-alt"></span></a></li>
               <li><a href="#">Reset Password &nbsp;<span class="glyphicon glyphicon-wrench"></span></a></li>
               <li class="divider"></li>
-              <li><a href="include/process_logout.php">Log out &nbsp;<span class="glyphicon glyphicon-exclamation-sign"></span></a></li>
+              <li><a href="include/process_logout.php">Log out &nbsp;&nbsp;<i class="fa fa-sign-out"></i></a></li>
             </ul>
           </li>
         </ul>

@@ -21,22 +21,20 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">List All <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onClick="get_list( 'computers' );">
-                <span class="glyphicon glyphicon-hdd"></span>&nbsp; Computers/Tablets</a>
+              <li><a href="#" onClick="get_list( 'computers' );"><i class="fa fa-desktop"></i>&nbsp; Computers/Tablets</a>
               </li>
-              <li><a href="#" onClick="get_list( 'printers' );">
-                <span class="glyphicon glyphicon-print"></span>&nbsp; Network Printers</a>
+              <li><a href="#" onClick="get_list( 'labs' );"><i class="fa fa-users"></i>&nbsp; Lab Workstations</a>
               </li>
-              <li><a href="#" onClick="get_list( 'users' );">
-                <span class="glyphicon glyphicon-user"></span>&nbsp; Faculty/Staff Users</a>
+              <li><a href="#" onClick="get_list( 'printers' );"><span class="glyphicon glyphicon-print"></span>&nbsp; Network Printers</a>
               </li>
-              <li><a href="#" onClick="get_list( 'users' );">
-                <span class="glyphicon glyphicon-barcode"></span>&nbsp; Purchase Orders</a>
+              <li><a href="#" onClick="get_list( 'users' );"><span class="glyphicon glyphicon-user"></span>&nbsp; Faculty/Staff Users</a>
+              </li>
+              <li><a href="#" onClick="get_list( 'users' );"><span class="glyphicon glyphicon-barcode"></span>&nbsp; Purchase Orders</a>
               </li>
 		      <?php if ( $_SESSION['role'] > 1 ) : ?>
 			    <li class='divider'></li>
                 <li><a href="#" onClick="get_list( 'software' );">
-                  <span class='glyphicon glyphicon-lock'></span>&nbsp; Software Licenses</a>
+                  <i class="fa fa-key"></i>&nbsp; Software Licenses</a>
                 </li>
 		      <?php endif; ?>
             </ul>
@@ -67,7 +65,7 @@
               <li><a href="#">View User Log &nbsp;<span class="glyphicon glyphicon-list-alt"></span></a></li>
               <li><a href="#">Reset Password &nbsp;<span class="glyphicon glyphicon-wrench"></span></a></li>
               <li class="divider"></li>
-              <li><a href="include/process_logout.php">Log out &nbsp;<span class="glyphicon glyphicon-exclamation-sign"></span></a></li>
+              <li><a href="include/process_logout.php">Log out &nbsp;&nbsp;<i class="fa fa-sign-out"></i></a></li>
             </ul>
           </li>
         </ul>
