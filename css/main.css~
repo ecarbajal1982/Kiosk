@@ -15,7 +15,7 @@
 	border-bottom:2px solid #6678b1;
 	padding:10px 8px;
 }
-#custom_table th a
+#custom_table th div
 {
 	cursor: pointer;
 	cursor: hand;
@@ -27,5 +27,5 @@
 }
 #custom_table tbody tr:hover td
 {
-	color:#009;
+	background-color:cyan;
 }

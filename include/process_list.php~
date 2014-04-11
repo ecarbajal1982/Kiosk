@@ -33,12 +33,12 @@ if ( isset( $_POST['type'] ) )
 							 	 <thead>
 									 <tr>
 										 <th class='expand_all open'><i style='cursor:pointer; cursor:hand;' class='fa fa-plus-square-o fa-fw'></i></th>
-										 <th scope='col'><div>Property Tag <i class='arrow fa fa-unsorted'></i></div></th>
-										 <th scope='col'><div>Serial Number <i class='arrow fa fa-unsorted'></i></div></th>
-										 <th scope='col'><div>Make & Model <i class='arrow fa fa-unsorted'></i></div></th>
-										 <th scope='col'><div>Location <i class='arrow fa fa-unsorted'></i></div></th>
-										 <th scope='col'><div>Department <i class='arrow fa fa-unsorted'></i></div></th>
-										 <th scope='col'><div>Users <i class='arrow fa fa-unsorted'></i></div></th>
+										 <th scope='col' class='header'><div>Property Tag <i class='fa'></i></div></th>
+										 <th scope='col' class='header'><div>Serial Number <i class='fa fa-unsorted'></i></div></th>
+										 <th scope='col' class='header'><div>Make & Model <i class='fa fa-unsorted'></i></div></th>
+										 <th scope='col' class='header'><div>Location <i class='fa fa-unsorted'></i></div></th>
+										 <th scope='col' class='header'><div>Department <i class='fa fa-unsorted'></i></div></th>
+										 <th scope='col' class='header'><div>Users <i class='fa fa-unsorted'></i></div></th>
 									 </tr>
 								 </thead>
 								 <tbody>" );
@@ -93,7 +93,7 @@ if ( isset( $_POST['type'] ) )
 
 					}
 				}	
-				printf( "<tr class='more_info' style='display:none;'><td></td><td style='border: 2px solid blue' colspan='5'>testing testing testing</td></tr>" );
+				printf( "<tr class='more_info expand-child' style='display:none;'><td></td><td style='border: 2px solid blue' colspan='6'>testing testing testing</td></tr>" );
 			}
 			
 			printf( "</tbody></table><script>$( '#custom_table' ).tablesorter();
@@ -104,7 +104,12 @@ if ( isset( $_POST['type'] ) )
 																				 if ( $( this ).hasClass( 'open' ) )
 																					 $( '.more_info' ).hide();
 																				 if ( $( this ).hasClass( 'closed' ) )
-																				   $( '.more_info' ).show(); });</script>" );
+																				   $( '.more_info' ).show(); });
+																			 $( 'th.headerSortDown > div > i' ).addClass( 'fa-arrow-down' );
+																			 $( 'th.headerSortDown > div > i' ).removeClass( 'fa-unsorted' );
+																			 $( 'th.headerSortUp >  div > i' ).addClass( 'fa-arrow-up' );
+																			 $( 'th.headerSortUp > div > i' ).removeClass( 'fa-unsorted' );
+</script>" );
     }
 	}
 
