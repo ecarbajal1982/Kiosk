@@ -32,13 +32,13 @@ if ( isset( $_POST['type'] ) )
 			printf( "<table id='custom_table' class='tablesorter' summary='Search Results'>
 							 	 <thead>
 									 <tr>
-										 <th></th>
-										 <th scope='col'>Property Tag</th>
-										 <th scope='col'>Serial Number</th>
-										 <th scope='col'>Make & Model</th>
-										 <th scope='col'>Location</th>
-										 <th scope='col'>Department</th>
-										 <th scope='col'>Users</th>
+										 <th class='expand_all open'><i style='cursor:pointer; cursor:hand;' class='fa fa-plus-square-o fa-fw'></i></th>
+										 <th scope='col'><div>Property Tag <i class='arrow fa fa-unsorted'></i></div></th>
+										 <th scope='col'><div>Serial Number <i class='arrow fa fa-unsorted'></i></div></th>
+										 <th scope='col'><div>Make & Model <i class='arrow fa fa-unsorted'></i></div></th>
+										 <th scope='col'><div>Location <i class='arrow fa fa-unsorted'></i></div></th>
+										 <th scope='col'><div>Department <i class='arrow fa fa-unsorted'></i></div></th>
+										 <th scope='col'><div>Users <i class='arrow fa fa-unsorted'></i></div></th>
 									 </tr>
 								 </thead>
 								 <tbody>" );
@@ -46,7 +46,7 @@ if ( isset( $_POST['type'] ) )
 			while ( $stmt->fetch() )
 			{
 				printf( "<tr>
-									 <td><i class='fa fa-plus-square-o fa-fw'></i></td>
+									 <td class='expand_record'><i style='cursor:pointer; cursor:hand;'<i class='fa fa-plus-square-o fa-fw'></i></td>
 									 <td>%s</td>
 									 <td>%s</td>
 									 <td>%s</td>", $tag, $serial, $makemodel );
@@ -89,13 +89,22 @@ if ( isset( $_POST['type'] ) )
 						while ( $stmt2->fetch() )
 							printf( ", %s", $user );
 
-						printf( "</td></tr>" );
+						printf( "</td>" );
+
 					}
 				}	
+				printf( "<tr class='more_info' style='display:none;'><td></td><td style='border: 2px solid blue' colspan='6'>testing testing testing</td></tr>" );
 			}
 			
-			printf( "</tbody></table><script>$( '#custom_table' ).tablesorter();</script>" );
-
+			printf( "</tbody></table><script>$( '#custom_table' ).tablesorter();
+																			 $( '.expand_record' ).click( function(){
+																				 $( this ).parent().next().toggle(); });
+																			 $( '.expand_all' ).click( function(){
+																				 $( this ).toggleClass( 'closed open' );
+																				 if ( $( this ).hasClass( 'open' ) )
+																					 $( '.more_info' ).hide();
+																				 if ( $( this ).hasClass( 'closed' ) )
+																				   $( '.more_info' ).show(); });</script>" );
     }
 	}
 
@@ -122,12 +131,12 @@ if ( $type == 'labs' )
 			printf( "<table id='custom_table' class='tablesorter' summary='Search Results'>
 							 	 <thead>
 									 <tr>
-										 <th></th>
-										 <th scope='col'>Property Tag</th>
-										 <th scope='col'>Serial Number</th>
-										 <th scope='col'>Make & Model</th>
-										 <th scope='col'>Location</th>
-										 <th scope='col'>Department</th>
+										 <th class='expand_all open'><i style='cursor:pointer; cursor:hand;' class='fa fa-plus-square-o fa-fw'></i></th>
+										 <th scope='col'><div>Property Tag <i class='arrow fa fa-unsorted'></i></div></th>
+										 <th scope='col'><div>Serial Number <i class='arrow fa fa-unsorted'></i></div></th>
+										 <th scope='col'><div>Make & Model <i class='arrow fa fa-unsorted'></i></div></th>
+										 <th scope='col'><div>Location <i class='arrow fa fa-unsorted'></i></div></th>
+										 <th scope='col'><div>Department <i class='arrow fa fa-unsorted'></i></div></th>
 									 </tr>
 								 </thead>
 								 <tbody>" );
@@ -135,7 +144,7 @@ if ( $type == 'labs' )
 			while ( $stmt->fetch() )
 			{
 				printf( "<tr>
-									 <td><i class='fa fa-plus-square-o fa-fw'></i></td>
+									 <td class='expand_record'><i style='cursor:pointer; cursor:hand;' class='fa fa-plus-square-o fa-fw'></i></td>
 									 <td>%s</td>
 									 <td>%s</td>
 									 <td>%s</td>", $tag, $serial, $makemodel );
@@ -150,11 +159,21 @@ if ( $type == 'labs' )
 					printf( "<td>Unknown</td>" );
 
 				printf( "<td>%s</td></tr>", $department );
+				printf( "<tr class='more_info' style='display:none;'><td></td><td style='border: 2px solid blue' colspan='5'>testing testing testing</td></tr>" );
 
 				
 			}
 			
-			printf( "</tbody></table><script>$( '#custom_table' ).tablesorter();</script>" );
+			printf( "</tbody></table><script>$( '#custom_table' ).tablesorter();
+																			 $( '.expand_record' ).click( function(){
+																				 $( this ).parent().next().toggle(); });
+																			 $( '.expand_all' ).click( function(){
+																				 $( this ).toggleClass( 'closed open' );
+																				 if ( $( this ).hasClass( 'open' ) )
+																					 $( '.more_info' ).hide();
+																				 if ( $( this ).hasClass( 'closed' ) )
+																				   $( '.more_info' ).show(); });					
+</script>" );
 
     }
 	}
