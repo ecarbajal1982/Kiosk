@@ -211,7 +211,7 @@ $get_software_from_tag = "SELECT 	s.software_name,
 													FROM 		software s,
 																	licensed_to l
 
-													WHERE 	s.software_name = l.software_name AND
+													WHERE 	s.software_id = l.software_id AND
 																	l.computer_tag = ?";
 
 

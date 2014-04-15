@@ -99,35 +99,32 @@ if ( $type == 'computers' and $stmt = $mysqli->prepare( $get_all_computers ) )
 		}
 
 		// Set results and headers arrays
-		$results[] = array( "tag" => $tag, 
-	 										 	"serial" => $serial, 
-												"makemodel" => $makemodel, 
-												"department" => $department, 
-												"location" => $location,
-												"purchase_order" => $purchase_order, 
-												"purchase_date" => $purchase_date,
-												"purchased_by" => $purchased_by,
-												"eq_printer" => $eq_printer,
-					 							"eq_notes" => $eq_notes,
-					 							"os" => $os,
-					 							"hostname" => $hostname,
-					 							"mac" => $mac,
-					 							"wmac" => $wmac,
-												"ip" => $ip,
-				 								"users" => $users,
-				 								"software" => $software, );
+		$results[] = array( "visible" => array( "tag" => $tag, 
+	 										 											"serial" => $serial, 
+																						"makemodel" => $makemodel, 
+																						"location" => $location,
+																						"department" => $department, ),
+												"hidden" => array( "purchase_order" => $purchase_order, 
+																					 "purchase_date" => $purchase_date,
+																					 "purchased_by" => $purchased_by,
+																					 "eq_printer" => $eq_printer,
+					 																 "eq_notes" => $eq_notes,
+					 																 "os" => $os,
+					 																 "hostname" => $hostname,
+					 																 "mac" => $mac,
+					 																 "wmac" => $wmac,
+																					 "ip" => $ip,
+				 																	 "users" => $users,
+				 																	 "software" => $software, ) );
 	}
 			
 	$headers = array( "1" => "Property Tag",
 										"2" => "Serial Number",
 										"3" => "Make & Model",
 										"4" => "Location",
-										"5" => "Department",
-										"6" => "Users", );
+										"5" => "Department", );
 
 	$resultsCount = $stmt->num_rows;		
-	
-	echo json_encode( $results );
 
 }
 
@@ -202,22 +199,22 @@ if ( $type == 'labs' and $stmt = $mysqli->prepare( $get_all_labs ) )
 		}
 
 		// Set results and headers arrays
-		$results[] = array( "tag" => $tag, 
-	 										 	"serial" => $serial, 
-												"makemodel" => $makemodel, 
-												"department" => $department, 
-												"location" => $location,
-												"purchase_order" => $purchase_order, 
-												"purchase_date" => $purchase_date,
-												"purchased_by" => $purchased_by,
-												"eq_printer" => $eq_printer,
-					 							"eq_notes" => $eq_notes,
-					 							"os" => $os,
-					 							"hostname" => $hostname,
-					 							"mac" => $mac,
-					 							"wmac" => $wmac,
-												"ip" => $ip,
-				 								"software" => $software, );
+		$results[] = array( "visible" => array( "tag" => $tag, 
+	 										 											"serial" => $serial, 
+																						"makemodel" => $makemodel, 
+																						"location" => $location,
+																						"department" => $department, ),
+												"hidden" => array( "purchase_order" => $purchase_order, 
+																					 "purchase_date" => $purchase_date,
+																					 "purchased_by" => $purchased_by,
+																				   "eq_printer" => $eq_printer,
+					 																 "eq_notes" => $eq_notes,
+					 																 "os" => $os,
+					 																 "hostname" => $hostname,
+					 																 "mac" => $mac,
+					 																 "wmac" => $wmac,
+																					 "ip" => $ip,
+				 																	 "software" => $software, ) );
 	}
 			
 	$headers = array( "1" => "Property Tag",
@@ -227,8 +224,6 @@ if ( $type == 'labs' and $stmt = $mysqli->prepare( $get_all_labs ) )
 										"5" => "Department", );
 
 	$resultsCount = $stmt->num_rows;		
-	
-	echo json_encode( $results );
 
 }
 
@@ -271,19 +266,19 @@ if ( $type == 'printers' and $stmt = $mysqli->prepare( $get_all_network_printers
 		}
 
 		// Set results and headers arrays
-		$results[] = array( "tag" => $tag, 
-	 										 	"serial" => $serial, 
-												"makemodel" => $makemodel, 
-												"department" => $department, 
-												"location" => $location,
-												"purchase_order" => $purchase_order, 
-												"purchase_date" => $purchase_date,
-												"purchased_by" => $purchased_by,
-					 							"eq_notes" => $eq_notes,
-					 							"hostname" => $hostname,
-					 							"mac" => $mac,
-					 							"wmac" => $wmac,
-												"ip" => $ip, );
+		$results[] = array( "visible" => array( "tag" => $tag, 
+	 										 											"serial" => $serial, 
+																						"makemodel" => $makemodel,
+																						"location" => $location,  
+																						"department" => $department, ),
+												"hidden" => array( "purchase_order" => $purchase_order, 
+																					 "purchase_date" => $purchase_date,
+																					 "purchased_by" => $purchased_by,
+					 																 "eq_notes" => $eq_notes,
+					 																 "hostname" => $hostname,
+					 																 "mac" => $mac,
+					 																 "wmac" => $wmac,
+																					 "ip" => $ip, ) );
 	}
 			
 	$headers = array( "1" => "Property Tag",
@@ -293,8 +288,6 @@ if ( $type == 'printers' and $stmt = $mysqli->prepare( $get_all_network_printers
 										"5" => "Department", );
 
 	$resultsCount = $stmt->num_rows;		
-
-	echo json_encode( $results );
 
 }
 
@@ -345,17 +338,15 @@ if ( $type == 'users' and $stmt = $mysqli->prepare( $get_all_users ) )
 		}
 
 		// Set results and headers arrays
-		$results[] = array( "f_name" => $f_name, 
-	 										 	"l_name" => $l_name, 
-												"equipment" => $equipment, );
+		$results[] = array( "visible" => array( "f_name" => $f_name, 
+	 										 											"l_name" => $l_name, ),
+												"hidden" => array( "equipment" => $equipment, ) );
 	}
-			
+
 	$headers = array( "1" => "First Name",
 										"2" => "Last Name", );
 
 	$resultsCount = $stmt->num_rows;
-	
-	echo json_encode( $results );
 
 }
 
@@ -406,10 +397,10 @@ if ( $type == 'purchases' and $stmt = $mysqli->prepare( $get_all_purchase_orders
 		}
 
 		// Set results and headers arrays
-		$results[] = array( "purchase_order" => $purchase_order, 
-	 										 	"purchase_date" => $purchase_date,
-												"purchased_by" => $purchased_by, 
-												"equipment" => $equipment, );
+		$results[] = array( "visible" => array( "purchase_order" => $purchase_order, 
+	 										 											"purchase_date" => $purchase_date,
+																						"purchased_by" => $purchased_by, ),
+												"hidden" => array( "equipment" => $equipment, ) );
 	}
 			
 	$headers = array( "1" => "Purchase Order",
@@ -417,8 +408,6 @@ if ( $type == 'purchases' and $stmt = $mysqli->prepare( $get_all_purchase_orders
 										"3" => "Purchased By" );
 
 	$resultsCount = $stmt->num_rows;
-	
-	echo json_encode( $results );
 
 }
 
@@ -472,120 +461,100 @@ if ( $type == 'software' and $stmt = $mysqli->prepare( $get_all_software ) )
 		}
 
 		// Set results and headers arrays
-		$results[] = array( "software_name" => $software_name, 
-	 										 	"license_number" => $license_number,
-												"license_type" => $license_type, 
-												"number_of_licenses" => $number_of_licenses,
-												"notes" => $notes,
-												"computers" => $computers, );
+		$results[] = array( "visible" => array( "software_name" => $software_name, 
+	 										 											"license_number" => $license_number,
+																						"license_type" => $license_type, 
+																						"number_of_licenses" => $number_of_licenses, 
+																						"notes" => $notes, ),
+												"hidden" => array( "computers" => $computers, ) );
 	}
 			
 	$headers = array( "1" => "Software Name",
 										"2" => "License Number",
 										"3" => "License Type",
-										"4" => "Number of Licenses" );
+										"4" => "Number of Licenses",
+										"5" => "Notes", );
 
 	$resultsCount = $stmt->num_rows;
 	
-	echo json_encode( $results );
+
 
 }
 
+//echo json_encode( $results );
 
-/*
-if ( $type == 'labs' )
-	{
-		$stmt = $mysqli->prepare( $get_all_labs );
- 
-    if ( $stmt ) 
-		{
-    	$stmt->execute();
-			$stmt->store_result();
-      $stmt->bind_result( $tag, $serial, $makemodel, $os, $hostname, $department, $offcampus, $location );
-
-			printf( "Number of Results: %d", $stmt->num_rows );
-			printf( "<table id='custom_table' class='tablesorter' summary='Search Results'>
+printf( "Number of Results: %d <input class='search' type='search' data-column='all'>", $resultsCount );
+printf( "<table id='custom_table' class='tablesorter' summary='Search Results'>
 							 	 <thead>
 									 <tr>
 										 <th>
 											 <i style='cursor:pointer; color:blue;' class='expand_all open fa fa-plus-square fa-fw'></i>
-										 </th>
-										 <th scope='col'>
-										 	 <div>Property Tag <i class='fa fa-unsorted'></i></div>
-										 </th>
-										 <th scope='col'>
-											 <div>Serial Number <i class='fa fa-unsorted'></i></div>
-										 </th>
-										 <th scope='col'>
-											 <div>Make & Model <i class='fa fa-unsorted'></i></div>
-										 </th>
-										 <th scope='col'>
-											 <div>Location <i class='fa fa-unsorted'></i></div>
-										 </th>
-										 <th scope='col'>
-											 <div>Department <i class='fa fa-unsorted'></i></div>
-										 </th>
-									 </tr>
-								 </thead>
-								 <tbody>" );
+										 </th>" );
 
-			while ( $stmt->fetch() )
-			{
-				printf( "<tr>
-									 <td>
-										 <i style='cursor:pointer; color:blue;' class='expand_record fa fa-plus-square fa-fw'></i>
-									 </td>
-									 <td>%s</td>
-									 <td>%s</td>
-									 <td>%s</td>", $tag, $serial, $makemodel );
+foreach ( $headers as $header )
+{
+	printf( "<th scope='col'>
+						 <div>%s</div>
+					 </th>", $header );
+}
 
-				if ( $offcampus == 'off' )
-					printf( "<td>Off Campus</td>" );
+printf( "</tr></thead><tbody>" );
 
-				else if ( $offcampus == 'on' )
-					printf( "<td>%s</td>", $location );
+foreach ( $results as $result )
+{
+	printf( "<tr>
+						 <td>
+							 <i style='cursor:pointer; color:blue;' class='toggle open fa fa-plus-square fa-fw'></i>
+						 </td>" );
 
-				else
-					printf( "<td>Unknown</td>" );
-
-				printf( "<td>%s</td></tr>", $department );
-				printf( "<tr class='more_info expand-child' style='display:none;'><td></td><td style='border: 2px solid blue' colspan='5'>testing testing testing</td></tr>" );
-
-				
-			}
-
-
-    }
+	foreach ( $result["visible"] as $columnvalue )
+	{
+		printf( "<td>%s</td>", $columnvalue );
 	}
+
+	printf( "</tr><tr class='tablesorter-childRow'><td colspan='1'></td><td colspan='10'>Nothing to see here, masdfasdfasdfasdfasdfasdfffffff ffff fffffffffffffff fffffffffasdfa sdfasdfasdfasdfasdfasdfasdfasdfasdfasdove alongNothing to see here, masdfasdfasdfa sdfasdfasd fff fffffffffffffffffffffffffffff fffasdfasdf asd fasdfasdfasdfasdfasdfasdfasdfasdove alongNothing to see here, masdfasdfasdfasdfasdfasdff fffffff ffffffffffffffffffffffffffasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdove alongNothing to see here, masdfasdfasdfasdfasdfa s d fffffffffffffffffffffffffffffffffffasdfasdfasdf asdfasdfasdfasdfasdfasdfasdfasdove alongNothing to see here, masdfasdfasdfasdfasdfa sdfffffffffffffffffffffffffffffffffffasdfasdfasdfasdfasdfasdfas dfasdfasdfasdfasdove alongNothing to see here , masdfasdfasdfasdfasdfasdfffffffffffffffffffffffffffffffffffasdfa sdfasdfasdfasdfasdfasdfasdfasdfasdfasdove along</td></tr>" );
+
+}
 
 
 // after query has been done:
 printf( "</tbody></table>
-				 <script>$( '#custom_table' ).tablesorter();
-									 $( '.expand_record' ).click( function(){
-										 $( this ).parent().parent().next().toggle();
-										 $( this ).toggleClass( 'fa-minus-square fa-plus-square' ); });
-									 $( '.expand_all' ).click( function(){
-										 $( this ).toggleClass( 'closed open' );
-										 if ( $( this ).hasClass( 'open' ) )
-										 {
-											 $( '.more_info' ).hide();
-											 $( '.expand_record, .expand_all' ).removeClass( 'fa-minus-square' );
-											 $( '.expand_record, .expand_all' ).addClass( 'fa-plus-square' );
-										 }
+<script>
 
-										 if ( $( this ).hasClass( 'closed' ) )
-										 {
-										   $( '.more_info' ).show();
-											 $( '.expand_record, .expand_all' ).removeClass( 'fa-plus-square' );
-											 $( '.expand_record, .expand_all' ).addClass( 'fa-minus-square' );
-										 }
-									 }); </script>" );
+$('#custom_table').tablesorter({
+    cssChildRow: 'tablesorter-childRow',
+		widgets : ['stickyHeaders'],
+  
+  });
+	
+$('.tablesorter-childRow td').hide();
+							
+$( '.expand_all' ).click( function(){
+	$( this ).toggleClass( 'closed open' );
+	$( this ).toggleClass( 'fa-plus-square fa-minus-square' );
+	$( '.toggle' ).toggleClass( 'fa-plus-square fa-minus-square' );
+	if ( $( this ).hasClass( 'open' ) )
+	{
+		$( '.tablesorter-childRow td' ).hide();
+		$( '.toggle' ).removeClass( 'fa-minus-square' );
+		$( '.toggle' ).addClass( 'fa-plus-square' );
+	}
 
+	if ( $( this ).hasClass( 'closed' ) )
+	{
+		$( '.tablesorter-childRow td' ).show();
+		$( '.toggle' ).removeClass( 'fa-plus-square' );
+		$( '.toggle' ).addClass( 'fa-minus-square' );
+	}
+}); 
 
+$( '.toggle' ).on( 'click' ,function(){
+	$( this ).toggleClass( 'fa-plus-square fa-minus-square' );
 
-}
-*/
+  $(this).closest('tr').nextUntil('tr:not(.tablesorter-childRow)').find('td').toggle();
 
+  return false;
+});
+</script>" );
 
 ?>

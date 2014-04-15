@@ -126,7 +126,7 @@ $get_all_purchase_orders = "SELECT	 	p.purchase_id,
 // Retrieve all licensed software
 $get_all_software = "SELECT s.software_id,
 														s.software_name,
-														s.license_name,
+														s.license_num,
 														s.license_type,
 														s.number_of_licenses,
 														s.notes

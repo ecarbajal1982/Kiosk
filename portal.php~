@@ -63,7 +63,7 @@ if ( !( $logged ) )
 				<button class="btn btn-primary" type="button" id="addOther">Other Equipment</button></span></h3>
 <script>$("#addComputer").on( "click", function(){
 	$( this ).parent().hide();
-	$( '.modal-title' ).html( "<b>Add Computer or Tablet</b>" );
+	$( '.modal-title' ).html( "<b>Add Computer or Tablet:</b>" );
 
 
 });</script>
