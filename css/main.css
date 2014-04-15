@@ -10,7 +10,7 @@
 #custom_table th
 {
 	font-size:14px;
-	font-weight:normal;
+	font-weight:bold;
 	color:#039;
 	border-bottom:2px solid #6678b1;
 	padding:10px 8px;
@@ -28,4 +28,5 @@
 #custom_table tbody tr:hover td
 {
 	color:#009;
+
 }

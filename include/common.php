@@ -53,8 +53,8 @@ function sec_session_start()
 function login( $user, $password, $mysqli )
 {
     if ( $stmt = $mysqli->prepare( "SELECT id, username, password, salt, role 
-        							FROM users
-       								WHERE username = ? LIMIT 1" ) )
+        														FROM users
+       															WHERE username = ? LIMIT 1" ) )
 	{
         $stmt->bind_param( 's', $user );
         $stmt->execute();
@@ -107,7 +107,7 @@ function login( $user, $password, $mysqli )
                     // Record this attempt in the database
                     $now = time();
                     $mysqli->query( "INSERT INTO login_attempts( user_id, time )
-                                    VALUES ( '$user_id', '$now' )" );
+                                     VALUES ( '$user_id', '$now' )" );
                     return "wrong_password";
                 }
             }

@@ -8,6 +8,12 @@ function login_db_connect()
 	return $mysqli;
 }
 
+function inventory_db_connect()
+{
+	$mysqli = new mysqli( HOST, I_USER, I_PASSWORD, I_DATABASE );
+
+	return $mysqli;
+}
 
 function sec_session_start()
 {

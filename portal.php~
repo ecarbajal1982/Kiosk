@@ -15,28 +15,78 @@ if ( !( $logged ) )
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>CAL Inventory</title>
+	<meta charset="UTF-8">
+	<title>CAL Inventory</title>
 
-
-<link rel="shortcut icon" href="http://www.csusb.edu/images/favicon.ico">
-
+	<link rel="shortcut icon" href="http://www.csusb.edu/images/favicon.ico">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/font-awesome.min.css">
   <link rel="stylesheet" href="css/main.css">
 
   <!-- Javascript -->
   <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
-  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/jquery.tablesorter.mod.js"></script>
+  <script type="text/javascript" src="js/jquery.tablesorter.pager.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
   <script type="text/javascript" src="js/bootstrap-typeahead.js"></script> 
   <script type="text/JavaScript" src="js/sha512.js"></script> 
   <script type="text/JavaScript" src="js/main.js"></script>
 
 </head>
 <body style="padding-top: 60px">
+
+
+<!-- Search Modal -->
+<div class="modal" id="searchModal" style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        Search
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Add Equipment Modal -->
+<div class="modal" id="addEquipmentModal" style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+		  <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title"><b>Choose Type &rsaquo;&rsaquo;&nbsp;</b><span>
+				<button class="btn btn-primary" type="button" id="addComputer">Computer/Tablet</button>
+				<button class="btn btn-primary" type="button" id="addPrinter">Network Printer</button>
+				<button class="btn btn-primary" type="button" id="addOther">Other Equipment</button></span></h3>
+<script>$("#addComputer").on( "click", function(){
+	$( this ).parent().hide();
+	$( '.modal-title' ).html( "<b>Add Computer or Tablet</b>" );
+
+
+});</script>
+		  </div>
+      <div class="modal-body text-center">
+        Add New Equipment
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Add Software Modal -->
+<div class="modal" id="addSoftwareModal" style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        Add New Software
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- Top panel-->
 <div class="container" id="navbar">
@@ -52,6 +102,7 @@ if ( !( $logged ) )
 	<!-- Main Section -->
     <div id="main_content">
 	  <?php include "include/template/main.php"; ?>
+
 
 
     </div><!-- end main section -->

@@ -1,4 +1,3 @@
-
 function get_list( type )
 {
 	$.ajax({
@@ -8,14 +7,9 @@ function get_list( type )
 		success: function( result ) {
 			$( '#main_content' ).html( result );
 		}
-});
-
+	});
 
 }
-
-
-
-
 
 
 

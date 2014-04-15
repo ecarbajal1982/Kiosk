@@ -12,9 +12,13 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav pull-right">
-        <li><a href="#"><b>Search</b></a></li>
-<li class="divider-vertical"></li>
-        <li><a href="#">Add Equipment</a></li>
+        <li data-backdrop="true" data-toggle="modal" data-target="#searchModal">
+					<a style="cursor:pointer;"><b>Search</b></a>
+				</li>
+				<li class="divider-vertical"></li>
+        <li data-backdrop="true" data-toggle="modal" data-target="#addEquipmentModal">
+					<a style="cursor:pointer;">Add Equipment</a>
+				</li>
         <li><a href="#">Add Software</a></li>
 
         <ul class="nav navbar-nav">
@@ -23,13 +27,13 @@
             <ul class="dropdown-menu">
               <li><a href="#" onClick="get_list( 'computers' );"><i class="fa fa-desktop"></i>&nbsp; Computers/Tablets</a>
               </li>
-              <li><a href="#" onClick="get_list( 'labs' );"><i class="fa fa-users"></i>&nbsp; Computer Labs</a>
+              <li><a href="#" onClick="get_list( 'labs' );"><i class="fa fa-users"></i>&nbsp; Lab Workstations</a>
               </li>
               <li><a href="#" onClick="get_list( 'printers' );"><span class="glyphicon glyphicon-print"></span>&nbsp; Network Printers</a>
               </li>
               <li><a href="#" onClick="get_list( 'users' );"><span class="glyphicon glyphicon-user"></span>&nbsp; Faculty/Staff Users</a>
               </li>
-              <li><a href="#" onClick="get_list( 'users' );"><span class="glyphicon glyphicon-barcode"></span>&nbsp; Purchase Orders</a>
+              <li><a href="#" onClick="get_list( 'purchases' );"><span class="glyphicon glyphicon-barcode"></span>&nbsp; Purchase Orders</a>
               </li>
 		      <?php if ( $_SESSION['role'] > 1 ) : ?>
 			    <li class='divider'></li>

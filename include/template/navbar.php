@@ -12,10 +12,16 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav pull-right">
-        <li><a href="#"><b>Search</b></a></li>
-<li class="divider-vertical"></li>
-        <li><a href="#">Add Equipment</a></li>
-        <li><a href="#">Add Software</a></li>
+        <li data-backdrop="true" data-toggle="modal" data-target="#searchModal">
+					<a style="cursor:pointer;"><b>Search</b></a>
+				</li>
+				<li class="divider-vertical"></li>
+        <li data-backdrop="true" data-toggle="modal" data-target="#addEquipmentModal">
+					<a style="cursor:pointer;">Add Equipment</a>
+				</li>
+        <li data-backdrop="true" data-toggle="modal" data-target="#addSoftwareModal">
+					<a style="cursor:pointer;">Add Software</a>
+				</li>
 
         <ul class="nav navbar-nav">
           <li class="dropdown">
@@ -29,7 +35,7 @@
               </li>
               <li><a href="#" onClick="get_list( 'users' );"><span class="glyphicon glyphicon-user"></span>&nbsp; Faculty/Staff Users</a>
               </li>
-              <li><a href="#" onClick="get_list( 'users' );"><span class="glyphicon glyphicon-barcode"></span>&nbsp; Purchase Orders</a>
+              <li><a href="#" onClick="get_list( 'purchases' );"><span class="glyphicon glyphicon-barcode"></span>&nbsp; Purchase Orders</a>
               </li>
 		      <?php if ( $_SESSION['role'] > 1 ) : ?>
 			    <li class='divider'></li>
