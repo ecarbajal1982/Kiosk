@@ -5,7 +5,7 @@ function get_list( type )
 		url: "include/process_list.php",
 		data: { type: type },
 		success: function( result ) {
-			$( '#main_content' ).html( result );
+			$( '.content' ).html( result );
 		}
 	});
 

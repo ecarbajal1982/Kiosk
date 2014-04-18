@@ -135,11 +135,15 @@ $get_all_software = "SELECT s.software_id,
 
 
 // Retrieve all faculty/staff users
-$get_all_users = "SELECT u.user_id, 
-												 u.f_name, 
-												 u.l_name
+$get_all_users = "SELECT		u.user_id, 
+														u.f_name, 
+														u.l_name
 
-									FROM	 user u";
+									FROM			user u
+
+									WHERE			u.l_name IS NOT NULL
+
+									ORDER BY	u.l_name ASC";
 
 // Retrieve all computers based on licensed software
 $get_computers_from_software_id = "SELECT	e.tag_num,

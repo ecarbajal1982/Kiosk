@@ -22,11 +22,19 @@
 }
 #custom_table td
 {
+	cursor: pointer;
 	color:#669;
-	padding:9px 8px 0;
+	padding:5px;
 }
 #custom_table tbody tr:hover td
 {
-	color:#009;
+	color:#669;
+	background-color: #e0e0e0;
 
+}
+.wrapper {
+	position: relative;
+	padding: 0 5px;
+	height: 250px;
+	overflow-y: auto;
 }

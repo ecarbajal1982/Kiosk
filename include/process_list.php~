@@ -344,7 +344,7 @@ if ( $type == 'users' and $stmt = $mysqli->prepare( $get_all_users ) )
 	}
 
 	$headers = array( "1" => "First Name",
-										"2" => "Last Name", );
+										"2" => "Last Name" );
 
 	$resultsCount = $stmt->num_rows;
 
@@ -483,13 +483,27 @@ if ( $type == 'software' and $stmt = $mysqli->prepare( $get_all_software ) )
 
 //echo json_encode( $results );
 
-printf( "Number of Results: %d <input class='search' type='search' data-column='all'>", $resultsCount );
-printf( "<table id='custom_table' class='tablesorter' summary='Search Results'>
+
+printf( "Number of Results: %d", $resultsCount );
+printf( "<div class='row well'>
+		      <div class='col-xs-6'>
+                <form class='form-inline'>
+                  <input type='text' class='form-control search' placeholder='Search' size='25' data-column='all'>
+                    <button class='btn btn-primary' type='button'>
+                      <span class='glyphicon glyphicon-search'></span>
+                    </button>
+                </form>
+              </div>
+              <div class='col-xs-6 text-right'>
+                <button class='btn btn-primary' type='button'>
+                  <span class='glyphicon glyphicon-file'></span>&nbsp; Print Report
+                </button>
+	          </div>
+            </div>");
+printf( "<div class='wrapper'><table id='custom_table' class='tablesorter'>
+							 
 							 	 <thead>
-									 <tr>
-										 <th>
-											 <i style='cursor:pointer; color:blue;' class='expand_all open fa fa-plus-square fa-fw'></i>
-										 </th>" );
+									 <tr class='tablesorter-stickyHeader'>" );
 
 foreach ( $headers as $header )
 {
@@ -502,56 +516,124 @@ printf( "</tr></thead><tbody>" );
 
 foreach ( $results as $result )
 {
-	printf( "<tr>
-						 <td>
-							 <i style='cursor:pointer; color:blue;' class='toggle open fa fa-plus-square fa-fw'></i>
-						 </td>" );
+	printf( "<tr class='toggle'>" );
 
 	foreach ( $result["visible"] as $columnvalue )
 	{
 		printf( "<td>%s</td>", $columnvalue );
 	}
 
-	printf( "</tr><tr class='tablesorter-childRow'><td colspan='1'></td><td colspan='10'>Nothing to see here, masdfasdfasdfasdfasdfasdfffffff ffff fffffffffffffff fffffffffasdfa sdfasdfasdfasdfasdfasdfasdfasdfasdfasdove alongNothing to see here, masdfasdfasdfa sdfasdfasd fff fffffffffffffffffffffffffffff fffasdfasdf asd fasdfasdfasdfasdfasdfasdfasdfasdove alongNothing to see here, masdfasdfasdfasdfasdfasdff fffffff ffffffffffffffffffffffffffasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdove alongNothing to see here, masdfasdfasdfasdfasdfa s d fffffffffffffffffffffffffffffffffffasdfasdfasdf asdfasdfasdfasdfasdfasdfasdfasdove alongNothing to see here, masdfasdfasdfasdfasdfa sdfffffffffffffffffffffffffffffffffffasdfasdfasdfasdfasdfasdfas dfasdfasdfasdfasdove alongNothing to see here , masdfasdfasdfasdfasdfasdfffffffffffffffffffffffffffffffffffasdfa sdfasdfasdfasdfasdfasdfasdfasdfasdfasdove along</td></tr>" );
+	printf( "</tr>" );
+/*
+					 <tr class='tablesorter-childRow'>
 
+						 <td colspan='10' width='100px'>
+							 <div class='panel'>
+								 <div class='panel-body'>
+							 		 <div class='col-xs-6'>
+										 <ul class='list-group'>
+  										 <li class='list-group-item list-group-item'>
+												 <b>Purchase Order: </b>
+												 <div class='pull-right'>N/A</div>
+											 </li>
+  										 <li class='list-group-item list-group-item'>
+												 <b>Purchase Date: </b>
+												 <div class='pull-right'>02/15/2010</div>
+											 </li>
+  										 <li class='list-group-item list-group-item'>
+												 <b>Purchased By: </b>
+												 <div class='pull-right'>Department</div>
+											 </li>
+										 </ul>
+										 <ul class='list-group'>
+  										 <li class='list-group-item list-group-item'>
+												 <b>Hostname: </b>
+												 <div class='pull-right'>UH201-01-01</div>
+											 </li>
+  										 <li class='list-group-item list-group-item'>
+												 <b>OS: </b>
+												 <div class='pull-right'>Windows 7 Pro 64bit</div>
+											 </li>
+  										 <li class='list-group-item list-group-item'>
+												 <b>Printer: </b>
+												 <div class='pull-right'>HP LaserJet 2000j</div>
+											 </li>
+										 </ul>
+							 		 </div>
+							 		 <div class='col-xs-3'>
+										 <ul class='list-group'>
+  										 <li class='list-group-item list-group-item'>
+												 <h5><b>Hostname:</b></h5>
+												 UH201-02-01
+											 </li>
+  										 <li class='list-group-item list-group-item'>
+												 <h5><b>OS:</b></h5>
+												 Windows 7 Pro 64bit
+											 </li>
+  										 <li class='list-group-item list-group-item'>
+												 <h5><b>Printer:</b></h5>
+												 HP LaserJet 6400j
+											 </li>
+										 </ul>
+									 </div>
+							 		 <div class='col-xs-3'>
+										 <ul class='list-group'>
+  										 <li class='list-group-item list-group-item'>
+												 <h5><b>MAC Address:</b></h5>
+												 01:23:45:67:89:0a
+											 </li>
+  										 <li class='list-group-item list-group-item'>
+												 <h5><b>WMAC Address:</b></h5>
+												 N/A
+											 </li>
+  										 <li class='list-group-item list-group-item'>
+												 <h5><b>IP Address:</b></h5>
+												 12.34.56.78
+											 </li>
+										 </ul>
+							   	 </div>
+								 </div>
+							 </div>
+					 </td></tr>" );
+
+*/
 }
 
 
 // after query has been done:
-printf( "</tbody></table>
-<script>
+printf( "</tbody></table></div>
+<script id='js'>$(function(){
 
-$('#custom_table').tablesorter({
-    cssChildRow: 'tablesorter-childRow',
-		widgets : ['stickyHeaders'],
-  
-  });
-	
+	var options = {
+		widthFixed : true,
+		showProcessing: true,
+		headerTemplate : '{content} {icon}',
+
+		widgets: [ 'stickyHeaders', 'filter' ],
+
+		widgetOptions: {
+
+			// extra class name added to the sticky header row
+			stickyHeaders : 'tablesorter-stickyHeader',
+			filter_external : '.search',
+			filter_columnFilters : false
+
+		}
+	};
+
+	$('#custom_table').tablesorter(options);
+
+});
+
+
+
 $('.tablesorter-childRow td').hide();
 							
-$( '.expand_all' ).click( function(){
-	$( this ).toggleClass( 'closed open' );
-	$( this ).toggleClass( 'fa-plus-square fa-minus-square' );
-	$( '.toggle' ).toggleClass( 'fa-plus-square fa-minus-square' );
-	if ( $( this ).hasClass( 'open' ) )
-	{
-		$( '.tablesorter-childRow td' ).hide();
-		$( '.toggle' ).removeClass( 'fa-minus-square' );
-		$( '.toggle' ).addClass( 'fa-plus-square' );
-	}
 
-	if ( $( this ).hasClass( 'closed' ) )
-	{
-		$( '.tablesorter-childRow td' ).show();
-		$( '.toggle' ).removeClass( 'fa-plus-square' );
-		$( '.toggle' ).addClass( 'fa-minus-square' );
-	}
-}); 
 
-$( '.toggle' ).on( 'click' ,function(){
-	$( this ).toggleClass( 'fa-plus-square fa-minus-square' );
-
-  $(this).closest('tr').nextUntil('tr:not(.tablesorter-childRow)').find('td').toggle();
+$( '.toggle' ).on( 'click' ,function()
+{
+  $( this ).closest('tr').nextUntil('tr:not(.tablesorter-childRow)').find('td').toggle();
 
   return false;
 });

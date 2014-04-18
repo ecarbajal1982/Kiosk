@@ -23,12 +23,13 @@ if ( !( $logged ) )
   <!-- CSS -->
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/jquery.tablesorter.pager.css">
   <link rel="stylesheet" href="css/main.css">
 
   <!-- Javascript -->
   <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
-  <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
-  <script type="text/javascript" src="js/jquery.tablesorter.mod.js"></script>
+  <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
+  <script type="text/javascript" src="js/jquery.tablesorter.pager.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.widgets.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
   <script type="text/javascript" src="js/bootstrap-typeahead.js"></script> 
@@ -101,8 +102,11 @@ if ( !( $logged ) )
 
 	<!-- Main Section -->
     <div id="main_content">
-	  <?php include "include/template/main.php"; ?>
-
+			<div class="col-xs-9 content">
+	  		<?php include "include/template/main.php"; ?>
+			</div>
+			<div class="col-xs-3 more_info">
+			</div>
 
 
     </div><!-- end main section -->
