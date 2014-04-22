@@ -19,7 +19,9 @@
         <li data-backdrop="true" data-toggle="modal" data-target="#addEquipmentModal">
 					<a style="cursor:pointer;">Add Equipment</a>
 				</li>
-        <li><a href="#">Add Software</a></li>
+        <li data-backdrop="true" data-toggle="modal" data-target="#addSoftwareModal">
+					<a style="cursor:pointer;">Add Software</a>
+				</li>
 
         <ul class="nav navbar-nav">
           <li class="dropdown">

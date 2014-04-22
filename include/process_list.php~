@@ -122,7 +122,8 @@ if ( $type == 'computers' and $stmt = $mysqli->prepare( $get_all_computers ) )
 										"2" => "Serial Number",
 										"3" => "Make & Model",
 										"4" => "Location",
-										"5" => "Department", );
+										"5" => "Department", 
+										"6" => "Users", );
 
 	$resultsCount = $stmt->num_rows;		
 
@@ -512,6 +513,13 @@ foreach ( $headers as $header )
 					 </th>", $header );
 }
 
+if ( isset( $headers['users'] ) )
+{
+	printf( "<th scope='col'>
+						 <div>Users</div>
+					 </th>" );
+
+}
 printf( "</tr></thead><tbody>" );
 
 foreach ( $results as $result )
@@ -520,17 +528,16 @@ foreach ( $results as $result )
 
 	foreach ( $result["visible"] as $columnvalue )
 	{
-		printf( "<td>%s</td>", $columnvalue );
+		printf( "<td class='parent_row'>%s</td>", $columnvalue );
 	}
 
-	printf( "</tr>" );
-/*
+	printf( "</tr>
 					 <tr class='tablesorter-childRow'>
 
-						 <td colspan='10' width='100px'>
+						 <td colspan='10'>
 							 <div class='panel'>
 								 <div class='panel-body'>
-							 		 <div class='col-xs-6'>
+							 		 <div class='col-xs-3'>
 										 <ul class='list-group'>
   										 <li class='list-group-item list-group-item'>
 												 <b>Purchase Order: </b>
@@ -545,6 +552,8 @@ foreach ( $results as $result )
 												 <div class='pull-right'>Department</div>
 											 </li>
 										 </ul>
+							 		 </div>
+							 		 <div class='col-xs-3'>
 										 <ul class='list-group'>
   										 <li class='list-group-item list-group-item'>
 												 <b>Hostname: </b>
@@ -559,36 +568,20 @@ foreach ( $results as $result )
 												 <div class='pull-right'>HP LaserJet 2000j</div>
 											 </li>
 										 </ul>
-							 		 </div>
-							 		 <div class='col-xs-3'>
-										 <ul class='list-group'>
-  										 <li class='list-group-item list-group-item'>
-												 <h5><b>Hostname:</b></h5>
-												 UH201-02-01
-											 </li>
-  										 <li class='list-group-item list-group-item'>
-												 <h5><b>OS:</b></h5>
-												 Windows 7 Pro 64bit
-											 </li>
-  										 <li class='list-group-item list-group-item'>
-												 <h5><b>Printer:</b></h5>
-												 HP LaserJet 6400j
-											 </li>
-										 </ul>
 									 </div>
 							 		 <div class='col-xs-3'>
 										 <ul class='list-group'>
   										 <li class='list-group-item list-group-item'>
-												 <h5><b>MAC Address:</b></h5>
-												 01:23:45:67:89:0a
+												 <b>MAC Address: </b>
+												 <div class='pull-right'>1a:2b:3c:4d:5e:6f</div>
 											 </li>
   										 <li class='list-group-item list-group-item'>
-												 <h5><b>WMAC Address:</b></h5>
-												 N/A
+												 <b>Wireless MAC: </b>
+												 <div class='pull-right'>0f:9e:8d:7c:6b:5a</div>
 											 </li>
   										 <li class='list-group-item list-group-item'>
-												 <h5><b>IP Address:</b></h5>
-												 12.34.56.78
+												 <b>IP Address: </b>
+												 <div class='pull-right'>169.245.1.2</div>
 											 </li>
 										 </ul>
 							   	 </div>
@@ -596,7 +589,7 @@ foreach ( $results as $result )
 							 </div>
 					 </td></tr>" );
 
-*/
+
 }
 
 
@@ -606,6 +599,7 @@ printf( "</tbody></table></div>
 
 	var options = {
 		widthFixed : true,
+		cssChildRow : tablesorter-childRow,
 		showProcessing: true,
 		headerTemplate : '{content} {icon}',
 

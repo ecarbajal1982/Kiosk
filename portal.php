@@ -39,6 +39,18 @@ if ( !( $logged ) )
 </head>
 <body style="padding-top: 60px">
 
+<!-- Processing Modal -->
+<div class="modal" id="processingModal" style="padding-top:200px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <i class="fa fa-clock-o"></i> Processing...
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
 <!-- Search Modal -->
 <div class="modal" id="searchModal" style="padding-top:40px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -102,13 +114,7 @@ if ( !( $logged ) )
 
 	<!-- Main Section -->
     <div id="main_content">
-			<div class="col-xs-9 content">
 	  		<?php include "include/template/main.php"; ?>
-			</div>
-			<div class="col-xs-3 more_info">
-			</div>
-
-
     </div><!-- end main section -->
 
   </div><!-- end row -->

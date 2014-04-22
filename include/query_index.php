@@ -48,7 +48,7 @@ $get_all_computers = "SELECT		e.tag_num,
 
 											GROUP BY 	e.tag_num
 
-											ORDER BY 	e.tag_num ASC";
+											ORDER BY 	e.tag_num DESC";
 
 // Retrieve all lab computers 
 $get_all_labs = "SELECT		e.tag_num,

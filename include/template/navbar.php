@@ -27,7 +27,7 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">List All <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onClick="get_list( 'computers' );"><i class="fa fa-desktop"></i>&nbsp; Computers/Tablets</a>
+              <li><a href="#" onClick="list_computers();"><i class="fa fa-desktop"></i>&nbsp; Computers/Tablets</a>
               </li>
               <li><a href="#" onClick="get_list( 'labs' );"><i class="fa fa-users"></i>&nbsp; Lab Workstations</a>
               </li>

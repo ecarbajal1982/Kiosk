@@ -1,20 +1,110 @@
 function get_list( type )
 {
+	url = "include/list_" + type + ".php";
+	//$('#processingModal').modal('toggle');
 	$.ajax({
 		type: "POST",
-		url: "include/process_list.php",
+		url: url,
 		data: { type: type },
 		success: function( result ) {
-			$( '.content' ).html( result );
+			$( '#main_content' ).html( result );
+			//$('#processingModal').modal('toggle');
 		}
 	});
 
 }
 
+function list_computers()
+{
+	//$('#processingModal').modal('toggle');
+	$.ajax({
+		type: "POST",
+		url: "include/list_computers.php",
+		success: function( result ) {
+			createTable_computers( result );
+			//$('#processingModal').modal('toggle');
+		}
+	});
+}
 
+function createTable_computers( result )
+{
 
+	var results = $.parseJSON( result );
 
+	$('#main_content').html("");
+	$('#main_content').append( "<div class='well'><form class='form-inline'><input type='text' class='form-control search' placeholder='Filter Results' size='25' data-column='all'><button class='btn btn-primary pull-right' type='button'><span class='glyphicon glyphicon-file'></span>&nbsp; Print Report</button></form></div>");
 
+	
+
+	$('#main_content').append( result );
+
+}
+
+function list_labs()
+{
+	//$('#processingModal').modal('toggle');
+	$.ajax({
+		type: "POST",
+		url: "include/list_labs.php",
+		success: function( result ) {
+			$( '#main_content' ).html( result );
+			//$('#processingModal').modal('toggle');
+		}
+	});
+}
+
+function list_printers()
+{
+	//$('#processingModal').modal('toggle');
+	$.ajax({
+		type: "POST",
+		url: "include/list_printers.php",
+		success: function( result ) {
+			$( '#main_content' ).html( result );
+			//$('#processingModal').modal('toggle');
+		}
+	});
+}
+
+function list_users()
+{
+	//$('#processingModal').modal('toggle');
+	$.ajax({
+		type: "POST",
+		url: "include/list_users.php",
+		success: function( result ) {
+			$( '#main_content' ).html( result );
+			//$('#processingModal').modal('toggle');
+		}
+	});
+}
+
+function list_purchases()
+{
+	//$('#processingModal').modal('toggle');
+	$.ajax({
+		type: "POST",
+		url: "include/list_purchases.php",
+		success: function( result ) {
+			$( '#main_content' ).html( result );
+			//$('#processingModal').modal('toggle');
+		}
+	});
+}
+
+function list_software()
+{
+	//$('#processingModal').modal('toggle');
+	$.ajax({
+		type: "POST",
+		url: "include/list_software.php",
+		success: function( result ) {
+			$( '#main_content' ).html( result );
+			//$('#processingModal').modal('toggle');
+		}
+	});
+}
 function formhash( form, password )
 {
     // Create a new element input, this will be our hashed password field. 
