@@ -44,7 +44,7 @@ if ( !( $logged ) )
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-body text-center">
-        <i class="fa fa-clock-o"></i> Processing...
+        <i class="fa fa-spinner fa-spin"></i> Processing...
       </div>
 
     </div>
@@ -110,11 +110,12 @@ if ( !( $logged ) )
 <!-- Bottom panel -->
 <div class="container">
   <div class="row">
-
-
+	<div id="search_bar_content">
+	</div>
+  </div>
+  <div class="row">
 	<!-- Main Section -->
-    <div id="main_content" class="row">
-	  		<?php include "include/template/main.php"; ?>
+    <div id="main_content">
     </div><!-- end main section -->
 
   </div><!-- end row -->

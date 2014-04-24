@@ -1,14 +1,14 @@
 function get_list( type )
 {
 	url = "include/list_" + type + ".php";
-	//$('#processingModal').modal('toggle');
+	$('#processingModal').modal('toggle');
 	$.ajax({
 		type: "POST",
 		url: url,
 		data: { type: type },
 		success: function( result ) {
 			$( '#main_content' ).html( result );
-			//$('#processingModal').modal('toggle');
+			$('#processingModal').modal('toggle');
 		}
 	});
 
@@ -16,29 +16,65 @@ function get_list( type )
 
 function list_computers()
 {
-	//$('#processingModal').modal('toggle');
+	$('#processingModal').modal('toggle');
 	$.ajax({
 		type: "POST",
 		url: "include/list_computers.php",
 		success: function( result ) {
-			createTable_computers( result );
-			//$('#processingModal').modal('toggle');
+			createTable_computers( $.parseJSON( result ) );
+			$('#processingModal').modal('toggle');
 		}
 	});
 }
 
-function createTable_computers( result )
+function createTable_computers( results )
 {
-
-	var results = $.parseJSON( result );
-
-	$('#main_content').html("");
-	$('#main_content').append( "<div class='well'><form class='form-inline'><input type='text' class='form-control search' placeholder='Filter Results' size='25' data-column='all'><button class='btn btn-primary pull-right' type='button'><span class='glyphicon glyphicon-file'></span>&nbsp; Print Report</button></form></div>");
-
+	table = "<form class='form-inline well'>";
+	table += "<input class='form-control search' type='text' placeholder='Filter Results' size='25' data-column='all'>";
+	table += "<button class='btn btn-primary pull-right' id='printReport_button' style='margin-left: 5px;'>";
+	table += "<span class='glyphicon glyphicon-file'></span>&nbsp; Print Report</button>";
+	table += "<button class='btn btn-primary pull-right' id='printReport_button' style='margin-left: 5px;'>";
+	table += "<span class='glyphicon glyphicon-file'></span>&nbsp; Search Options</button></form>";
+	table += "<table id='custom_table' class='tablesorter'><thead><tr>";
+	table += "<th scope='col'>Property Tag</th><th scope='col'>Serial Number</th>";
+	table += "<th scope='col'>Make & Model</th><th scope='col'>Location</th>";
+	table += "<th scope='col'>Department</th><th scope='col'>Users</th></tr></thead><tbody></tbody></table>";
 	
+	$('#main_content').html( table );
 
-	$('#main_content').append( result );
+	row = "";
+	$.each( results, function(){
+		row += "<tr class='toggle'><td rowspan='2'>" + this.tag;
+		row += "</td><td>" + this.serial;
+		row += "</td><td>" + this.makemodel;
+		row += "</td><td>" + this.location;
+		row += "</td><td>" + this.department + "</td><td>";
 
+		$.each( this.users, function( i ){
+			row += this.firstname + " " + this.lastname;
+			if ( this.count >= i )
+				row += ", ";
+		});
+
+		row += "</td></tr><tr class='tablesorter-childRow'><td colspan='10'>TO BE FILLED WITH EXTRA INFORMATION</td></tr>";
+	});
+		
+	$( '#custom_table>tbody' ).append( row );
+
+	$( '#custom_table>tbody>tr>td' ).addClass( 'parent_row' );
+
+	var options = {
+		widthFixed : true,
+		cssChildRow : 'tablesorter-childRow',
+		headerTemplate : '{content} {icon}',
+		widgets: [ 'filter' ],
+		widgetOptions: {
+			filter_external : '.search',
+			filter_columnFilters : false
+		}
+	};
+
+	$('#custom_table').tablesorter( options );
 }
 
 function list_labs()

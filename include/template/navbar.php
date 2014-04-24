@@ -16,10 +16,10 @@
 					<a style="cursor:pointer;"><b>Search</b></a>
 				</li>
 				<li class="divider-vertical"></li>
-        <li data-backdrop="true" data-toggle="modal" data-target="#addEquipmentModal">
+        <li data-backdrop="static" data-toggle="modal" data-target="#addEquipmentModal">
 					<a style="cursor:pointer;">Add Equipment</a>
 				</li>
-        <li data-backdrop="true" data-toggle="modal" data-target="#addSoftwareModal">
+        <li data-backdrop="static" data-toggle="modal" data-target="#addSoftwareModal">
 					<a style="cursor:pointer;">Add Software</a>
 				</li>
 
@@ -29,7 +29,7 @@
             <ul class="dropdown-menu">
               <li><a href="#" onClick="list_computers();"><i class="fa fa-desktop"></i>&nbsp; Computers/Tablets</a>
               </li>
-              <li><a href="#" onClick="get_list( 'labs' );"><i class="fa fa-users"></i>&nbsp; Lab Workstations</a>
+              <li><a href="#" onClick="list_labs();"><i class="fa fa-users"></i>&nbsp; Lab Workstations</a>
               </li>
               <li><a href="#" onClick="get_list( 'printers' );"><span class="glyphicon glyphicon-print"></span>&nbsp; Network Printers</a>
               </li>

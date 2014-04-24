@@ -17,38 +17,61 @@
 *****************************************/
 
 // Retrieve all non-lab computers
-$get_all_computers = "SELECT		e.tag_num,
-																e.serial,
-																CONCAT( e.make, ' ', e.model ),
-																c.os,
-														 		c.hostname,
-																e.department,
-																e.location,
-																CONCAT( e.building, ' ', e.room_num ), 	
-														 		p.purchase_order,
-																p.purchase_date,
-																p.purchased_by,
-																n.mac,
-																n.wmac,
-																n.ip
+/*$get_all_computers = "	SELECT		e.tag_num,
+									e.serial,
+									CONCAT( e.make, ' ', e.model ),
+									c.os,
+									c.hostname,
+									e.department,
+									e.location,
+									CONCAT( e.building, ' ', e.room_num ), 	
+									p.purchase_order,
+									p.purchase_date,
+									p.purchased_by,
+									n.mac,
+									n.wmac,
+									n.ip
 
-											FROM 			equipment e,
-																computer c,
-																eq_network n,
-																purchase p, 
-																user u,
-																uses us
+						FROM 		equipment e,
+									computer c,
+									eq_network n,
+									purchase p, 
+									user u,
+									uses us
 
-											WHERE 		c.computer_tag = e.tag_num AND
-																us.tag_num = e.tag_num AND
-																us.user_id = u.user_id AND 
-																e.purchase_id = p.purchase_id AND
-																n.tag_num = e.tag_num AND
-																u.l_name IS NOT NULL
+						WHERE	 	c.computer_tag = e.tag_num AND
+									us.tag_num = e.tag_num AND
+									us.user_id = u.user_id AND 
+									e.purchase_id = p.purchase_id AND
+									n.tag_num = e.tag_num AND
+									u.l_name IS NOT NULL
 
-											GROUP BY 	e.tag_num
+						GROUP BY 	e.tag_num
 
-											ORDER BY 	e.tag_num DESC";
+						ORDER BY 	e.tag_num DESC";
+*/
+$get_all_computers = "	SELECT		e.tag_num,
+									e.serial,
+									CONCAT( e.make, ' ', e.model ),
+									e.department,
+									e.location,
+									CONCAT( e.building, ' ', e.room_num ) 	
+
+						FROM 		equipment e,
+									computer c,
+									user u,
+									uses us
+
+						WHERE	 	c.computer_tag = e.tag_num AND
+									us.tag_num = e.tag_num AND
+									us.user_id = u.user_id AND 
+									u.l_name IS NOT NULL
+
+						GROUP BY 	e.tag_num
+
+						ORDER BY 	e.tag_num DESC";
+
+
 
 // Retrieve all lab computers 
 $get_all_labs = "SELECT		e.tag_num,

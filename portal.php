@@ -110,11 +110,12 @@ if ( !( $logged ) )
 <!-- Bottom panel -->
 <div class="container">
   <div class="row">
-
-
+	<div id="search_bar_content">
+	</div>
+  </div>
+  <div class="row">
 	<!-- Main Section -->
     <div id="main_content">
-	  		<?php include "include/template/main.php"; ?>
     </div><!-- end main section -->
 
   </div><!-- end row -->
