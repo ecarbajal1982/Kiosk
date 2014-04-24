@@ -26,7 +26,7 @@
 	color:#669;
 	padding:5px;
 }
-#custom_table tbody tr:hover .parent_row
+.parent_row:hover
 {
 	color:#669;
 	background-color: #e0e0e0;

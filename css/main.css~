@@ -31,5 +31,12 @@
 	color:#669;
 	background-color: #e0e0e0;
 
+
+}
+.modal {
+ overflow-y: auto;
 }
 
+.modal-open {
+ overflow: auto;
+}

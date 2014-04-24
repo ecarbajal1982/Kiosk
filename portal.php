@@ -37,7 +37,7 @@ if ( !( $logged ) )
   <script type="text/JavaScript" src="js/main.js"></script>
 
 </head>
-<body style="padding-top: 60px">
+<body style="padding-top: 60px; padding-bottom: 20px;">
 
 <!-- Processing Modal -->
 <div class="modal" id="processingModal" style="padding-top:200px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

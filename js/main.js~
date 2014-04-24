@@ -14,6 +14,34 @@ function get_list( type )
 
 }
 
+function createSearchBar()
+{
+	searchbar = "<form class='form-inline well'>";
+	searchbar += "<input class='form-control search' type='text' placeholder='Filter Results' size='25' data-column='all'>";
+	searchbar += "<button class='btn btn-primary pull-right' id='printReport_button' style='margin-left: 5px;'>";
+	searchbar += "<span class='glyphicon glyphicon-file'></span>&nbsp; Print Report</button>";
+	searchbar += "<button class='btn btn-primary pull-right' id='printReport_button' style='margin-left: 5px;'>";
+	searchbar += "<span class='glyphicon glyphicon-file'></span>&nbsp; Search Options</button></form>";
+
+	return searchbar;
+}
+
+function createPager()
+{
+	pager = "<div id='pager' class='pager pull-center'><form class='form-inline'>";
+	pager += "&nbsp;<div class='btn-group'><button class='btn first btn-default'>First</button>";
+	pager += "<button class='btn prev btn-default'>Previous</button>";
+	pager += "<button class='btn next btn-default'>Next</button>";
+	pager += "<button class='btn last btn-default'>Last</button></div>&nbsp;&nbsp;<span class='pagedisplay'></span>";
+	pager += "&nbsp;&nbsp;<select class='pagesize form-control'>";
+	pager += "<option value='10'>10</option>";
+	pager += "<option value='15'>15</option>";
+	pager += "<option selected='selected' value='20'>20</option>";
+	pager += "<option value='9999'>All</option></select></form></div>";
+
+	return pager;
+}
+
 function list_computers()
 {
 	$('#processingModal').modal('toggle');
@@ -29,22 +57,16 @@ function list_computers()
 
 function createTable_computers( results )
 {
-	table = "<form class='form-inline well'>";
-	table += "<input class='form-control search' type='text' placeholder='Filter Results' size='25' data-column='all'>";
-	table += "<button class='btn btn-primary pull-right' id='printReport_button' style='margin-left: 5px;'>";
-	table += "<span class='glyphicon glyphicon-file'></span>&nbsp; Print Report</button>";
-	table += "<button class='btn btn-primary pull-right' id='printReport_button' style='margin-left: 5px;'>";
-	table += "<span class='glyphicon glyphicon-file'></span>&nbsp; Search Options</button></form>";
-	table += "<table id='custom_table' class='tablesorter'><thead><tr>";
+	table = "<div class='panel'><table id='custom_table' class='tablesorter'><thead><tr>";
 	table += "<th scope='col'>Property Tag</th><th scope='col'>Serial Number</th>";
 	table += "<th scope='col'>Make & Model</th><th scope='col'>Location</th>";
-	table += "<th scope='col'>Department</th><th scope='col'>Users</th></tr></thead><tbody></tbody></table>";
+	table += "<th scope='col'>Department</th><th scope='col'>Users</th></tr></thead><tbody></tbody></table></div>";
 	
-	$('#main_content').html( table );
+	$('#main_content').html( createSearchBar() + createPager() + table );
 
 	row = "";
 	$.each( results, function(){
-		row += "<tr class='toggle'><td rowspan='2'>" + this.tag;
+		row += "<tr class='toggle'><td>" + this.tag;
 		row += "</td><td>" + this.serial;
 		row += "</td><td>" + this.makemodel;
 		row += "</td><td>" + this.location;
@@ -56,12 +78,16 @@ function createTable_computers( results )
 				row += ", ";
 		});
 
-		row += "</td></tr><tr class='tablesorter-childRow'><td colspan='10'>empty content</td></tr>";
+		row += "</td></tr><tr class='tablesorter-childRow'><td colspan='10'>TO BE FILLED WITH EXTRA INFORMATION</td></tr>";
 	});
 		
 	$( '#custom_table>tbody' ).append( row );
 
-	$( '#custom_table>tbody>tr>td' ).addClass( 'parent_row' );
+	$( '#custom_table>tbody>tr' ).not( '.tablesorter-childRow').addClass( 'parent_row' );
+
+	$( '.parent_row' ).on( 'click', function(){
+		$(this).closest('tr').nextUntil( 'tr.tablesorter-hasChildRow' ).find( 'td' ).toggle();
+	});
 
 	var options = {
 		widthFixed : true,
@@ -70,11 +96,38 @@ function createTable_computers( results )
 		widgets: [ 'filter' ],
 		widgetOptions: {
 			filter_external : '.search',
-			filter_columnFilters : false
+			filter_childRows : true,
+			filter_columnFilters : false,
+			filter_ssFilter : 'tablesorter-filter'
 		}
 	};
 
-	$('#custom_table').tablesorter( options );
+	var pagerOptions = {
+		container: $(".pager"),
+		page: 0,
+		size: 20,
+		output: 'Showing Results {startRow} to {endRow}',
+    cssPageDisplay: '.pagedisplay',
+    cssPageSize: '.pagesize',
+		cssNext: '.next',
+    cssPrev: '.prev',
+    cssFirst: '.first',
+    cssLast: '.last'
+
+
+
+	};
+
+	$('#custom_table').tablesorter( options ).tablesorterPager(pagerOptions).bind( 'sortStart', function(){
+		$(this).trigger('pageSet', 0 );
+	});
+	$('.tablesorter-childRow td').hide();
+
+	$( '.search' ).on( 'keyup', function(){
+		$( '.tablesorter-childRow td' ).hide();
+	});
+
+
 }
 
 function list_labs()

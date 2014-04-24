@@ -17,7 +17,7 @@
 *****************************************/
 
 // Retrieve all non-lab computers
-/*$get_all_computers = "	SELECT		e.tag_num,
+$get_all_computers = "	SELECT		e.tag_num,
 									e.serial,
 									CONCAT( e.make, ' ', e.model ),
 									c.os,
@@ -49,7 +49,7 @@
 						GROUP BY 	e.tag_num
 
 						ORDER BY 	e.tag_num DESC";
-*/
+/*
 $get_all_computers = "	SELECT		e.tag_num,
 									e.serial,
 									CONCAT( e.make, ' ', e.model ),
@@ -71,6 +71,7 @@ $get_all_computers = "	SELECT		e.tag_num,
 
 						ORDER BY 	e.tag_num DESC";
 
+*/
 
 // Retrieve all lab computers 
 $get_all_labs = "SELECT		e.tag_num,
@@ -185,7 +186,7 @@ $get_computers_from_software_id = "SELECT	e.tag_num,
 
 
 // Retrieve all equipment based on purchase order
-$get_equipment_from_purchase_id = "SELECT 	e.tag_num,
+$get_equipment_from_user = "SELECT 	e.tag_num,
 																		e.serial,
 																		CONCAT( e.make, ' ', e.model ),
 																		e.location,
@@ -252,24 +253,9 @@ $get_users_from_tag = "SELECT u.f_name,
 															us.tag_num = ?";
 
 
-// Retrieve network info based on tag number
-$get_network_from_tag = "SELECT n.mac,
-																n.wmac,
-																n.ip
 
-												 FROM		eq_network n
 
-												 WHERE	n.tag_num = ?";
 
-// Retrieve purchase info based on tag number
-$get_purchase_from_tag = "SELECT 	p.purchase_order,
-																	p.purchase_date,
-																	p.purchased_by
-
-													FROM		purchase p, equipment e
-
-													WHERE		p.purchase_id = e.purchase_id AND
-																	e.tag_num = ?";
 
 
 ?>
