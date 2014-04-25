@@ -2,7 +2,18 @@
 include_once 'common.php';
 include_once 'query_index.php';
 
+$mysqli = login_db_connect();
+
+sec_session_start();
+
+$logged = login_check( $mysqli );
+
+if ( !( $logged ) )
+	header( 'Location: login.php' );
+
 $mysqli = inventory_db_connect();
+
+
 
 // List all Non-Lab Computers
 if ( $stmt = $mysqli->prepare( $get_all_computers ) ) 

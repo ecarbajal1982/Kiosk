@@ -21,13 +21,15 @@ if ( !( $logged ) )
 	<link rel="shortcut icon" href="http://www.csusb.edu/images/favicon.ico">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="css/bootstrap.css">
+
   <link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/jquery.tablesorter.pager.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/main.css">
 
   <!-- Javascript -->
   <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+  <script type="text/javascript" src="js/jquery.sticky.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.pager.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.widgets.js"></script>
@@ -109,10 +111,6 @@ if ( !( $logged ) )
 
 <!-- Bottom panel -->
 <div class="container">
-  <div class="row">
-	<div id="search_bar_content">
-	</div>
-  </div>
   <div class="row">
 	<!-- Main Section -->
     <div id="main_content">

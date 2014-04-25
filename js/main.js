@@ -14,33 +14,31 @@ function get_list( type )
 
 }
 
+
+
 function createSearchBar()
 {
-	searchbar = "<form class='form-inline well'>";
-	searchbar += "<input class='form-control search' type='text' placeholder='Filter Results' size='25' data-column='all'>";
-	searchbar += "<button class='btn btn-primary pull-right' id='printReport_button' style='margin-left: 5px;'>";
+	searchbar = "<div id='searchbar' class='form-inline'>";
+	searchbar += "<input class='form-control search pull-left' type='text' placeholder='Filter Results' data-column='all'>";
+	searchbar += "<button class='btn btn-info pull-left' id='searchOptions_button' style='margin-left: 5px;'>";
+	searchbar += "<span class='glyphicon glyphicon-search'></span>&nbsp; Options</button>";
+
+	searchbar += "<button class='btn btn-info pull-right' id='printReport_button' style='margin-left: 5px;'>";
 	searchbar += "<span class='glyphicon glyphicon-file'></span>&nbsp; Print Report</button>";
-	searchbar += "<button class='btn btn-primary pull-right' id='printReport_button' style='margin-left: 5px;'>";
-	searchbar += "<span class='glyphicon glyphicon-file'></span>&nbsp; Search Options</button></form>";
+
+
+	pager = "<div id='pager' class='pager btn-group' style='margin:0;'><button class='btn first btn-info'><i class='fa fa-angle-double-left fa-lg'></i></button>";
+	pager += "<button class='btn prev btn-info'><i class='fa fa-angle-left fa-lg'></i></button>";
+	pager += "<div class='btn active pagedisplay btn-info'></div>";
+	pager += "<button class='btn next btn-info'><i class='fa fa-angle-right fa-lg'></i></button>";
+	pager += "<button class='btn last btn-info'><i class='fa fa-angle-double-right fa-lg'></i></button></div>";
+	pager += "&nbsp;&nbsp<select class='pagesize'><option value='10'>10</option><option selected='selected' value='20'>20</option><option value='40'>40</option><option value='9999'>All</option></select></div></div>";
+
+	searchbar += pager + "</div>";
 
 	return searchbar;
 }
 
-function createPager()
-{
-	pager = "<div id='pager' class='pager pull-center'><form class='form-inline'>";
-	pager += "&nbsp;<div class='btn-group'><button class='btn first btn-default'>First</button>";
-	pager += "<button class='btn prev btn-default'>Previous</button>";
-	pager += "<button class='btn next btn-default'>Next</button>";
-	pager += "<button class='btn last btn-default'>Last</button></div>&nbsp;&nbsp;<span class='pagedisplay'></span>";
-	pager += "&nbsp;&nbsp;<select class='pagesize form-control'>";
-	pager += "<option value='10'>10</option>";
-	pager += "<option value='15'>15</option>";
-	pager += "<option selected='selected' value='20'>20</option>";
-	pager += "<option value='9999'>All</option></select></form></div>";
-
-	return pager;
-}
 
 function list_computers()
 {
@@ -57,12 +55,12 @@ function list_computers()
 
 function createTable_computers( results )
 {
-	table = "<div class='panel'><table id='custom_table' class='tablesorter'><thead><tr>";
+	table = "<div class='panel panel-default'><div class='panel-heading'>" + createSearchBar() + "</div><table id='custom_table' class='tablesorter'><thead><tr>";
 	table += "<th scope='col'>Property Tag</th><th scope='col'>Serial Number</th>";
 	table += "<th scope='col'>Make & Model</th><th scope='col'>Location</th>";
-	table += "<th scope='col'>Department</th><th scope='col'>Users</th></tr></thead><tbody></tbody></table></div>";
+	table += "<th scope='col'>Department</th><th scope='col'>Users</th></tr></thead><tbody></tbody></table>";
 	
-	$('#main_content').html( createSearchBar() + createPager() + table );
+	$('#main_content').html( table );
 
 	row = "";
 	$.each( results, function(){
@@ -83,11 +81,23 @@ function createTable_computers( results )
 		
 	$( '#custom_table>tbody' ).append( row );
 
-	$( '#custom_table>tbody>tr' ).not( '.tablesorter-childRow').addClass( 'parent_row' );
+	$( '#custom_table>tbody>tr' ).not( '.tablesorter-childRow' ).addClass( 'parent_row' );
 
 	$( '.parent_row' ).on( 'click', function(){
 		$(this).closest('tr').nextUntil( 'tr.tablesorter-hasChildRow' ).find( 'td' ).toggle();
 	});
+
+	pager = "<div id='pager' class='pager pagination center-block panel-footer'>";
+	pager += "<div class='btn-group'><button class='btn first btn-info'><i class='fa fa-angle-double-left fa-lg'></i></button>";
+	pager += "<button class='btn prev btn-info'><i class='fa fa-angle-left fa-lg'></i></button>";
+	pager += "<button class='btn active pagedisplay btn-info'></button>";
+	pager += "<button class='btn next btn-info'><i class='fa fa-angle-right fa-lg'></i></button>";
+	pager += "<button class='btn last btn-info'><i class='fa fa-angle-double-right fa-lg'></i></button></div>";
+	pager += "&nbsp;&nbsp<select class='pagesize'><option value='10'>10</option><option selected='selected' value='20'>20</option><option value='40'>40</option><option value='9999'>All</option></select></div></div>";
+
+
+	$( '#main_content').append( pager );
+
 
 	var options = {
 		widthFixed : true,
@@ -106,7 +116,7 @@ function createTable_computers( results )
 		container: $(".pager"),
 		page: 0,
 		size: 20,
-		output: 'Showing Results {startRow} to {endRow} of {totalRows}',
+		output: 'Showing Results {startRow} to {endRow} of {filteredRows}',
     cssPageDisplay: '.pagedisplay',
     cssPageSize: '.pagesize',
 		cssNext: '.next',
@@ -118,15 +128,17 @@ function createTable_computers( results )
 
 	};
 
-	$('#custom_table').tablesorter( options ).tablesorterPager(pagerOptions).bind( 'sortStart', function(){
-		$(this).trigger('pageSet', 0 );
-	});
+	$('#custom_table').tablesorter( options )
+		.tablesorterPager(pagerOptions)
+		.bind( 'sortStart', function(){
+			$(this).trigger('pageSet', 0 );
+		});
+
 	$('.tablesorter-childRow td').hide();
 
 	$( '.search' ).on( 'keyup', function(){
 		$( '.tablesorter-childRow td' ).hide();
 	});
-
 
 }
 
