@@ -19,7 +19,6 @@
 #custom_table .parent_row
 {
 	cursor: pointer;
-	vertical-align: top;
 }
 #custom_table td
 {
@@ -31,12 +30,15 @@
 	color:#669;
 	background-color: #e0e0e0;
 
+}
+.modal
+{
+	overflow-y: auto;
+}
 
-}
-.modal {
- overflow-y: auto;
+.modal-open
+{
+	overflow: auto;
 }
 
-.modal-open {
- overflow: auto;
-}
+

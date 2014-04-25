@@ -29,7 +29,6 @@ if ( !( $logged ) )
 
   <!-- Javascript -->
   <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
-  <script type="text/javascript" src="js/jquery.sticky.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.pager.js"></script>
   <script type="text/javascript" src="js/jquery.tablesorter.widgets.js"></script>
@@ -114,6 +113,16 @@ if ( !( $logged ) )
   <div class="row">
 	<!-- Main Section -->
     <div id="main_content">
+<button id='example'>test</button>
+ <script>
+
+            $('#example').popover({
+                trigger: "click",
+                placement: "bottom",
+                content: "This is a default title",
+                });
+
+  </script>
     </div><!-- end main section -->
 
   </div><!-- end row -->

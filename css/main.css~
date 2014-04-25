@@ -3,7 +3,7 @@
 	font-family:"Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 	font-size:14px;
 	background:#fff;
-	width:auto;
+	width:100%;
 	border-collapse:collapse;
 	text-align:left;
 }
@@ -31,12 +31,15 @@
 	color:#669;
 	background-color: #e0e0e0;
 
+}
+.modal
+{
+	overflow-y: auto;
+}
 
-}
-.modal {
- overflow-y: auto;
+.modal-open
+{
+	overflow: auto;
 }
 
-.modal-open {
- overflow: auto;
-}
+
