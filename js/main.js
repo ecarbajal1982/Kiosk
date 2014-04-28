@@ -1,3 +1,86 @@
+function formhash( form, password )
+{
+    // Create a new element input, this will be our hashed password field. 
+    var p = document.createElement( "input" );
+ 
+    // Add the new element to our form. 
+    form.appendChild( p );
+    p.name = "p";
+    p.type = "hidden";
+    p.value = hex_sha512( password.value );
+    // Make sure the plaintext password doesn't get sent. 
+    password.value = "";
+ 
+    // Finally submit the form. 
+    form.submit();
+}
+ 
+function regformhash( form, uid, password, conf, role )
+{
+    // Check each field has a value
+    if ( uid.value == '' || password.value == '' ||  conf.value == '' || role.value == '' )
+	{ 
+        alert( 'You must provide all the requested details.' );
+        return false;
+    }
+ 
+    // Check the username
+    re = /^\w+$/; 
+    if( !re.test( form.username.value ) )
+	{ 
+        alert( "Username must contain only letters, numbers and underscores." ); 
+        form.username.focus();
+        return false; 
+    }
+ 
+    // Check that the password is sufficiently long (min 6 chars)
+    // The check is duplicated below, but this is included to give more
+    // specific guidance to the user
+    if ( password.value.length < 6 )
+	{
+        alert( 'Passwords must be at least 6 characters long.  Please try again' );
+        form.password.focus();
+        return false;
+    }
+ 
+    // At least one number, one lowercase and one uppercase letter 
+    // At least six characters 
+ 
+    var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/; 
+    if ( !re.test( password.value ) )
+	{
+        alert( 'Passwords must contain at least one number, one lowercase and one uppercase letter.' );
+        return false;
+    }
+ 
+    // Check password and confirmation are the same
+    if ( password.value != conf.value )
+	{
+        alert( 'Passwords do not match!' );
+        form.password.focus();
+        return false;
+    }
+ 
+    // Create a new element input, this will be our hashed password field. 
+    var p = document.createElement( "input" );
+ 
+    // Add the new element to our form. 
+    form.appendChild( p );
+    p.name = "p";
+    p.type = "hidden";
+    p.value = hex_sha512( password.value );
+ 
+    // Make sure the plaintext password doesn't get sent. 
+    password.value = "";
+    conf.value = "";
+ 
+    // Finally submit the form. 
+    form.submit();
+    return true;
+}
+
+
+
 function get_list( type )
 {
 	url = "include/list_" + type + ".php";
@@ -13,45 +96,6 @@ function get_list( type )
 	});
 
 }
-
-
-
-function createSearchBar()
-{
-	searchbar = "<div id='searchbar' class='form-inline'>";
-
-	searchbar += "<input class='form-control search' type='text' placeholder='Filter Results' data-column='all'>";
-
-	searchbar += "<button class='btn btn-info' id='searchOptions_button' style='margin-left: 5px;'>";
-	searchbar += "<span class='glyphicon glyphicon-search'></span>&nbsp; Options</button>";
-
-	searchbar += "<button class='btn btn-info pull-right' id='printReport_button' style='margin-left: 5px;'>";
-	searchbar += "<span class='glyphicon glyphicon-file'></span>&nbsp; Print Report</button>";
-
-	searchbar += "</div>";
-
-	return searchbar;
-}
-
-function createPagerBar()
-{
-	pager = "<div id='pager' class='pager pagination center-block' style='margin:0px;'>";
-
-	pager += "<div class='btn-group'><button class='btn first btn-info'><i class='fa fa-angle-double-left fa-lg'></i></button>";
-
-	pager += "<button class='btn prev btn-info'><i class='fa fa-angle-left fa-lg'></i></button>";
-
-	pager += "<button class='btn pagedisplay btn-info active'></button>";
-
-	pager += "<button class='btn next btn-info'><i class='fa fa-angle-right fa-lg'></i></button>";
-
-	pager += "<button class='btn last btn-info'><i class='fa fa-angle-double-right fa-lg'></i></button></div>";
-
-	pager += "&nbsp;&nbsp<select class='pagesize'><option value='10'>10</option><option selected='selected' value='15'>15</option><option value='20'>20</option><option value='9999'>All</option></select></div>";
-
-	return pager;
-}
-
  
 
 function list_computers()
@@ -67,26 +111,160 @@ function list_computers()
 	});
 }
 
+function createTable( role, headers )
+{
+// search panel
+	filterBox = $( "<input>" )
+		.addClass( "form-control search" )
+		.attr({ "type" : "text",
+				"placeholder" : "Filter Results",
+				"data-column" : "all" });
+
+	optionsBtn = $( "<button>" )
+		.addClass( "btn btn-info" )
+		.attr({ "id" : "optionsBtn",
+				"style" : "margin-left: 5px" })
+		.html( "<i class='fa fa-search'></i>&nbsp;Options" );
+
+	reportBtn = $( "<button>" )
+		.addClass( "btn btn-info" )
+		.attr({ "id" : "reportBtn",
+				"style" : "margin-left: 5px" })
+		.html( "<i class='fa fa-file-o'></i>&nbsp;Create Report" );
+
+	searchPanel = $( "<div>" )
+		.addClass( "form-inline" )
+		.append( [filterBox, optionsBtn, reportBtn ]);
+
+	panelHead = $( "<div>" )
+		.addClass( "panel-heading" )
+		.append( searchPanel );
+
+// table
+	var headerRow = new Array();	
+
+	headerRow.push( $( "<th>" )
+		.addClass( "unchecked" )
+		.attr({ "id" : "select_all",
+				"scope" : "col",
+				"style" : "padding-left: 6px" })
+		.html( "<i class='fa fa-square-o'></i>" ) );
+
+	if ( role > 1 )
+	{
+	headerRow.push( $( "<th>" )
+		.attr({ "id" : "edit_selected",
+				"scope" : "col",
+				"style" : "padding-left: 6px" })
+		.html( "<i class='fa fa-cog'></i>" ) );
+	}
+
+	if ( role > 2 )
+	{
+	headerRow.push( $( "<th>" )
+		.attr({ "id" : "delete_selected",
+				"scope" : "col",
+				"style" : "padding-left: 6px" })
+		.html( "<i class='fa fa-trash-o'></i>" ) );
+	}
+
+	$.each( headers, function(){
+		headerRow.push( $( "<th>" )
+			.attr( "scope", "col" )
+			.html( this ) );
+	});
+
+	table = $( "<table>" )
+		.addClass( "tablesorter" )		
+		.attr( "id", "results_table" );
+
+	thead = $( "<thead>" )
+		.appendTo( table );
+
+	tr = $( "<tr>" )
+		.append( headerRow )
+		.appendTo( thead );
+
+	tbody = $( "<tbody>" )
+		.appendTo( table );
+
+	panelBody = $( "<div>" ).addClass( "panel-body" )
+							.append( table );
+
+// pager panel
+	pagerPanel = $( "<div>" )
+		.addClass( "pager pagination center-block" )
+		.attr({ "id" : "pager",
+				"style" : "margin: 0px" });
+
+	firstBtn = $( "<button>" )
+		.addClass( "btn btn-info first" )
+		.html( "<i class='fa fa-angle-double-left fa-lg'></i>" );
+
+	prevBtn = $( "<button>" )
+		.addClass( "btn btn-info prev" )
+		.html( "<i class='fa fa-angle-left fa-lg'></i>" );
+
+	pageDisplay = $( "<button>" )
+		.addClass( "btn btn-info active pagedisplay" );
+
+	nextBtn = $( "<button>" )
+		.addClass( "btn btn-info next" )
+		.html( "<i class='fa fa-angle-right fa-lg'></i>" );
+
+	lastBtn = $( "<button>" )
+		.addClass( "btn btn-info last" )
+		.html( "<i class='fa fa-angle-double-right fa-lg'></i>" );
+
+	buttonGroup = $( "<div>" )
+		.addClass( "btn-group" )
+		.append( [firstBtn, prevBtn, pageDisplay, nextBtn, lastBtn] )
+		.appendTo( pagerPanel );
+
+	panelFoot = $( "<div>" )
+		.addClass( "panel-footer" )
+		.append( pagerPanel );
+
+// full panel
+	panel = $( "<div>" )
+		.addClass( "panel panel-default" )
+		.append( [panelHead, panelBody, panelFoot] );
+
+return panel;
+}
+
+function checkRole()
+{
+    return $.ajax({
+        type: "GET",
+        url: "include/check_role.php",
+        async: false
+    }).responseText;
+}
+
 function createTable_computers( results )
 {
-	table = "<div class='panel panel-default'><div class='panel-heading'>" + createSearchBar() + "</div><div class='panel-body'><table id='custom_table' class='tablesorter'><thead><tr>";
-	table += "<th scope='col' id='select_all' class='unchecked' style='padding-left:5px;'><i class='fa fa-square-o'></i></th>";
-	table += "<th scope='col' style='padding-left:5px;'><i id='edit_selected' class='fa fa-cog'></i></th>";
-	table += "<th scope='col' style='padding-left:5px;'><i id='delete_selected' class='fa fa-trash-o'></i></th>";
-	table += "<th scope='col'>Property Tag</th><th scope='col'>Serial Number</th>";
-	table += "<th scope='col'>Make & Model</th><th scope='col'>Location</th>";
-	table += "<th scope='col'>Department</th><th scope='col'>Users</th>";
+	var role = checkRole();
 
-	table += "</tr></thead><tbody></tbody></table></div><div id='table_foot' class='panel-footer'></div>";
-	
-	$('#main_content').html( table );
+	headers = ["Property Tag", "Serial Number", "Make & Model", "Location", "Department", "Users"];
+	$( '#main_content' ).html( createTable( role, headers ) );
 
-	row = "";
+	var tableRows = new Array();
+
+
+
+
 	$.each( results, function(){
-		row += "<tr class='toggle'>";
-		row += "<td class='select' style='border-right:solid 2px;' rowspan='2'><i class='fa fa-square-o'></i></td>";
-		row += "<td class='edit' style='border-right:solid 2px;' rowspan='2'><i class='fa fa-cog'></i></td>";
-		row += "<td class='trash' style='border-right:solid 2px;' rowspan='2'><i class='fa fa-trash-o'></i></td>";
+		row = "";
+		row += "<tr>";
+		row += "<td class='select' rowspan='2'><i class='fa fa-square-o'></i></td>";
+	
+		if ( role > 1 )
+			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";
+
+		if ( role > 2 )
+			row += "<td class='trash' rowspan='2'><i class='fa fa-trash-o'></i></td>";
+
 		row += "<td>" + this.tag + "</td>";
 		row += "<td>" + this.serial + "</td>";
 		row += "<td>" + this.makemodel + "</td>";
@@ -99,16 +277,22 @@ function createTable_computers( results )
 				row += ", ";
 		});
 
-		row += "</td></tr><tr class='tablesorter-childRow'><td colspan='10'>TO BE FILLED WITH EXTRA INFORMATION</td></tr>";
+		row += "</td></tr><tr class='tablesorter-childRow'><td colspan='10' class='other_info'></td></tr>";
+
+		tableRows.push( row );		
+
 	});
 		
-	$( '#custom_table>tbody' ).html( row );
+	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
-	$( '#table_foot').html( createPagerBar() );
 
-	$( '#custom_table>tbody>tr' ).not( '.tablesorter-childRow' ).addClass( 'parent_row' );
+
+	$( '#results_table>tbody>tr' ).not( '.tablesorter-childRow' ).addClass( 'parent_row' );
 
 	$( '.parent_row>td' ).not('.select,.trash,.edit').on( 'click', function(){
+		// MAKE AJAX CALL TO GET ADDITIONAL INFORMATION, THEN FILL '#other_info' with it
+
+
 		$(this).closest('tr').nextUntil( 'tr.tablesorter-hasChildRow' ).find( 'td' ).toggle();
 	});
 
@@ -137,14 +321,13 @@ function createTable_computers( results )
 		}
 	});
 
-	$('#edit_selected').tooltip({
-		trigger: "hover",
-		placement: "right",
-		content: "Edit selected entries"
-
-	});
 
 	var options = {
+		headers: {
+			0: { sorter: false },
+			1: { sorter: false },
+			2: { sorter: false }
+    	},
 		widthFixed : true,
 		cssChildRow : 'tablesorter-childRow',
 		headerTemplate : '{content} {icon}',
@@ -173,7 +356,7 @@ function createTable_computers( results )
 
 	};
 
-	$('#custom_table').tablesorter( options )
+	$('#results_table').tablesorter( options )
 		.tablesorterPager(pagerOptions)
 		.bind( 'sortStart', function(){
 			$(this).trigger('pageSet', 0 );
@@ -184,6 +367,8 @@ function createTable_computers( results )
 	$( '.search' ).on( 'keyup', function(){
 		$( '.tablesorter-childRow td' ).hide();
 	});
+
+
 
 }
 
@@ -255,84 +440,5 @@ function list_software()
 		}
 	});
 }
-function formhash( form, password )
-{
-    // Create a new element input, this will be our hashed password field. 
-    var p = document.createElement( "input" );
- 
-    // Add the new element to our form. 
-    form.appendChild( p );
-    p.name = "p";
-    p.type = "hidden";
-    p.value = hex_sha512( password.value );
- 
-    // Make sure the plaintext password doesn't get sent. 
-    password.value = "";
- 
-    // Finally submit the form. 
-    form.submit();
-}
- 
-function regformhash( form, uid, password, conf, role )
-{
-    // Check each field has a value
-    if ( uid.value == '' || password.value == '' ||  conf.value == '' || role.value == '' )
-	{ 
-        alert( 'You must provide all the requested details.' );
-        return false;
-    }
- 
-    // Check the username
-    re = /^\w+$/; 
-    if( !re.test( form.username.value ) )
-	{ 
-        alert( "Username must contain only letters, numbers and underscores." ); 
-        form.username.focus();
-        return false; 
-    }
- 
-    // Check that the password is sufficiently long (min 6 chars)
-    // The check is duplicated below, but this is included to give more
-    // specific guidance to the user
-    if ( password.value.length < 6 )
-	{
-        alert( 'Passwords must be at least 6 characters long.  Please try again' );
-        form.password.focus();
-        return false;
-    }
- 
-    // At least one number, one lowercase and one uppercase letter 
-    // At least six characters 
- 
-    var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/; 
-    if ( !re.test( password.value ) )
-	{
-        alert( 'Passwords must contain at least one number, one lowercase and one uppercase letter.' );
-        return false;
-    }
- 
-    // Check password and confirmation are the same
-    if ( password.value != conf.value )
-	{
-        alert( 'Passwords do not match!' );
-        form.password.focus();
-        return false;
-    }
- 
-    // Create a new element input, this will be our hashed password field. 
-    var p = document.createElement( "input" );
- 
-    // Add the new element to our form. 
-    form.appendChild( p );
-    p.name = "p";
-    p.type = "hidden";
-    p.value = hex_sha512( password.value );
- 
-    // Make sure the plaintext password doesn't get sent. 
-    password.value = "";
-    conf.value = "";
- 
-    // Finally submit the form. 
-    form.submit();
-    return true;
-}
+
+

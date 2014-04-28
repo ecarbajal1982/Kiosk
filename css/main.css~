@@ -19,7 +19,6 @@
 #custom_table .parent_row
 {
 	cursor: pointer;
-	vertical-align: top;
 }
 #custom_table td
 {

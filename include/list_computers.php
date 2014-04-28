@@ -13,8 +13,6 @@ if ( !( $logged ) )
 
 $mysqli = inventory_db_connect();
 
-
-
 // List all Non-Lab Computers
 if ( $stmt = $mysqli->prepare( $get_all_computers ) ) 
 {

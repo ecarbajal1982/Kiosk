@@ -25,6 +25,7 @@ if ( isset( $_POST['user'], $_POST['p'] ) )
 else 
 {
 	echo 'Invalid Request!!'; 
+	echo $_POST['user'] . $_POST['p'];
 }
 
 ?>
