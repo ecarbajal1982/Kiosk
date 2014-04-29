@@ -16,18 +16,19 @@
 					<a style="cursor:pointer;"><b>Search</b></a>
 				</li>
 				<li class="divider-vertical"></li>
-        <li data-backdrop="static" data-toggle="modal" data-target="#addEquipmentModal">
-					<a style="cursor:pointer;">Add Equipment</a>
-				</li>
-        <li data-backdrop="static" data-toggle="modal" data-target="#addSoftwareModal">
-					<a style="cursor:pointer;">Add Software</a>
-				</li>
-
+		<?php if ( $_SESSION['role'] > 1 ) : ?>
+	        <li data-backdrop="static" data-toggle="modal" data-target="#addEquipmentModal">
+				<a style="cursor:pointer;">Add Equipment</a>
+			</li>
+        	<li data-backdrop="static" data-toggle="modal" data-target="#addSoftwareModal">
+				<a style="cursor:pointer;">Add Software</a>
+			</li>
+		<?php endif; ?>
         <ul class="nav navbar-nav">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">List All <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onClick="list_computers();"><i class="fa fa-desktop"></i>&nbsp; Computers/Tablets</a>
+              <li><a href="#" onClick="list_all_computers();"><i class="fa fa-desktop"></i>&nbsp; Computers/Tablets</a>
               </li>
               <li><a href="#" onClick="list_labs();"><i class="fa fa-users"></i>&nbsp; Lab Workstations</a>
               </li>
@@ -58,12 +59,6 @@
       					</li>
     				  </ul>';
 	    ?>
-<!--
-        <form class="navbar-form navbar-left">
-          <input type="text" class="form-control" placeholder="Search" size="45">
-          <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search"></span></button>
-        </form>
--->
         <ul class="nav navbar-nav navbar-right text-right">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['username']; ?> &nbsp;<span class="glyphicon glyphicon-cog"></span></a>

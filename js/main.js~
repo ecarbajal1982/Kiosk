@@ -80,36 +80,34 @@ function regformhash( form, uid, password, conf, role )
 }
 
 
-
-function get_list( type )
-{
-	url = "include/list_" + type + ".php";
-	$('#processingModal').modal('toggle');
-	$.ajax({
-		type: "POST",
-		url: url,
-		data: { type: type },
-		success: function( result ) {
-			$( '#main_content' ).html( result );
-			$('#processingModal').modal('toggle');
-		}
-	});
-
-}
- 
-
-function list_computers()
+function list_all_computers()
 {
 	$('#processingModal').modal('toggle');
 	$.ajax({
 		type: "POST",
 		url: "include/list_computers.php",
+		data: { query : "all-non-lab" },
 		success: function( result ) {
 			createTable_computers( $.parseJSON( result ) );
 			$('#processingModal').modal('toggle');
 		}
 	});
 }
+
+function list_all_labs()
+{
+	$('#processingModal').modal('toggle');
+	$.ajax({
+		type: "POST",
+		url: "include/list_computers.php",
+		data: { query : "all-lab" },
+		success: function( result ) {
+			createTable_computers( $.parseJSON( result ) );
+			$('#processingModal').modal('toggle');
+		}
+	});
+}
+
 
 function createTable( role, headers )
 {
@@ -147,7 +145,7 @@ function createTable( role, headers )
 		.addClass( "unchecked" )
 		.attr({ "id" : "select_all",
 				"scope" : "col",
-				"style" : "padding-left: 6px" })
+				"style" : "padding-left: 5px" })
 		.html( "<i class='fa fa-square-o'></i>" ) );
 
 	if ( role > 1 )
@@ -155,7 +153,7 @@ function createTable( role, headers )
 	headerRow.push( $( "<th>" )
 		.attr({ "id" : "edit_selected",
 				"scope" : "col",
-				"style" : "padding-left: 6px" })
+				"style" : "padding-left: 5px" })
 		.html( "<i class='fa fa-cog'></i>" ) );
 	}
 
@@ -164,7 +162,7 @@ function createTable( role, headers )
 	headerRow.push( $( "<th>" )
 		.attr({ "id" : "delete_selected",
 				"scope" : "col",
-				"style" : "padding-left: 6px" })
+				"style" : "padding-left: 5px" })
 		.html( "<i class='fa fa-trash-o'></i>" ) );
 	}
 
@@ -242,21 +240,19 @@ function checkRole()
     }).responseText;
 }
 
+
 function createTable_computers( results )
 {
 	var role = checkRole();
 
-	headers = ["Property Tag", "Serial Number", "Make & Model", "Location", "Department", "Users"];
+	headers = ["Property Tag", "Serial Number", "Make & Model", "Purchase Date", "Location", "Department", "Users"];
 	$( '#main_content' ).html( createTable( role, headers ) );
 
 	var tableRows = new Array();
 
-
-
-
 	$.each( results, function(){
 		row = "";
-		row += "<tr>";
+		row += "<tr class='parent_row'>";
 		row += "<td class='select' rowspan='2'><i class='fa fa-square-o'></i></td>";
 	
 		if ( role > 1 )
@@ -268,16 +264,82 @@ function createTable_computers( results )
 		row += "<td>" + this.tag + "</td>";
 		row += "<td>" + this.serial + "</td>";
 		row += "<td>" + this.makemodel + "</td>";
+		row += "<td>" + this.purchase_date + "</td>";
 		row += "<td>" + this.location + "</td>";
 		row += "<td>" + this.department + "</td><td>";
 
-		$.each( this.users, function( i ){
-			row += this.firstname + " " + this.lastname;
-			if ( this.count >= i )
-				row += ", ";
-		});
+		if ( this.users )
+		{
+			$.each( this.users, function( i ){
+				row += this.firstname + " " + this.lastname;
+				if ( this.count >= i )
+					row += ", ";
+			});
+		}
+		row += "</td></tr><tr class='tablesorter-childRow'><td colspan='10'>";
+		row += '<div class="panel panel-default panel-body"><div class="row"><div class="col-xs-3">';
 
-		row += "</td></tr><tr class='tablesorter-childRow'><td colspan='10' class='other_info'></td></tr>";
+		row += '<b>Purchase Order:&nbsp;&nbsp;</b>';
+		if ( this.purchase_order )
+			row += this.purchase_order;
+
+		row += '<br><b>Purchased By:&nbsp;&nbsp;</b>';
+		if ( this.purchased_by )
+			row += this.purchased_by;
+
+		row += '</div><div class="col-xs-3">';
+
+		row += '<b>Hostname:&nbsp;&nbsp;</b>';
+		if ( this.hostname )
+			row += this.hostname;
+
+		row += '<br><b>OS:&nbsp;&nbsp;</b>';
+		if ( this.os )
+			row += this.os;
+
+		row += '<br><b>Printer:&nbsp;&nbsp;</b>';
+		if ( this.eq_printer )
+			row += this.eq_printer;
+
+		row += '</div>';
+
+		if ( role > 1 )
+		{
+			row += '<div class="col-xs-3">';
+
+			row += '<b>MAC:&nbsp;&nbsp;</b>';
+			if ( this.mac )
+				row += this.mac;
+
+			row += '<br><b>WMAC:&nbsp;&nbsp;</b>';
+			if ( this.wmac )
+				row += this.wmac;
+
+			row += '<br><b>IP:&nbsp;&nbsp;</b>';
+			if ( this.ip )		
+				row += this.ip;
+			
+			row += '</div>';
+		}
+
+		row += '<div class="col-xs-3">';
+		row += '<b>Software:</b><br>';
+
+		if ( this.software )
+		{
+			$.each( this.software, function( i ){
+				row += this.software_name;
+				if ( this.count >= i )
+					row += "<br>";
+			});
+		}
+
+		row += '</div></div>';
+
+		if ( this.eq_notes )
+			row += '<hr><div class="row"><div class="col-xs-12"><b>Notes:&nbsp;&nbsp;</b>' + this.eq_notes + '</div></div>';
+
+		row += '</div></td></tr>';
 
 		tableRows.push( row );		
 
@@ -285,42 +347,51 @@ function createTable_computers( results )
 		
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
+	ignoreHeaders = {
+			0: { sorter: false } };
+
+	if ( role > 1 )
+		ignoreHeaders += { 1: { sorter: false } };
+
+	if ( role > 2 )
+		ignoreHeaders += { 2: { sorter: false } };
+
+	setupTablesorter( ignoreHeaders );
+}
 
 
-	$( '#results_table>tbody>tr' ).not( '.tablesorter-childRow' ).addClass( 'parent_row' );
 
+function setupTablesorter( ignoreHeaders )
+{
 	$( '.parent_row>td' ).not('.select,.trash,.edit').on( 'click', function(){
-		// MAKE AJAX CALL TO GET ADDITIONAL INFORMATION, THEN FILL '#other_info' with it
-
-
-		$(this).closest('tr').nextUntil( 'tr.tablesorter-hasChildRow' ).find( 'td' ).toggle();
+		$( this ).closest( 'tr' ).nextUntil( 'tr.tablesorter-hasChildRow' ).find( 'td' ).toggle();
 	});
 
 	$( '.select').on( 'click', function(){
 		$(this).children('i').toggleClass( 'fa-check-square-o fa-square-o');
 	});
 
-
 	$( '#select_all').on( 'click', function(){
 		$(this).toggleClass( 'checked unchecked');
 
 		if ( $(this).hasClass( 'checked' ) )
 		{
-			$('.parent_row').not(':hidden').children('.select').children('i').removeClass('fa-square-o');
-			$('.parent_row').not(':hidden').children('.select').children('i').addClass('fa-check-square-o');
+			$('.parent_row:visible').find('.select > i')
+				.removeClass('fa-square-o')
+				.addClass('fa-check-square-o');
 
 			$('#select_all>div').html( '<i class="fa fa-check-square-o"></i>');
 
 		}
 		else if ( $(this).hasClass( 'unchecked' ) )
 		{
-			$('.parent_row').not(':hidden').children('.select').children('i').removeClass('fa-check-square-o');
-			$('.parent_row').not(':hidden').children('.select').children('i').addClass('fa-square-o');
+			$('.parent_row:visible').find('.select > i')
+				.removeClass('fa-check-square-o')
+				.addClass('fa-square-o');
 
 			$('#select_all>div').html( '<i class="fa fa-square-o"></i>');
 		}
 	});
-
 
 	var options = {
 		widthFixed : true,
@@ -335,11 +406,13 @@ function createTable_computers( results )
 		}
 	};
 
+	options.headers = ignoreHeaders;
+
 	var pagerOptions = {
 		container: $(".pager"),
 		page: 0,
 		size: 20,
-		output: 'Showing Results {startRow} to {endRow} of {filteredRows}',
+		output: '[ Results: {filteredRows} ][ Showing Results {startRow} to {endRow} ]',
     cssPageDisplay: '.pagedisplay',
     cssPageSize: '.pagesize',
 		cssNext: '.next',

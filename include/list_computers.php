@@ -2,74 +2,13 @@
 include_once 'common.php';
 include_once 'query_index.php';
 
-$mysqli = login_db_connect();
-
-sec_session_start();
-
-$logged = login_check( $mysqli );
-
-if ( !( $logged ) )
-	header( 'Location: login.php' );
-
 $mysqli = inventory_db_connect();
 
 // List all Non-Lab Computers
-if ( $stmt = $mysqli->prepare( $get_all_computers ) ) 
-{
-	unset( $results );
+if ( $_POST['query'] == 'all' )
+	$query = $get_all_computers;
 
- 	$stmt->execute();
-	$stmt->store_result();
-	$stmt->bind_result( $tag,
-						$serial,
-						$makemodel,
-						$department,
-						$offcampus,
-						$location );
-
-	while ( $stmt->fetch() )
-	{
-		unset( $users );				
-
-		if ( $offcampus == 'off' )
-			$location = "Off Campus";
-
-		// Query users for current record
-		if ( $stmt4 = $mysqli->prepare( $get_users_from_tag ) )
-		{
-			$stmt4->bind_param( "s", $tag );
-			$stmt4->execute();
-			$stmt4->store_result();
-			$stmt4->bind_result( $firstname, $lastname );
-
-			while ( $stmt4->fetch() )
-				$users[] = array( "firstname" => $firstname, "lastname" => $lastname );
-
-			$stmt4->close();
-		}	
-
-		// Set results and headers arrays
-		$results[] = array( "tag" => $tag, 
-							"serial" => $serial, 
-							"makemodel" => $makemodel, 
-							"location" => $location,
-							"department" => $department,
-							"users" => $users, );
-	}
-}
-
-echo json_encode( $results );
-
-
-/*
-
-include_once 'common.php';
-include_once 'query_index.php';
-
-$mysqli = inventory_db_connect();
-
-// List all Non-Lab Computers
-if ( $stmt = $mysqli->prepare( $get_all_computers ) ) 
+if ( $stmt = $mysqli->prepare( $query ) ) 
 {
 	unset( $results );
 
@@ -125,6 +64,7 @@ if ( $stmt = $mysqli->prepare( $get_all_computers ) )
 			$stmt3->close();
 		}
 
+
 		// Query users for current record
 		if ( $stmt4 = $mysqli->prepare( $get_users_from_tag ) )
 		{
@@ -138,6 +78,7 @@ if ( $stmt = $mysqli->prepare( $get_all_computers ) )
 
 			$stmt4->close();
 		}	
+
 
 		// Query software for current record
 		if ( $stmt5 = $mysqli->prepare( $get_software_from_tag ) )
@@ -169,7 +110,7 @@ if ( $stmt = $mysqli->prepare( $get_all_computers ) )
 			 				"mac" => $mac,
 			 				"wmac" => $wmac,
 							"ip" => $ip,
-		 					"software" => $software, 
+		 					"software" => $software,
 							"users" => $users, );
 	}
 				
@@ -179,7 +120,7 @@ if ( $stmt = $mysqli->prepare( $get_all_computers ) )
 echo json_encode( $results );
 
 
-*/
+
 ?>
 
 

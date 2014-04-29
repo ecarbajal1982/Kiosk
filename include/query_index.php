@@ -17,7 +17,7 @@
 *****************************************/
 
 // Retrieve all non-lab computers
-/*$get_all_computers = "	SELECT		e.tag_num,
+$get_all_computers = "	SELECT		e.tag_num,
 									e.serial,
 									CONCAT( e.make, ' ', e.model ),
 									c.os,
@@ -49,7 +49,7 @@
 						GROUP BY 	e.tag_num
 
 						ORDER BY 	e.tag_num DESC";
-*/
+/*
 $get_all_computers = "	SELECT		e.tag_num,
 									e.serial,
 									CONCAT( e.make, ' ', e.model ),
@@ -70,7 +70,7 @@ $get_all_computers = "	SELECT		e.tag_num,
 						GROUP BY 	e.tag_num
 
 						ORDER BY 	e.tag_num DESC";
-
+*/
 
 // Retrieve all lab computers 
 $get_all_labs = "SELECT		e.tag_num,
@@ -103,7 +103,7 @@ $get_all_labs = "SELECT		e.tag_num,
 
 								GROUP BY 	e.tag_num
 
-								ORDER BY 	e.tag_num ASC";
+								ORDER BY 	e.tag_num DESC";
 
 
 // Retrieve all network printers
@@ -167,6 +167,7 @@ $get_all_users = "SELECT		u.user_id,
 
 									ORDER BY	u.l_name ASC";
 
+
 // Retrieve all computers based on licensed software
 $get_computers_from_software_id = "SELECT	e.tag_num,
 																					e.serial,
@@ -214,12 +215,16 @@ $get_equipment_from_user = "SELECT 	e.tag_num,
 																		us.user_id = ?";
 
 
+// Retrieve hostname and OS based on tag number
+$get_computer_info_from_tag = "SELECT 	c.hostname,
+										c.os
+							   FROM		computer c,
+							   WHERE	c.computer_tag = ? LIMIT 1";
+
 // Retrieve notes based on tag number
-$get_notes_from_tag = "SELECT n.notes
-
-											 FROM 	eq_notes n
-
-											 WHERE 	n.tag_num = ?";
+$get_notes_from_tag = "SELECT	n.notes
+					   FROM 	eq_notes n
+					   WHERE 	n.tag_num = ?";
 
 
 // Retrieve printer based on tag number
@@ -269,7 +274,7 @@ $get_purchase_from_tag = "SELECT 	p.purchase_order,
 													FROM		purchase p, equipment e
 
 													WHERE		p.purchase_id = e.purchase_id AND
-																	e.tag_num = ?";
+																	e.tag_num = ? LIMIT 1";
 
 
 ?>
