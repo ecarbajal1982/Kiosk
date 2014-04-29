@@ -1,83 +1,4 @@
-function formhash( form, password )
-{
-    // Create a new element input, this will be our hashed password field. 
-    var p = document.createElement( "input" );
- 
-    // Add the new element to our form. 
-    form.appendChild( p );
-    p.name = "p";
-    p.type = "hidden";
-    p.value = hex_sha512( password.value );
-    // Make sure the plaintext password doesn't get sent. 
-    password.value = "";
- 
-    // Finally submit the form. 
-    form.submit();
-}
- 
-function regformhash( form, uid, password, conf, role )
-{
-    // Check each field has a value
-    if ( uid.value == '' || password.value == '' ||  conf.value == '' || role.value == '' )
-	{ 
-        alert( 'You must provide all the requested details.' );
-        return false;
-    }
- 
-    // Check the username
-    re = /^\w+$/; 
-    if( !re.test( form.username.value ) )
-	{ 
-        alert( "Username must contain only letters, numbers and underscores." ); 
-        form.username.focus();
-        return false; 
-    }
- 
-    // Check that the password is sufficiently long (min 6 chars)
-    // The check is duplicated below, but this is included to give more
-    // specific guidance to the user
-    if ( password.value.length < 6 )
-	{
-        alert( 'Passwords must be at least 6 characters long.  Please try again' );
-        form.password.focus();
-        return false;
-    }
- 
-    // At least one number, one lowercase and one uppercase letter 
-    // At least six characters 
- 
-    var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/; 
-    if ( !re.test( password.value ) )
-	{
-        alert( 'Passwords must contain at least one number, one lowercase and one uppercase letter.' );
-        return false;
-    }
- 
-    // Check password and confirmation are the same
-    if ( password.value != conf.value )
-	{
-        alert( 'Passwords do not match!' );
-        form.password.focus();
-        return false;
-    }
- 
-    // Create a new element input, this will be our hashed password field. 
-    var p = document.createElement( "input" );
- 
-    // Add the new element to our form. 
-    form.appendChild( p );
-    p.name = "p";
-    p.type = "hidden";
-    p.value = hex_sha512( password.value );
- 
-    // Make sure the plaintext password doesn't get sent. 
-    password.value = "";
-    conf.value = "";
- 
-    // Finally submit the form. 
-    form.submit();
-    return true;
-}
+
 
 
 function list_all_computers()
@@ -88,7 +9,15 @@ function list_all_computers()
 		url: "include/list_computers.php",
 		data: { query : "all" },
 		success: function( result ) {
+			var role = checkRole();
+			headers = ["Property Tag", "Serial Number", "Make & Model", "Purchase Date", "Location", "Department", "Users"];
+			$( '#main_content' ).html( createTable( role, headers ) );
+
 			createTable_computers( $.parseJSON( result ) );
+
+
+			setupTablesorter( role );
+
 			$('#processingModal').modal('toggle');
 		}
 	});
@@ -160,7 +89,7 @@ function createTable( role, headers )
 	if ( role > 2 )
 	{
 	headerRow.push( $( "<th>" )
-		.attr({ "id" : "delete_selected",
+		.attr({ "id" : "trash_selected",
 				"scope" : "col",
 				"style" : "padding-left: 5px" })
 		.html( "<i class='fa fa-trash-o'></i>" ) );
@@ -261,7 +190,7 @@ function createTable_computers( results )
 		if ( role > 2 )
 			row += "<td class='trash' rowspan='2'><i class='fa fa-trash-o'></i></td>";
 
-		row += "<td>" + this.tag + "</td>";
+		row += "<td class='tag'>" + this.tag + "</td>";
 		row += "<td>" + this.serial + "</td>";
 		row += "<td>" + this.makemodel + "</td>";
 		row += "<td>" + this.purchase_date + "</td>";
@@ -346,30 +275,37 @@ function createTable_computers( results )
 	});
 		
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
-
-	ignoreHeaders = {
-			0: { sorter: false } };
-
-	if ( role > 1 )
-		ignoreHeaders += { 1: { sorter: false } };
-
-	if ( role > 2 )
-		ignoreHeaders += { 2: { sorter: false } };
-
-	setupTablesorter( ignoreHeaders );
 }
 
 
 
-function setupTablesorter( ignoreHeaders )
+function setupTablesorter( role )
 {
 	$( '.parent_row>td' ).not('.select,.trash,.edit').on( 'click', function(){
 		$( this ).closest( 'tr' ).nextUntil( 'tr.tablesorter-hasChildRow' ).find( 'td' ).toggle();
 	});
 
-	$( '.select').on( 'click', function(){
-		$(this).children('i').toggleClass( 'fa-check-square-o fa-square-o');
+	
+	$( '.select>i').on( 'click', function(){
+		$(this).toggleClass( 'fa-check-square-o fa-square-o');
 	});
+
+	$( '.edit>i').on( 'click', function(){
+		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
+		/*******************************************************
+		 Gather attributes, call edit_computer modal
+		*******************************************************/
+		alert( "Edit " + tag );
+	});
+
+	$( '.trash>i').on( 'click', function(){
+		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
+		/*******************************************************
+		 Gather attributes, call delete_computer modal
+		*******************************************************/
+		alert( "Delete " + tag );
+	});
+
 
 	$( '#select_all').on( 'click', function(){
 		$(this).toggleClass( 'checked unchecked');
@@ -406,6 +342,15 @@ function setupTablesorter( ignoreHeaders )
 		}
 	};
 
+	ignoreHeaders = {
+		0: { sorter: false } };
+
+	if ( role > 1 )
+		ignoreHeaders += { 1: { sorter: false } };
+
+	if ( role > 2 )
+		ignoreHeaders += { 2: { sorter: false } };
+
 	options.headers = ignoreHeaders;
 
 	var pagerOptions = {
@@ -419,9 +364,6 @@ function setupTablesorter( ignoreHeaders )
     cssPrev: '.prev',
     cssFirst: '.first',
     cssLast: '.last'
-
-
-
 	};
 
 	$('#results_table').tablesorter( options )
@@ -509,4 +451,83 @@ function list_software()
 	});
 }
 
-
+function formhash( form, password )
+{
+    // Create a new element input, this will be our hashed password field. 
+    var p = document.createElement( "input" );
+ 
+    // Add the new element to our form. 
+    form.appendChild( p );
+    p.name = "p";
+    p.type = "hidden";
+    p.value = hex_sha512( password.value );
+    // Make sure the plaintext password doesn't get sent. 
+    password.value = "";
+ 
+    // Finally submit the form. 
+    form.submit();
+}
+ 
+function regformhash( form, uid, password, conf, role )
+{
+    // Check each field has a value
+    if ( uid.value == '' || password.value == '' ||  conf.value == '' || role.value == '' )
+	{ 
+        alert( 'You must provide all the requested details.' );
+        return false;
+    }
+ 
+    // Check the username
+    re = /^\w+$/; 
+    if( !re.test( form.username.value ) )
+	{ 
+        alert( "Username must contain only letters, numbers and underscores." ); 
+        form.username.focus();
+        return false; 
+    }
+ 
+    // Check that the password is sufficiently long (min 6 chars)
+    // The check is duplicated below, but this is included to give more
+    // specific guidance to the user
+    if ( password.value.length < 6 )
+	{
+        alert( 'Passwords must be at least 6 characters long.  Please try again' );
+        form.password.focus();
+        return false;
+    }
+ 
+    // At least one number, one lowercase and one uppercase letter 
+    // At least six characters 
+ 
+    var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/; 
+    if ( !re.test( password.value ) )
+	{
+        alert( 'Passwords must contain at least one number, one lowercase and one uppercase letter.' );
+        return false;
+    }
+ 
+    // Check password and confirmation are the same
+    if ( password.value != conf.value )
+	{
+        alert( 'Passwords do not match!' );
+        form.password.focus();
+        return false;
+    }
+ 
+    // Create a new element input, this will be our hashed password field. 
+    var p = document.createElement( "input" );
+ 
+    // Add the new element to our form. 
+    form.appendChild( p );
+    p.name = "p";
+    p.type = "hidden";
+    p.value = hex_sha512( password.value );
+ 
+    // Make sure the plaintext password doesn't get sent. 
+    password.value = "";
+    conf.value = "";
+ 
+    // Finally submit the form. 
+    form.submit();
+    return true;
+}
