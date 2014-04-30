@@ -115,13 +115,13 @@ if ( !( $logged ) )
     <div id="main_content">
 <button id='example'>test</button>
  <script>
-    $(document).ready(function() {
+
             $('#example').popover({
                 trigger: "click",
                 placement: "bottom",
                 content: "This is a default title",
                 });
-        });
+
   </script>
     </div><!-- end main section -->
 

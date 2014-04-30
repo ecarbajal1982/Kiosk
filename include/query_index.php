@@ -17,9 +17,8 @@
 *****************************************/
 
 // Retrieve all non-lab computers
-$get_all_computers = "	SELECT		e.tag_num,
-									e.serial,
-									CONCAT( e.make, ' ', e.model ),
+$get_all_computers =
+"SELECT	e.tag_num, e.serial, CONCAT( e.make, ' ', e.model ),
 									c.os,
 									c.hostname,
 									e.department,

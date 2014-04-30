@@ -1,4 +1,4 @@
-#custom_table
+#results_table
 {
 	font-family:"Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 	font-size:14px;
@@ -7,7 +7,7 @@
 	border-collapse:collapse;
 	text-align:left;
 }
-#custom_table th
+#results_table th
 {
 	font-size:14px;
 	font-weight:bold;
@@ -16,11 +16,11 @@
 	padding:10px 8px;
 	cursor: pointer;
 }
-#custom_table .parent_row
+#results_table .parent_row
 {
 	cursor: pointer;
 }
-#custom_table td
+#results_table td
 {
 	color:#669;
 	padding:5px;

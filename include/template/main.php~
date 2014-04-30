@@ -11,6 +11,9 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<div id="table_panel_head" class="row">
+				<div class="col-xs-3">
+					<input class="form-control search" type="text" placeholder="Search" data-column="all">
+				</div>
 			</div>
 	    </div>
 

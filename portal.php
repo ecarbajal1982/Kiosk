@@ -113,16 +113,7 @@ if ( !( $logged ) )
   <div class="row">
 	<!-- Main Section -->
     <div id="main_content">
-<button id='example'>test</button>
- <script>
-
-            $('#example').popover({
-                trigger: "click",
-                placement: "bottom",
-                content: "This is a default title",
-                });
-
-  </script>
+		<?php include "include/template/main.php" ?>
     </div><!-- end main section -->
 
   </div><!-- end row -->

@@ -1,22 +1,32 @@
 
-
-
-function list_all_computers()
+function list_equipment( query )
 {
+
+	headers = [ "Property Tag",
+				"Serial Number", 
+				"Make & Model", 
+				"Purchase Date", 
+				"Location", 
+				"Department", 
+				"Users" ];
+
 	$('#processingModal').modal('toggle');
 	$.ajax({
 		type: "POST",
 		url: "include/list_computers.php",
-		data: { query : "all" },
+		data: { query : query },
 		success: function( result ) {
-	//		var role = checkRole();
-			headers = ["Property Tag", "Serial Number", "Make & Model", "Purchase Date", "Location", "Department", "Users"];
-			$( '#main_content' ).html( createTable( role, headers ) );
+			var role = checkRole();
 
-			createTable_computers( $.parseJSON( result ) );
+			createHeaders( role, headers );
 
+			$('#search_panel:visible').collapse('hide');
+			$('#table_panel').collapse('show');
+			$('#table_panel_head').html( '<div class="col-xs-1"><button id="optionsBtn" class="btn btn-info collapse in" data-toggle="collapse"  href="#search_panel"><i class="fa fa-search"></i>&nbsp;Options</button></div><div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div>' );
 
-			setupTablesorter( checkRole() );
+			populateTable_computers( $.parseJSON( result ) );
+
+			setupTablesorter( role );
 
 			$('#processingModal').modal('toggle');
 		}
@@ -37,36 +47,8 @@ function list_all_labs()
 	});
 }
 
-
-function createTable( role, headers )
+function createHeaders( role, headers )
 {
-// search panel
-	filterBox = $( "<input>" )
-		.addClass( "form-control search" )
-		.attr({ "type" : "text",
-				"placeholder" : "Filter Results",
-				"data-column" : "all" });
-
-	optionsBtn = $( "<button>" )
-		.addClass( "btn btn-info" )
-		.attr({ "id" : "optionsBtn",
-				"style" : "margin-left: 5px" })
-		.html( "<i class='fa fa-search'></i>&nbsp;Options" );
-
-	reportBtn = $( "<button>" )
-		.addClass( "btn btn-info" )
-		.attr({ "id" : "reportBtn",
-				"style" : "margin-left: 5px" })
-		.html( "<i class='fa fa-file-o'></i>&nbsp;Create Report" );
-
-	searchPanel = $( "<div>" )
-		.addClass( "form-inline" )
-		.append( [filterBox, optionsBtn, reportBtn ]);
-
-	panelHead = $( "<div>" )
-		.addClass( "panel-heading" )
-		.append( searchPanel );
-
 // table
 	var headerRow = new Array();	
 
@@ -101,64 +83,11 @@ function createTable( role, headers )
 			.html( this ) );
 	});
 
-	table = $( "<table>" )
-		.addClass( "tablesorter" )		
-		.attr( "id", "results_table" );
+	$( '#results_table>thead>tr').html( headerRow );
 
-	thead = $( "<thead>" )
-		.appendTo( table );
-
-	tr = $( "<tr>" )
-		.append( headerRow )
-		.appendTo( thead );
-
-	tbody = $( "<tbody>" )
-		.appendTo( table );
-
-	panelBody = $( "<div>" ).addClass( "panel-body" )
-							.append( table );
-
-// pager panel
-	pagerPanel = $( "<div>" )
-		.addClass( "pager pagination center-block" )
-		.attr({ "id" : "pager",
-				"style" : "margin: 0px" });
-
-	firstBtn = $( "<button>" )
-		.addClass( "btn btn-info first" )
-		.html( "<i class='fa fa-angle-double-left fa-lg'></i>" );
-
-	prevBtn = $( "<button>" )
-		.addClass( "btn btn-info prev" )
-		.html( "<i class='fa fa-angle-left fa-lg'></i>" );
-
-	pageDisplay = $( "<button>" )
-		.addClass( "btn btn-info active pagedisplay" );
-
-	nextBtn = $( "<button>" )
-		.addClass( "btn btn-info next" )
-		.html( "<i class='fa fa-angle-right fa-lg'></i>" );
-
-	lastBtn = $( "<button>" )
-		.addClass( "btn btn-info last" )
-		.html( "<i class='fa fa-angle-double-right fa-lg'></i>" );
-
-	buttonGroup = $( "<div>" )
-		.addClass( "btn-group" )
-		.append( [firstBtn, prevBtn, pageDisplay, nextBtn, lastBtn] )
-		.appendTo( pagerPanel );
-
-	panelFoot = $( "<div>" )
-		.addClass( "panel-footer" )
-		.append( pagerPanel );
-
-// full panel
-	panel = $( "<div>" )
-		.addClass( "panel panel-default" )
-		.append( [panelHead, panelBody, panelFoot] );
-
-return panel;
 }
+
+
 
 function checkRole()
 {
@@ -170,12 +99,9 @@ function checkRole()
 }
 
 
-function createTable_computers( results )
+function populateTable_computers( results )
 {
 	var role = checkRole();
-
-	headers = ["Property Tag", "Serial Number", "Make & Model", "Purchase Date", "Location", "Department", "Users"];
-	$( '#main_content' ).html( createTable( role, headers ) );
 
 	var tableRows = new Array();
 
@@ -357,7 +283,7 @@ function setupTablesorter( role )
 		container: $(".pager"),
 		page: 0,
 		size: 20,
-		output: '[ Results: {filteredRows} ][ Showing Results {startRow} to {endRow} ]',
+		output: ' ( Results: {filteredRows} )  Showing Results {startRow} to {endRow} ',
     cssPageDisplay: '.pagedisplay',
     cssPageSize: '.pagesize',
 		cssNext: '.next',

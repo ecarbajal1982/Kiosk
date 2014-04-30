@@ -5,8 +5,14 @@ include_once 'query_index.php';
 $mysqli = inventory_db_connect();
 
 // List all Non-Lab Computers
-if ( $_POST['query'] == 'all' )
+if ( $_POST['query'] == 'computers' )
 	$query = $get_all_computers;
+
+else
+{
+
+
+}
 
 if ( $stmt = $mysqli->prepare( $query ) ) 
 {

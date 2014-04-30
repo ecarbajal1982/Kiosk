@@ -5,11 +5,18 @@ include_once 'query_index.php';
 $mysqli = inventory_db_connect();
 
 // List all Non-Lab Computers
-if ( $_POST['query'] == 'all' )
+if ( $_POST['query'] == 'computers' )
 	$query = $get_all_computers;
+
+else if ( $_POST['query'] == 'labs' )
+	$query = $get_all_labs;
+
+else if ( $_POST['query'] == 'printers' )
+	$query = $get_all_printers;
 
 else
 {
+// create query here based on user input
 
 
 }
@@ -70,7 +77,6 @@ if ( $stmt = $mysqli->prepare( $query ) )
 			$stmt3->close();
 		}
 
-
 		// Query users for current record
 		if ( $stmt4 = $mysqli->prepare( $get_users_from_tag ) )
 		{
@@ -84,7 +90,6 @@ if ( $stmt = $mysqli->prepare( $query ) )
 
 			$stmt4->close();
 		}	
-
 
 		// Query software for current record
 		if ( $stmt5 = $mysqli->prepare( $get_software_from_tag ) )
