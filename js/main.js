@@ -21,8 +21,6 @@ function list_equipment( query )
 
 			createHeaders( role, headers );
 
-
-
 			$('#results_table').trigger('filterReset');
 
 			$('#results_table>tbody').empty();
@@ -48,10 +46,12 @@ function list_users( query )
 	$.ajax({
 		type: "POST",
 		url: "include/list_users.php",
+		data: { query : query },
 		success: function( result ) {
 			var role = checkRole();
 
 			createHeaders( role, headers );
+
 			$('#search_panel:visible').collapse('hide');
 	
 			$('#table_panel').collapse('show');
@@ -60,7 +60,7 @@ function list_users( query )
 
 			$('#results_table>tbody').empty();
 
-			populateTable_user( $.parseJSON( result ) );
+			populateTable_users( $.parseJSON( result ) );
 
 			setupTablesorter( role );
 
@@ -108,23 +108,6 @@ function setupTablesorter( role )
 	$( '.select>i').on( 'click', function(){
 		$(this).toggleClass( 'fa-check-square-o fa-square-o');
 	});
-
-	$( '.edit>i').on( 'click', function(){
-		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
-		/*******************************************************
-		 Gather attributes, call edit_computer modal
-		*******************************************************/
-		alert( "Edit " + tag );
-	});
-
-	$( '.trash>i').on( 'click', function(){
-		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
-		/*******************************************************
-		 Gather attributes, call delete_computer modal
-		*******************************************************/
-		alert( "Delete " + tag );
-	});
-
 
 	$( '#select_all').on( 'click', function(){
 		$(this).toggleClass( 'checked unchecked');
@@ -175,8 +158,8 @@ function setupTablesorter( role )
 	var pagerOptions = {
 		container: $(".pager"),
 		page: 0,
-		size: 20,
-		output: ' ( Results: {filteredRows} )  Showing Results {startRow} to {endRow} ',
+		size: 15,
+		output: ' <b>( Results: {filteredRows} )  Showing Results {startRow} to {endRow}</b> ',
     cssPageDisplay: '.pagedisplay',
     cssPageSize: '.pagesize',
 		cssNext: '.next',
@@ -185,7 +168,7 @@ function setupTablesorter( role )
     cssLast: '.last'
 	};
 
-			$('#table_panel_head').html( '<div class="col-xs-1"><button id="optionsBtn" class="btn btn-info collapse in" data-toggle="collapse"  href="#search_panel"><i class="fa fa-search"></i>&nbsp;Options</button></div><div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-8"><button id="createReportBtn" class="pull-right btn btn-info"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
+	$('#table_panel_head').html( '<div class="col-xs-1"><button id="optionsBtn" class="btn btn-info collapse in" data-toggle="collapse"  href="#search_panel"><i class="fa fa-search"></i>&nbsp;Options</button></div><div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-8"><button id="createReportBtn" class="pull-right btn btn-info"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
 
 	$('#results_table').tablesorter( options )
 		.tablesorterPager(pagerOptions)
@@ -199,7 +182,9 @@ function setupTablesorter( role )
 		$( '.tablesorter-childRow td' ).hide();
 	});
 
-
+	$( '#results_table' ).on( 'mouseover', function(){
+		$( '#search_panel:visible' ).collapse( 'hide' );
+	});
 
 }
 
@@ -353,10 +338,101 @@ function populateTable_equipment( results )
 	});
 		
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
+
+	$( '.edit>i').on( 'click', function(){
+		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
+		/*******************************************************
+		 Gather attributes, call edit_computer modal
+		*******************************************************/
+		alert( "Edit " + tag );
+	});
+
+	$( '.trash>i').on( 'click', function(){
+		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
+		/*******************************************************
+		 Gather attributes, call delete_computer modal
+		*******************************************************/
+		alert( "Delete " + tag );
+	});
+}
+
+function populateTable_users( results )
+{
+	var role = checkRole();
+
+	var tableRows = new Array();
+
+	if ( !results )
+		return;
+
+	$.each( results, function(){
+		row = "";
+		row += "<tr class='parent_row'>";
+		row += "<td class='select' rowspan='2'><i class='fa fa-square-o'></i></td>";
+	
+		if ( role > 1 )
+			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";
+
+		if ( role > 2 )
+			row += "<td class='trash' rowspan='2'><i class='fa fa-trash-o'></i></td>";
+
+		row += "<td class='firstname'>" + this.firstname + "</td>";
+		row += "<td class='lastname'>" + this.lastname + "</td>";
+		if ( !this.email)
+			this.email = "N/A";
+		row += "<td>" + this.email + "</td>";
+		if ( !this.department )
+			this.department = "N/A";
+		row += "<td>" + this.department + "</td>";
+
+		row += "</tr><tr class='tablesorter-childRow'><td colspan='10'>";
+		row += '<div class="panel panel-group">';
+
+		if ( this.equipment )
+		{
+			$.each( this.equipment, function( i ){
+				row += "<div class='panel panel-default' style='padding: 5px'>";
+				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>" + this.tag;
+				row += "<b> / Serial: </b>" + this.serial;
+				row += "<b> / Make & Model: </b>" + this.makemodel;
+				row += "<b> / Location: </b>" + this.location;
+				row += "<b> / Department: </b>" + this.department;
+				row += "</div>";
+				if ( this.count >= i )
+					row += "<br>";
+			});
+		}		
+		
+		row += '</div></td></tr>';
+
+		tableRows.push( row );		
+
+	});
+		
+	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
+
+	$( '.edit>i').on( 'click', function(){
+		tag = $(this).closest( 'tr' ).children( '.firstname' ).html() + " ";
+		tag += $(this).closest( 'tr' ).children( '.lastname' ).html();
+		/*******************************************************
+		 Gather attributes, call edit_user modal
+		*******************************************************/
+		alert( "Edit " + tag );
+	});
+
+	$( '.trash>i').on( 'click', function(){
+ 		tag = $(this).closest( 'tr' ).children( '.firstname' ).html() + " ";
+		tag += $(this).closest( 'tr' ).children( '.lastname' ).html();
+		/*******************************************************
+		 Gather attributes, call delete_user modal
+		*******************************************************/
+		alert( "Delete " + tag );
+	});
 }
 
 
 
+//  Password hashing functions
 
 function formhash( form, password )
 {

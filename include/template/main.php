@@ -25,6 +25,12 @@
 			</div>
 
 			<div id="pager" class="panel-footer pager" style="margin: 0px">
+				<div class="row">
+				<div class="col-xs-3">
+					
+				</div>
+
+				<div class="col-xs-6">
 				<div class="center-block">
 					<div class="btn-group">
 						<button class="btn btn-info first">
@@ -34,7 +40,6 @@
 							<i class="fa fa-angle-left fa-lg"></i>
 						</button>
 						<button class="btn btn-info active pagedisplay">
-							testing
 						</button>
 						<button class="btn btn-info next">
 							<i class="fa fa-angle-right fa-lg"></i>
@@ -44,6 +49,17 @@
 						</button>
 					</div>
 				</div>
+				</div>
+				
+<div class="col-xs-3"><div class="pull-right" style="margin-top: 10px">
+Records per page
+    <select class="pagesize">
+      <option selected="selected" value="10">10</option>
+      <option value="15">15</option>
+      <option value="20">20</option>
+      <option value="9999">All</option>
+    </select>
+</div></div>
 			</div>
 
 		</div>

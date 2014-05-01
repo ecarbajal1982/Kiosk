@@ -302,9 +302,7 @@ if ( $type == 'users' and $stmt = $mysqli->prepare( $get_all_users ) )
 	$stmt->store_result();
   $stmt->bind_result( $user_id,
 											$f_name,
-											$l_name,
-											$email,
-											$department );
+											$l_name );
 
 	while ( $stmt->fetch() )
 	{
@@ -341,9 +339,9 @@ if ( $type == 'users' and $stmt = $mysqli->prepare( $get_all_users ) )
 		}
 
 		// Set results and headers arrays
-		$results[] = array( "f_name" => $f_name, 
-	 						"l_name" => $l_name, ),
-							"equipment" => $equipment, );
+		$results[] = array( "visible" => array( "f_name" => $f_name, 
+	 										 											"l_name" => $l_name, ),
+												"hidden" => array( "equipment" => $equipment, ) );
 	}
 
 	$headers = array( "1" => "First Name",
