@@ -12,8 +12,8 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav pull-right">
-        <li data-backdrop="true" data-toggle="modal" data-target="#searchModal">
-					<a style="cursor:pointer;"><b>Search</b></a>
+        <li>
+					<a style="cursor:pointer;" href="portal.php"><b>Search</b></a>
 				</li>
 				<li class="divider-vertical"></li>
 		<?php if ( $_SESSION['role'] > 1 ) : ?>
@@ -28,19 +28,19 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">List All <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onClick="list_equipment( "computers" );"><i class="fa fa-desktop"></i>&nbsp; Computers/Tablets</a>
+              <li><a href="#" onClick="list_equipment( '_computers' );"><i class="fa fa-desktop"></i>&nbsp; Computers/Tablets</a>
               </li>
-              <li><a href="#" onClick="list_all_labs();"><i class="fa fa-users"></i>&nbsp; Lab Workstations</a>
+              <li><a href="#" onClick="list_equipment( '_labs' );"><i class="fa fa-users"></i>&nbsp; Lab Workstations</a>
               </li>
-              <li><a href="#" onClick="get_list( 'printers' );"><span class="glyphicon glyphicon-print"></span>&nbsp; Network Printers</a>
+              <li><a href="#" onClick="list_equipment( '_printers' );"><span class="glyphicon glyphicon-print"></span>&nbsp; Network Printers</a>
               </li>
-              <li><a href="#" onClick="get_list( 'users' );"><span class="glyphicon glyphicon-user"></span>&nbsp; Faculty/Staff Users</a>
+              <li><a href="#" onClick="list_users( '_all' );"><span class="glyphicon glyphicon-user"></span>&nbsp; Faculty/Staff Users</a>
               </li>
-              <li><a href="#" onClick="get_list( 'purchases' );"><span class="glyphicon glyphicon-barcode"></span>&nbsp; Purchase Orders</a>
+              <li><a href="#" onClick="list_purchases( '_all' );"><span class="glyphicon glyphicon-barcode"></span>&nbsp; Purchase Orders</a>
               </li>
 		      <?php if ( $_SESSION['role'] > 1 ) : ?>
 			    <li class='divider'></li>
-                <li><a href="#" onClick="get_list( 'software' );">
+                <li><a href="#" onClick="list_software( '_all' );">
                   <i class="fa fa-key"></i>&nbsp; Software Licenses</a>
                 </li>
 		      <?php endif; ?>

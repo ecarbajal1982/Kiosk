@@ -41,4 +41,20 @@
 	overflow: auto;
 }
 
+html
+{
+       overflow-y: scroll;
+}
 
+.select
+{
+	width: 15px;
+}
+.edit_selected
+{
+	width: 15px;
+}
+.trash_selected
+{
+	width: 15px;
+}

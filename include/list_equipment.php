@@ -5,19 +5,102 @@ include_once 'query_index.php';
 $mysqli = inventory_db_connect();
 
 // List all Non-Lab Computers
-if ( $_POST['query'] == 'computers' )
-	$query = $get_all_computers;
+if ( $_POST['query'] == '_computers' )
+	$query = "SELECT	e.tag_num, 
+										e.serial, 
+										CONCAT( e.make, ' ', e.model ),
+										c.os,
+										c.hostname,
+										e.department,
+										e.location,
+										CONCAT( e.building, ' ', e.room_num ), 	
+										p.purchase_order,
+										p.purchase_date,
+										p.purchased_by,
+										n.mac,
+										n.wmac,
+										n.ip
 
-else if ( $_POST['query'] == 'labs' )
-	$query = $get_all_labs;
+						FROM 		equipment e,
+										computer c,
+										eq_network n,
+										purchase p, 
+										user u,
+										uses us
+	
+						WHERE	 	c.computer_tag = e.tag_num AND
+										us.tag_num = e.tag_num AND
+										us.user_id = u.user_id AND 
+										e.purchase_id = p.purchase_id AND
+										n.tag_num = e.tag_num AND
+										u.l_name IS NOT NULL
 
-else if ( $_POST['query'] == 'printers' )
-	$query = $get_all_printers;
+						GROUP BY 	e.tag_num
+
+						ORDER BY 	e.tag_num DESC";
+
+else if ( $_POST['query'] == '_labs' )
+	$query = "SELECT	e.tag_num,
+										e.serial,
+										CONCAT( e.make, ' ', e.model ),
+										c.os,
+										c.hostname,
+										e.department,
+										e.location,
+										CONCAT( e.building, ' ', e.room_num ), 	
+										p.purchase_order,
+										p.purchase_date,
+										p.purchased_by,
+										n.mac,
+										n.wmac,
+										n.ip
+
+					FROM 			equipment e,
+										computer c,
+										eq_network n,
+										purchase p, 
+										user u,
+										uses us
+
+					WHERE 		c.computer_tag = e.tag_num AND
+										us.tag_num = e.tag_num AND
+										us.user_id = u.user_id AND 
+										e.purchase_id = p.purchase_id AND
+										n.tag_num = e.tag_num AND
+										u.l_name IS NULL
+
+					GROUP BY 	e.tag_num
+
+					ORDER BY 	e.tag_num DESC";
+
+else if ( $_POST['query'] == '_printers' )
+	$query = "SELECT		e.tag_num,
+											e.serial,
+											CONCAT( e.make, ' ', e.model ),
+											pr.hostname,
+											e.department,
+											CONCAT( e.building, ' ', e.room_num ), 	
+											p.purchase_order,
+											p.purchase_date,
+											p.purchased_by,
+											n.mac,
+											n.wmac,
+											n.ip
+
+						FROM 			equipment e,
+											eq_network n,
+											purchase p,
+											network_printer pr
+
+						WHERE 		pr.printer_tag = e.tag_num AND
+											e.purchase_id = p.purchase_id AND
+											n.tag_num = e.tag_num
+
+						ORDER BY 	pr.hostname ASC";
 
 else
 {
 // create query here based on user input
-
 
 }
 
@@ -124,14 +207,8 @@ if ( $stmt = $mysqli->prepare( $query ) )
 		 					"software" => $software,
 							"users" => $users, );
 	}
-				
-
 }
 
 echo json_encode( $results );
 
-
-
 ?>
-
-

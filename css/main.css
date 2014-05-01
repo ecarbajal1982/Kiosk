@@ -41,6 +41,9 @@
 	overflow: auto;
 }
 
-html {
+html
+{
        overflow-y: scroll;
 }
+
+

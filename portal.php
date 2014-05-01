@@ -36,6 +36,7 @@ if ( !( $logged ) )
   <script type="text/javascript" src="js/bootstrap-typeahead.js"></script> 
   <script type="text/JavaScript" src="js/sha512.js"></script> 
   <script type="text/JavaScript" src="js/main.js"></script>
+  <script type="text/JavaScript" src="js/table.js"></script>
 
 </head>
 <body style="padding-top: 60px; padding-bottom: 20px;">

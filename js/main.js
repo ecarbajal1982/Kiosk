@@ -1,14 +1,15 @@
+function checkRole()
+{
+    return $.ajax({
+        type: "GET",
+        url: "include/check_role.php",
+        async: false
+    }).responseText;
+}
 
 function list_equipment( query )
 {
-
-	headers = [ "Property Tag",
-				"Serial Number", 
-				"Make & Model", 
-				"Purchase Date", 
-				"Location", 
-				"Department", 
-				"Users" ];
+	headers = [ "Property Tag", "Serial Number", "Make & Model", "Purchase Date", "Location", "Department", "Users" ];
 
 	$('#processingModal').modal('toggle');
 	$.ajax({
@@ -20,11 +21,46 @@ function list_equipment( query )
 
 			createHeaders( role, headers );
 
+
+
+			$('#results_table').trigger('filterReset');
+
+			$('#results_table>tbody').empty();
+
+			populateTable_equipment( $.parseJSON( result ) );
+
+			setupTablesorter( role );
+
+			$('#processingModal').modal('toggle');	
+		
 			$('#search_panel:visible').collapse('hide');
 			$('#table_panel').collapse('show');
-			$('#table_panel_head').html( '<div class="col-xs-1"><button id="optionsBtn" class="btn btn-info collapse in" data-toggle="collapse"  href="#search_panel"><i class="fa fa-search"></i>&nbsp;Options</button></div><div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div>' );
+		}
+	});
+}
 
-			populateTable_computers( $.parseJSON( result ) );
+function list_users( query )
+{
+	headers = [ "First Name", "Last Name", "Email Address", "Department" ];
+
+	$('#processingModal').modal('toggle');
+
+	$.ajax({
+		type: "POST",
+		url: "include/list_users.php",
+		success: function( result ) {
+			var role = checkRole();
+
+			createHeaders( role, headers );
+			$('#search_panel:visible').collapse('hide');
+	
+			$('#table_panel').collapse('show');
+
+			$('#results_table').trigger('filterReset');
+
+			$('#results_table>tbody').empty();
+
+			populateTable_user( $.parseJSON( result ) );
 
 			setupTablesorter( role );
 
@@ -33,23 +69,144 @@ function list_equipment( query )
 	});
 }
 
-function list_all_labs()
+function list_purchases()
 {
 	$('#processingModal').modal('toggle');
 	$.ajax({
 		type: "POST",
-		url: "include/list_labs.php",
-		data: { query : "all" },
+		url: "include/list_purchases.php",
 		success: function( result ) {
-			createTable_computers( $.parseJSON( result ) );
+			$( '#main_content' ).html( result );
 			$('#processingModal').modal('toggle');
 		}
 	});
 }
 
+function list_software()
+{
+	//$('#processingModal').modal('toggle');
+	$.ajax({
+		type: "POST",
+		url: "include/list_software.php",
+		success: function( result ) {
+			$( '#main_content' ).html( result );
+			//$('#processingModal').modal('toggle');
+		}
+	});
+}
+
+
+function setupTablesorter( role )
+{
+	$('#results_table').trigger("destroy");
+	
+	$( '.parent_row>td' ).not('.select,.trash,.edit').on( 'click', function(){
+		$( this ).closest( 'tr' ).nextUntil( 'tr.tablesorter-hasChildRow' ).find( 'td' ).toggle();
+	});
+
+	
+	$( '.select>i').on( 'click', function(){
+		$(this).toggleClass( 'fa-check-square-o fa-square-o');
+	});
+
+	$( '.edit>i').on( 'click', function(){
+		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
+		/*******************************************************
+		 Gather attributes, call edit_computer modal
+		*******************************************************/
+		alert( "Edit " + tag );
+	});
+
+	$( '.trash>i').on( 'click', function(){
+		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
+		/*******************************************************
+		 Gather attributes, call delete_computer modal
+		*******************************************************/
+		alert( "Delete " + tag );
+	});
+
+
+	$( '#select_all').on( 'click', function(){
+		$(this).toggleClass( 'checked unchecked');
+
+		if ( $(this).hasClass( 'checked' ) )
+		{
+			$('.parent_row:visible').find('.select > i')
+				.removeClass('fa-square-o')
+				.addClass('fa-check-square-o');
+
+			$('#select_all>div').html( '<i class="fa fa-check-square-o"></i>');
+
+		}
+		else if ( $(this).hasClass( 'unchecked' ) )
+		{
+			$('.parent_row:visible').find('.select > i')
+				.removeClass('fa-check-square-o')
+				.addClass('fa-square-o');
+
+			$('#select_all>div').html( '<i class="fa fa-square-o"></i>');
+		}
+	});
+
+	var options = {
+		widthFixed : true,
+		cssChildRow : 'tablesorter-childRow',
+		headerTemplate : '{content} {icon}',
+		widgets: [ 'filter' ],
+		widgetOptions: {
+			filter_external : '.search',
+			filter_childRows : false,
+			filter_columnFilters : false,
+			filter_ssFilter : 'tablesorter-filter'
+		}
+	};
+
+	ignoreHeaders = {
+		0: { sorter: false } };
+
+	if ( role > 1 )
+		ignoreHeaders += { 1: { sorter: false } };
+
+	if ( role > 2 )
+		ignoreHeaders += { 2: { sorter: false } };
+
+	options.headers = ignoreHeaders;
+
+	var pagerOptions = {
+		container: $(".pager"),
+		page: 0,
+		size: 20,
+		output: ' ( Results: {filteredRows} )  Showing Results {startRow} to {endRow} ',
+    cssPageDisplay: '.pagedisplay',
+    cssPageSize: '.pagesize',
+		cssNext: '.next',
+    cssPrev: '.prev',
+    cssFirst: '.first',
+    cssLast: '.last'
+	};
+
+			$('#table_panel_head').html( '<div class="col-xs-1"><button id="optionsBtn" class="btn btn-info collapse in" data-toggle="collapse"  href="#search_panel"><i class="fa fa-search"></i>&nbsp;Options</button></div><div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-8"><button id="createReportBtn" class="pull-right btn btn-info"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
+
+	$('#results_table').tablesorter( options )
+		.tablesorterPager(pagerOptions)
+		.bind( 'sortStart', function(){
+			$(this).trigger('pageSet', 0 );
+		});
+
+	$('.tablesorter-childRow td').hide();
+
+	$( '.search' ).on( 'keyup', function(){
+		$( '.tablesorter-childRow td' ).hide();
+	});
+
+
+
+}
+
+
+
 function createHeaders( role, headers )
 {
-// table
 	var headerRow = new Array();	
 
 	headerRow.push( $( "<th>" )
@@ -87,23 +244,14 @@ function createHeaders( role, headers )
 
 }
 
-
-
-function checkRole()
-{
-    return $.ajax({
-        type: "GET",
-        url: "include/check_role.php",
-        async: false
-    }).responseText;
-}
-
-
-function populateTable_computers( results )
+function populateTable_equipment( results )
 {
 	var role = checkRole();
 
 	var tableRows = new Array();
+
+	if ( !results )
+		return;
 
 	$.each( results, function(){
 		row = "";
@@ -126,7 +274,11 @@ function populateTable_computers( results )
 		if ( this.users )
 		{
 			$.each( this.users, function( i ){
-				row += this.firstname + " " + this.lastname;
+				if ( this.lastname )
+					row += this.firstname + " " + this.lastname;
+				else
+					row += this.firstname;
+
 				if ( this.count >= i )
 					row += ", ";
 			});
@@ -205,177 +357,6 @@ function populateTable_computers( results )
 
 
 
-function setupTablesorter( role )
-{
-	$( '.parent_row>td' ).not('.select,.trash,.edit').on( 'click', function(){
-		$( this ).closest( 'tr' ).nextUntil( 'tr.tablesorter-hasChildRow' ).find( 'td' ).toggle();
-	});
-
-	
-	$( '.select>i').on( 'click', function(){
-		$(this).toggleClass( 'fa-check-square-o fa-square-o');
-	});
-
-	$( '.edit>i').on( 'click', function(){
-		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
-		/*******************************************************
-		 Gather attributes, call edit_computer modal
-		*******************************************************/
-		alert( "Edit " + tag );
-	});
-
-	$( '.trash>i').on( 'click', function(){
-		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
-		/*******************************************************
-		 Gather attributes, call delete_computer modal
-		*******************************************************/
-		alert( "Delete " + tag );
-	});
-
-
-	$( '#select_all').on( 'click', function(){
-		$(this).toggleClass( 'checked unchecked');
-
-		if ( $(this).hasClass( 'checked' ) )
-		{
-			$('.parent_row:visible').find('.select > i')
-				.removeClass('fa-square-o')
-				.addClass('fa-check-square-o');
-
-			$('#select_all>div').html( '<i class="fa fa-check-square-o"></i>');
-
-		}
-		else if ( $(this).hasClass( 'unchecked' ) )
-		{
-			$('.parent_row:visible').find('.select > i')
-				.removeClass('fa-check-square-o')
-				.addClass('fa-square-o');
-
-			$('#select_all>div').html( '<i class="fa fa-square-o"></i>');
-		}
-	});
-
-	var options = {
-		widthFixed : true,
-		cssChildRow : 'tablesorter-childRow',
-		headerTemplate : '{content} {icon}',
-		widgets: [ 'filter' ],
-		widgetOptions: {
-			filter_external : '.search',
-			filter_childRows : true,
-			filter_columnFilters : false,
-			filter_ssFilter : 'tablesorter-filter'
-		}
-	};
-
-	ignoreHeaders = {
-		0: { sorter: false } };
-
-	if ( role > 1 )
-		ignoreHeaders += { 1: { sorter: false } };
-
-	if ( role > 2 )
-		ignoreHeaders += { 2: { sorter: false } };
-
-	options.headers = ignoreHeaders;
-
-	var pagerOptions = {
-		container: $(".pager"),
-		page: 0,
-		size: 20,
-		output: ' ( Results: {filteredRows} )  Showing Results {startRow} to {endRow} ',
-    cssPageDisplay: '.pagedisplay',
-    cssPageSize: '.pagesize',
-		cssNext: '.next',
-    cssPrev: '.prev',
-    cssFirst: '.first',
-    cssLast: '.last'
-	};
-
-	$('#results_table').tablesorter( options )
-		.tablesorterPager(pagerOptions)
-		.bind( 'sortStart', function(){
-			$(this).trigger('pageSet', 0 );
-		});
-
-	$('.tablesorter-childRow td').hide();
-
-	$( '.search' ).on( 'keyup', function(){
-		$( '.tablesorter-childRow td' ).hide();
-	});
-
-
-
-}
-
-
-
-
-
-function list_labs()
-{
-	//$('#processingModal').modal('toggle');
-	$.ajax({
-		type: "POST",
-		url: "include/list_labs.php",
-		success: function( result ) {
-			$( '#main_content' ).html( result );
-			//$('#processingModal').modal('toggle');
-		}
-	});
-}
-
-function list_printers()
-{
-	//$('#processingModal').modal('toggle');
-	$.ajax({
-		type: "POST",
-		url: "include/list_printers.php",
-		success: function( result ) {
-			$( '#main_content' ).html( result );
-			//$('#processingModal').modal('toggle');
-		}
-	});
-}
-
-function list_users()
-{
-	//$('#processingModal').modal('toggle');
-	$.ajax({
-		type: "POST",
-		url: "include/list_users.php",
-		success: function( result ) {
-			$( '#main_content' ).html( result );
-			//$('#processingModal').modal('toggle');
-		}
-	});
-}
-
-function list_purchases()
-{
-	//$('#processingModal').modal('toggle');
-	$.ajax({
-		type: "POST",
-		url: "include/list_purchases.php",
-		success: function( result ) {
-			$( '#main_content' ).html( result );
-			//$('#processingModal').modal('toggle');
-		}
-	});
-}
-
-function list_software()
-{
-	//$('#processingModal').modal('toggle');
-	$.ajax({
-		type: "POST",
-		url: "include/list_software.php",
-		success: function( result ) {
-			$( '#main_content' ).html( result );
-			//$('#processingModal').modal('toggle');
-		}
-	});
-}
 
 function formhash( form, password )
 {
