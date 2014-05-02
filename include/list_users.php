@@ -2,6 +2,15 @@
 include_once 'common.php';
 include_once 'query_index.php';
 
+$mysqli = login_db_connect();
+
+sec_session_start();
+
+$logged = login_check( $mysqli );
+
+if ( !( $logged ) )
+	header( 'Location: ../login.php' );
+
 $mysqli = inventory_db_connect();
 
 if ( $_POST['query'] == "_all" )
@@ -35,6 +44,17 @@ if ( $stmt = $mysqli->prepare( $query ) )
 	{
 		unset( $equipment );			
 
+		$get_equipment_from_user = "SELECT 	e.tag_num,
+																				e.serial,
+																				CONCAT( e.make, ' ', e.model ),
+																				e.location,
+																				CONCAT( e.building, ' ', e.room_num ),
+																				e.department
+																FROM		equipment e,
+																				uses us
+																WHERE		e.tag_num = us.tag_num AND
+																				us.user_id = ?";
+
 		// Query equipment for current user
 		if ( $stmt2 = $mysqli->prepare( $get_equipment_from_user ) )
 		{
@@ -58,20 +78,17 @@ if ( $stmt = $mysqli->prepare( $query ) )
 										"makemodel" => $makemodel,
 										"location" => $location,
 										"department" => $department );
-
 			}
 
 			$stmt2->close();
-
 		}
 
 		// Set results and headers arrays
-		$results[] = array( "firstname" => $f_name, 
-	 						"lastname" => $l_name,
-							"equipment" => $equipment, );
+		$results[] = array( "userid" => $user_id,
+												"firstname" => $f_name, 
+	 											"lastname" => $l_name,
+												"equipment" => $equipment, );
 	}
-
-
 }
 echo json_encode( $results );
 

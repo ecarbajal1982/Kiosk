@@ -12,7 +12,7 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav pull-right">
-        <li data-backdrop="true" data-toggle="modal" data-target="#searchModal">
+        <li id="searchBtn" class="collapse in" data-toggle="collapse" href="#search_panel">
 					<a style="cursor:pointer;"><b>Search</b></a>
 				</li>
 				<li class="divider-vertical"></li>

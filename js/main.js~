@@ -21,6 +21,10 @@ function list_equipment( query )
 
 			createHeaders( role, headers );
 
+			$('#search_panel:visible, #filter_panel:visible, #report_panel:visible').collapse('hide');
+	
+			$('#table_panel').collapse('show');
+
 			$('#results_table').trigger('filterReset');
 
 			$('#results_table>tbody').empty();
@@ -52,7 +56,7 @@ function list_users( query )
 
 			createHeaders( role, headers );
 
-			$('#search_panel:visible').collapse('hide');
+			$('#search_panel:visible, #filter_panel:visible, #report_panel:visible').collapse('hide');
 	
 			$('#table_panel').collapse('show');
 
@@ -69,14 +73,32 @@ function list_users( query )
 	});
 }
 
-function list_purchases()
+function list_purchases( query )
 {
+	headers = [ "Purchase Order", "Purchase Date", "Purchased By" ];
+
 	$('#processingModal').modal('toggle');
 	$.ajax({
 		type: "POST",
-		url: "include/list_purchases.php",
+		url: "include/list_purchases.php", 
+		data: { query: query },
 		success: function( result ) {
-			$( '#main_content' ).html( result );
+			var role = checkRole();
+
+			createHeaders( role, headers );
+
+			$('#search_panel:visible, #filter_panel:visible, #report_panel:visible').collapse('hide');
+	
+			$('#table_panel').collapse('show');
+
+			$('#results_table').trigger('filterReset');
+
+			$('#results_table>tbody').empty();
+
+			populateTable_purchases( $.parseJSON( result ) );
+
+			setupTablesorter( role );
+
 			$('#processingModal').modal('toggle');
 		}
 	});
@@ -84,13 +106,30 @@ function list_purchases()
 
 function list_software()
 {
-	//$('#processingModal').modal('toggle');
+	headers = [ "Software Name", "License Number", "License Type", "License Quantity", "Notes" ];
+
+	$('#processingModal').modal('toggle');
 	$.ajax({
 		type: "POST",
 		url: "include/list_software.php",
 		success: function( result ) {
-			$( '#main_content' ).html( result );
-			//$('#processingModal').modal('toggle');
+			var role = checkRole();
+
+			createHeaders( role, headers );
+
+			$('#search_panel:visible, #filter_panel:visible, #report_panel:visible').collapse('hide');
+	
+			$('#table_panel').collapse('show');
+
+			$('#results_table').trigger('filterReset');
+
+			$('#results_table>tbody').empty();
+
+			populateTable_software( $.parseJSON( result ) );
+
+			setupTablesorter( role );
+
+			$('#processingModal').modal('toggle');
 		}
 	});
 }
@@ -168,7 +207,7 @@ function setupTablesorter( role )
     cssLast: '.last'
 	};
 
-	$('#table_panel_head').html( '<div class="col-xs-1"><button id="optionsBtn" class="btn btn-info collapse in" data-toggle="collapse"  href="#search_panel"><i class="fa fa-search"></i>&nbsp;Options</button></div><div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-8"><button id="createReportBtn" class="pull-right btn btn-info"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
+	$('#table_panel_head').html( '<div class="col-xs-1"><button id="optionsBtn" class="btn btn-info collapse in" data-toggle="collapse"  href="#filter_panel"><i class="fa fa-search"></i>&nbsp;Options</button></div><div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-8"><button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
 
 	$('#results_table').tablesorter( options )
 		.tablesorterPager(pagerOptions)
@@ -183,7 +222,19 @@ function setupTablesorter( role )
 	});
 
 	$( '#results_table' ).on( 'mouseover', function(){
-		$( '#search_panel:visible' ).collapse( 'hide' );
+		$( '#search_panel:visible, #filter_panel:visible, #report_panel:visible' ).collapse( 'hide' );
+	});
+
+	$( '#optionsBtn' ).on( 'click', function(){
+		$( '#report_panel:visible, #search_panel:visible' ).collapse( 'hide' );
+	});
+
+	$( '#createReportBtn' ).on( 'click', function(){
+		$( '#search_panel:visible, #filter_panel:visible' ).collapse( 'hide' );
+	});
+
+	$( '#searchBtn' ).on( 'click', function(){
+		$( '#search_panel:visible, #filter_panel:visible' ).collapse( 'hide' );
 	});
 
 }
@@ -368,7 +419,8 @@ function populateTable_users( results )
 	$.each( results, function(){
 		row = "";
 		row += "<tr class='parent_row'>";
-		row += "<td class='select' rowspan='2'><i class='fa fa-square-o'></i></td>";
+		row += "<td class='select' rowspan='2'><div style='display:none'>" + this.userid + "</div>";
+		row += "<i class='fa fa-square-o'></i></td>";
 	
 		if ( role > 1 )
 			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";
@@ -376,8 +428,8 @@ function populateTable_users( results )
 		if ( role > 2 )
 			row += "<td class='trash' rowspan='2'><i class='fa fa-trash-o'></i></td>";
 
-		row += "<td class='firstname'>" + this.firstname + "</td>";
-		row += "<td class='lastname'>" + this.lastname + "</td>";
+		row += "<td>" + this.firstname + "</td>";
+		row += "<td>" + this.lastname + "</td>";
 		if ( !this.email)
 			this.email = "N/A";
 		row += "<td>" + this.email + "</td>";
@@ -415,7 +467,7 @@ function populateTable_users( results )
 		tag = $(this).closest( 'tr' ).children( '.firstname' ).html() + " ";
 		tag += $(this).closest( 'tr' ).children( '.lastname' ).html();
 		/*******************************************************
-		 Gather attributes, call edit_computer modal
+		 Gather attributes, call edit_user modal
 		*******************************************************/
 		alert( "Edit " + tag );
 	});
@@ -424,7 +476,147 @@ function populateTable_users( results )
  		tag = $(this).closest( 'tr' ).children( '.firstname' ).html() + " ";
 		tag += $(this).closest( 'tr' ).children( '.lastname' ).html();
 		/*******************************************************
-		 Gather attributes, call delete_computer modal
+		 Gather attributes, call delete_user modal
+		*******************************************************/
+		alert( "Delete " + tag );
+	});
+}
+
+
+function populateTable_purchases( results )
+{
+	var role = checkRole();
+
+	var tableRows = new Array();
+
+	if ( !results )
+		return;
+
+	$.each( results, function(){
+		row = "";
+		row += "<tr class='parent_row'>";
+		row += "<td class='select' rowspan='2'><div style='display:none'>" + this.purchaseid + "</div>";
+		row += "<i class='fa fa-square-o'></i></td>";
+	
+		if ( role > 1 )
+			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";
+
+		if ( role > 2 )
+			row += "<td class='trash' rowspan='2'><i class='fa fa-trash-o'></i></td>";
+
+		row += "<td>" + this.purchaseorder + "</td>";
+		row += "<td>" + this.purchasedate + "</td>";
+		row += "<td>" + this.purchasedby + "</td>";
+
+		row += "</tr><tr class='tablesorter-childRow'><td colspan='10'>";
+		row += '<div class="panel panel-group">';
+
+		if ( this.equipment )
+		{
+			$.each( this.equipment, function( i ){
+				row += "<div class='panel panel-default' style='padding: 5px'>";
+				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>" + this.tag;
+				row += "<b> / Serial: </b>" + this.serial;
+				row += "<b> / Make & Model: </b>" + this.makemodel;
+				row += "<b> / Location: </b>" + this.location;
+				row += "<b> / Department: </b>" + this.department;
+				row += "</div>";
+				if ( this.count >= i )
+					row += "<br>";
+			});
+		}		
+		
+		row += '</div></td></tr>';
+
+		tableRows.push( row );		
+
+	});
+		
+	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
+
+	$( '.edit>i').on( 'click', function(){
+		tag = $(this).closest( 'tr' ).children( '.purchaseOrder' ).html();
+		/*******************************************************
+		 Gather attributes, call edit_purchase modal
+		*******************************************************/
+		alert( "Edit " + tag );
+	});
+
+	$( '.trash>i').on( 'click', function(){
+ 		tag = $(this).closest( 'tr' ).children( '.purchaseOrder' ).html();
+		/*******************************************************
+		 Gather attributes, call delete_purchase modal
+		*******************************************************/
+		alert( "Delete " + tag );
+	});
+}
+
+
+function populateTable_software( results )
+{
+	var role = checkRole();
+
+	var tableRows = new Array();
+
+	if ( !results )
+		return;
+
+	$.each( results, function(){
+		row = "";
+		row += "<tr class='parent_row'>";
+		row += "<td class='select' rowspan='2'><div style='display:none'>" + this.softwareid + "</div>";
+		row += "<i class='fa fa-square-o'></i></td>";
+	
+		if ( role > 1 )
+			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";
+
+		if ( role > 2 )
+			row += "<td class='trash' rowspan='2'><i class='fa fa-trash-o'></i></td>";
+
+		row += "<td>" + this.softwarename + "</td>";
+		row += "<td>" + this.licensenumber + "</td>";
+		row += "<td>" + this.licensetype + "</td>";
+		row += "<td>" + this.licensequantity + "</td>";
+		row += "<td>" + this.licensenotes + "</td>";
+
+		row += "</tr><tr class='tablesorter-childRow'><td colspan='10'>";
+		row += '<div class="panel panel-group">';
+
+		if ( this.equipment )
+		{
+			$.each( this.equipment, function( i ){
+				row += "<div class='panel panel-default' style='padding: 5px'>";
+				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>" + this.tag;
+				row += "<b> / Serial: </b>" + this.serial;
+				row += "<b> / Make & Model: </b>" + this.makemodel;
+				row += "<b> / Location: </b>" + this.location;
+				row += "<b> / Department: </b>" + this.department;
+				row += "</div>";
+				if ( this.count >= i )
+					row += "<br>";
+			});
+		}		
+		
+		row += '</div></td></tr>';
+
+		tableRows.push( row );		
+
+	});
+		
+	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
+
+	$( '.edit>i').on( 'click', function(){
+		tag = $(this).closest( 'tr' ).children( '.purchaseOrder' ).html();
+		/*******************************************************
+		 Gather attributes, call edit_software modal
+		*******************************************************/
+		alert( "Edit " + tag );
+	});
+
+	$( '.trash>i').on( 'click', function(){
+ 		tag = $(this).closest( 'tr' ).children( '.purchaseOrder' ).html();
+		/*******************************************************
+		 Gather attributes, call delete_software modal
 		*******************************************************/
 		alert( "Delete " + tag );
 	});

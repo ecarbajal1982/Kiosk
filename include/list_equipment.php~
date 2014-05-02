@@ -2,6 +2,15 @@
 include_once 'common.php';
 include_once 'query_index.php';
 
+$mysqli = login_db_connect();
+
+sec_session_start();
+
+$logged = login_check( $mysqli );
+
+if ( !( $logged ) )
+	header( 'Location: ../login.php' );
+
 $mysqli = inventory_db_connect();
 
 // List all Non-Lab Computers
@@ -98,7 +107,7 @@ if ( $stmt = $mysqli->prepare( $query ) )
 	unset( $results );
 
 	if ( $query != "_computers" or $query != "_labs" or $query != "_printers" )
-		$stmt->bind_param( "ssss
+		$stmt->bind_param( "ssss", $query );
  	$stmt->execute();
 	$stmt->store_result();
 	$stmt->bind_result( $tag,
@@ -123,6 +132,10 @@ if ( $stmt = $mysqli->prepare( $query ) )
 		if ( $offcampus == 'off' )
 			$location = "Off Campus";
 				
+		$get_printer_from_tag = "SELECT p.printer
+								 				 		 FROM 	eq_printer p
+														 WHERE 	p.tag_num = ?";
+
 		// Query printer for current record
 		if ( $stmt2 = $mysqli->prepare( $get_printer_from_tag ) )
 		{
@@ -136,6 +149,10 @@ if ( $stmt = $mysqli->prepare( $query ) )
 
 			$stmt2->close();
 		}
+
+		$get_notes_from_tag = "SELECT	n.notes
+					   							 FROM 	eq_notes n
+					  							 WHERE 	n.tag_num = ?";
 
 		// Query notes for current record
 		if ( $stmt3 = $mysqli->prepare( $get_notes_from_tag ) )
@@ -151,6 +168,13 @@ if ( $stmt = $mysqli->prepare( $query ) )
 			$stmt3->close();
 		}
 
+		$get_users_from_tag = "SELECT u.f_name,
+																	u.l_name
+											 		 FROM 	user u,
+																	uses us
+								  		 		 WHERE 	u.user_id = us.user_id AND
+																	us.tag_num = ?";
+
 		// Query users for current record
 		if ( $stmt4 = $mysqli->prepare( $get_users_from_tag ) )
 		{
@@ -165,6 +189,13 @@ if ( $stmt = $mysqli->prepare( $query ) )
 			$stmt4->close();
 		}	
 
+		$get_software_from_tag = "SELECT 	s.software_name,
+																			s.license_type
+															FROM 		software s,
+																			licensed_to l
+															WHERE 	s.software_id = l.software_id AND
+																			l.computer_tag = ?";
+
 		// Query software for current record
 		if ( $stmt5 = $mysqli->prepare( $get_software_from_tag ) )
 		{
@@ -174,7 +205,7 @@ if ( $stmt = $mysqli->prepare( $query ) )
 			$stmt5->bind_result( $software_name, $license_type );
 
 			while ( $stmt5->fetch() )
-				$software[] = array( "name" => $software_name, "type" => $license_type );
+				$software[] = array( "name" => $software_name );
 
 			$stmt5->close();
 		}

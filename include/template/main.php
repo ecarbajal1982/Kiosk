@@ -1,9 +1,66 @@
 <div class="panel-group">
 
-	<div class="panel panel-default">
+	<div class="panel panel-default" style="overflow:visible">
 		<div id="search_panel" class="panel-collapse collapse in">
 			<div class="panel-body">
-	        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+<div class="row">
+
+
+  <div class="col-xs-5">
+    <div class="input-group">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Equipment <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Equipment</a></li>
+          <li><a href="#">Software</a></li>
+          <li><a href="#">Users</a></li>
+          <li><a href="#">Purchases</a></li>
+					<?php if ( $_SESSION['role'] > 1 ) : ?>
+          	<li class="divider"></li>
+          	<li><a href="#">Software</a></li>
+					<?php endif; ?>
+        </ul>
+      </div><!-- /btn-group -->
+      <input type="text" class="form-control" placeholder="Search">
+			<span class="input-group-btn">
+        <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+      </span>
+    </div><!-- /input-group -->
+<span class="help-block">Select type of search and enter keywords</span>
+		<script>      
+			$(".dropdown-menu>li>a").click(function(){
+  			$(this).parents('.input-group-btn').find('.dropdown-toggle').html( $( this ).text() +' <span class="caret"></span>');
+			});
+		</script>
+
+  </div><!-- /.col-lg-5 -->
+
+
+</div><!-- /.row -->
+<div class="row">
+	<div class="col-xs-4"><br>
+<h4>Additional search options:</h4>
+	</div>
+</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div id="filter_panel" class="panel-collapse collapse">
+			<div class="panel-body">
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div id="report_panel" class="panel-collapse collapse">
+			<div class="panel-body">
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+
 			</div>
 		</div>
 	</div>

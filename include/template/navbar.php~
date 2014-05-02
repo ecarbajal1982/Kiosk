@@ -12,8 +12,8 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav pull-right">
-        <li>
-					<a style="cursor:pointer;" href="portal.php"><b>Search</b></a>
+        <li class="collapse in" data-toggle="collapse"  href="#search_panel">
+					<a style="cursor:pointer;"><b>Search</b></a>
 				</li>
 				<li class="divider-vertical"></li>
 		<?php if ( $_SESSION['role'] > 1 ) : ?>
