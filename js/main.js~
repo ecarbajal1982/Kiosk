@@ -207,7 +207,7 @@ function setupTablesorter( role )
     cssLast: '.last'
 	};
 
-	$('#table_panel_head').html( '<div class="col-xs-1"><button id="optionsBtn" class="btn btn-info collapse in" data-toggle="collapse"  href="#filter_panel"><i class="fa fa-search"></i>&nbsp;Options</button></div><div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-8"><button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
+	$('#table_panel_head').html( '<div class="col-xs-3"><input class="form-control search" type="text" placeholder="Filter Results" data-column="all"></div><div class="col-xs-9"><button id="createReportBtn" class="pull-right btn btn-info collapse in" data-toggle="collapse" href="#report_panel"><i class="fa fa-file"></i>&nbsp;&nbsp;Create Report</button></div>' );
 
 	$('#results_table').tablesorter( options )
 		.tablesorterPager(pagerOptions)
@@ -222,11 +222,7 @@ function setupTablesorter( role )
 	});
 
 	$( '#results_table' ).on( 'mouseover', function(){
-		$( '#search_panel:visible, #filter_panel:visible, #report_panel:visible' ).collapse( 'hide' );
-	});
-
-	$( '#optionsBtn' ).on( 'click', function(){
-		$( '#report_panel:visible, #search_panel:visible' ).collapse( 'hide' );
+		$( '#search_panel:visible, #report_panel:visible' ).collapse( 'hide' );
 	});
 
 	$( '#createReportBtn' ).on( 'click', function(){
@@ -234,7 +230,7 @@ function setupTablesorter( role )
 	});
 
 	$( '#searchBtn' ).on( 'click', function(){
-		$( '#search_panel:visible, #filter_panel:visible' ).collapse( 'hide' );
+		$( '#report_panel:visible, #filter_panel:visible' ).collapse( 'hide' );
 	});
 
 }
