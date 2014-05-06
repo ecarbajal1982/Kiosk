@@ -33,8 +33,7 @@
 				</div><!-- row -->
 				<script>
 					$("#searchmenu>li>a").on( 'click', function(){
-						var choice = $( this ).text();
-  					$( '#searchtype').html( choice );
+	  					$( '#searchtype').html( $( this ).text() );
 					});
 
 					$( '#executesearch' ).on( 'click', function(){

@@ -1,7 +1,7 @@
 <?php
 include_once '../include/common.php';
 
-$mysqli = db_connect();
+$mysqli = login_db_connect();
  
 sec_session_start();
 
@@ -62,7 +62,7 @@ if ( isset( $_POST['username'], $_POST['p'], $_POST['role'] ) )
         <meta charset="UTF-8">
         <title>Register New User</title>
         <script type="text/JavaScript" src="../js/sha512.js"></script> 
-        <script type="text/JavaScript" src="../js/forms.js"></script>
+        <script type="text/JavaScript" src="../js/main.js"></script>
     </head>
     <body>
         <!-- Registration form to be output if the POST variables are not

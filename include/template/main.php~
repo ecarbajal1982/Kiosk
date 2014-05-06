@@ -38,9 +38,7 @@
 					});
 
 					$( '#executesearch' ).on( 'click', function(){
-
 						var choice = $( '#searchtype' ).text();
-						alert( choice );
 						if ( choice == 'Equipment' )
 							list_equipment( $( '#searchinput' ).val() );
 						if ( choice == 'Users' )

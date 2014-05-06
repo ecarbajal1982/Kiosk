@@ -143,7 +143,6 @@ function setupTablesorter( role )
 	$( '.parent_row>td' ).not('.select,.trash,.edit').on( 'click', function(){
 		$( this ).closest( 'tr' ).nextUntil( 'tr.tablesorter-hasChildRow' ).find( 'td' ).toggle();
 	});
-
 	
 	$( '.select>i').on( 'click', function(){
 		$(this).toggleClass( 'fa-check-square-o fa-square-o');
@@ -226,6 +225,10 @@ function setupTablesorter( role )
 		$( '#search_panel:visible, #report_panel:visible' ).collapse( 'hide' );
 	});
 
+	$( '#table_panel_head>div>input' ).on( 'click', function(){
+		$( '#search_panel:visible, #report_panel:visible' ).collapse( 'hide' );
+	});
+
 	$( '#createReportBtn' ).on( 'click', function(){
 		$( '#search_panel:visible' ).collapse( 'hide' );
 	});
@@ -288,8 +291,9 @@ function populateTable_equipment( results )
 
 	$.each( results, function(){
 		row = "";
-		row += "<tr class='parent_row'>";
-		row += "<td class='select' rowspan='2'><i class='fa fa-square-o'></i></td>";
+		row += "<tr class='parent_row' title='" + this.tag + "'>";
+		row += "<td class='select' rowspan='2'>";
+		row += "<i class='fa fa-square-o'></i></td>";
 	
 		if ( role > 1 )
 			row += "<td class='edit' rowspan='2'><i class='fa fa-cog'></i></td>";
@@ -297,7 +301,7 @@ function populateTable_equipment( results )
 		if ( role > 2 )
 			row += "<td class='trash' rowspan='2'><i class='fa fa-trash-o'></i></td>";
 
-		row += "<td class='tag'>" + this.tag + "</td>";
+		row += "<td>" + this.tag + "</td>";
 		row += "<td>" + this.serial + "</td>";
 		row += "<td>" + this.makemodel + "</td>";
 		row += "<td>" + this.purchase_date + "</td>";
@@ -321,7 +325,7 @@ function populateTable_equipment( results )
 
 		row += '<b>Purchase Order:&nbsp;&nbsp;</b>';
 		if ( this.purchase_order )
-			row += this.purchase_order;
+			row += "<div class='view_purchase' style='cursor: pointer' title='View this purchase order'>" + this.purchase_order + "</div>";
 
 		row += '<br><b>Purchased By:&nbsp;&nbsp;</b>';
 		if ( this.purchased_by )
@@ -388,20 +392,25 @@ function populateTable_equipment( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
+		var tag = $(this).closest( '.parent_row' ).attr( "title" );
 		/*******************************************************
 		 Gather attributes, call edit_computer modal
 		*******************************************************/
-		alert( "Edit " + tag );
+		alert( tag );
 	});
 
 	$( '.trash>i').on( 'click', function(){
-		tag = $(this).closest( 'tr' ).children( '.tag' ).html();
+		var tag = $(this).closest( '.parent_row' ).attr( "title" );
 		/*******************************************************
 		 Gather attributes, call delete_computer modal
 		*******************************************************/
 		alert( "Delete " + tag );
 	});
+
+	$( '.view_purchase' ).on( 'click', function(){
+		list_purchases( $( this ).html() );
+	});
+
 }
 
 function populateTable_users( results )
@@ -415,8 +424,8 @@ function populateTable_users( results )
 
 	$.each( results, function(){
 		row = "";
-		row += "<tr class='parent_row'>";
-		row += "<td class='select' rowspan='2'><div style='display:none'>" + this.userid + "</div>";
+		row += "<tr class='parent_row' title='" + this.userid + "'>";
+		row += "<td class='select' rowspan='2'>";
 		row += "<i class='fa fa-square-o'></i></td>";
 	
 		if ( role > 1 )
@@ -441,8 +450,9 @@ function populateTable_users( results )
 		{
 			$.each( this.equipment, function( i ){
 				row += "<div class='panel panel-default' style='padding: 5px'>";
-				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>" + this.tag;
-				row += "<b> / Serial: </b>" + this.serial;
+				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>";
+				row += "<span class='view_equipment' style='cursor: pointer'>" + this.tag;
+				row += "</span><b> / Serial: </b>" + this.serial;
 				row += "<b> / Make & Model: </b>" + this.makemodel;
 				row += "<b> / Location: </b>" + this.location;
 				row += "<b> / Department: </b>" + this.department;
@@ -461,8 +471,7 @@ function populateTable_users( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		tag = $(this).closest( 'tr' ).children( '.firstname' ).html() + " ";
-		tag += $(this).closest( 'tr' ).children( '.lastname' ).html();
+		var tag = $(this).closest( '.parent_row' ).attr( "title" );
 		/*******************************************************
 		 Gather attributes, call edit_user modal
 		*******************************************************/
@@ -470,12 +479,15 @@ function populateTable_users( results )
 	});
 
 	$( '.trash>i').on( 'click', function(){
- 		tag = $(this).closest( 'tr' ).children( '.firstname' ).html() + " ";
-		tag += $(this).closest( 'tr' ).children( '.lastname' ).html();
+		var tag = $(this).closest( '.parent_row' ).attr( "title" );
 		/*******************************************************
 		 Gather attributes, call delete_user modal
 		*******************************************************/
 		alert( "Delete " + tag );
+	});
+
+	$( '.view_equipment' ).on( 'click', function(){
+		list_equipment( $( this ).html() );
 	});
 }
 
@@ -491,8 +503,8 @@ function populateTable_purchases( results )
 
 	$.each( results, function(){
 		row = "";
-		row += "<tr class='parent_row'>";
-		row += "<td class='select' rowspan='2'><div style='display:none'>" + this.purchaseid + "</div>";
+		row += "<tr class='parent_row' title='" + this.purchaseid + "'>";
+		row += "<td class='select' rowspan='2'>";
 		row += "<i class='fa fa-square-o'></i></td>";
 	
 		if ( role > 1 )
@@ -514,8 +526,9 @@ function populateTable_purchases( results )
 		{
 			$.each( this.equipment, function( i ){
 				row += "<div class='panel panel-default' style='padding: 5px'>";
-				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>" + this.tag;
-				row += "<b> / Serial: </b>" + this.serial;
+				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>";
+				row += "<span class='view_equipment' style='cursor: pointer'>" + this.tag;
+				row += "</span><b> / Serial: </b>" + this.serial;
 				row += "<b> / Make & Model: </b>" + this.makemodel;
 				row += "<b> / Location: </b>" + this.location;
 				row += "<b> / Department: </b>" + this.department;
@@ -546,7 +559,7 @@ function populateTable_purchases( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		tag = $(this).closest( 'tr' ).children( '.purchaseOrder' ).html();
+		var tag = $(this).closest( '.parent_row' ).attr( "title" );
 		/*******************************************************
 		 Gather attributes, call edit_purchase modal
 		*******************************************************/
@@ -554,11 +567,15 @@ function populateTable_purchases( results )
 	});
 
 	$( '.trash>i').on( 'click', function(){
- 		tag = $(this).closest( 'tr' ).children( '.purchaseOrder' ).html();
+		var tag = $(this).closest( '.parent_row' ).attr( "title" );
 		/*******************************************************
 		 Gather attributes, call delete_purchase modal
 		*******************************************************/
 		alert( "Delete " + tag );
+	});
+
+	$( '.view_equipment' ).on( 'click', function(){
+		list_equipment( $( this ).html() );
 	});
 }
 
@@ -574,8 +591,8 @@ function populateTable_software( results )
 
 	$.each( results, function(){
 		row = "";
-		row += "<tr class='parent_row'>";
-		row += "<td class='select' rowspan='2'><div style='display:none'>" + this.softwareid + "</div>";
+		row += "<tr class='parent_row' title='" + this.softwareid + "'>";
+		row += "<td class='select' rowspan='2'>";
 		row += "<i class='fa fa-square-o'></i></td>";
 	
 		if ( role > 1 )
@@ -597,8 +614,9 @@ function populateTable_software( results )
 		{
 			$.each( this.equipment, function( i ){
 				row += "<div class='panel panel-default' style='padding: 5px'>";
-				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>" + this.tag;
-				row += "<b> / Serial: </b>" + this.serial;
+				row += "&nbsp;&nbsp;&nbsp;<b>Tag: </b>";
+				row += "<span class='view_equipment' style='cursor: pointer'>" + this.tag;
+				row += "</span><b> / Serial: </b>" + this.serial;
 				row += "<b> / Make & Model: </b>" + this.makemodel;
 				row += "<b> / Location: </b>" + this.location;
 				row += "<b> / Department: </b>" + this.department;
@@ -617,7 +635,7 @@ function populateTable_software( results )
 	$( '#results_table>tbody' ).html( tableRows.join( "" ) );
 
 	$( '.edit>i').on( 'click', function(){
-		tag = $(this).closest( 'tr' ).children( '.purchaseOrder' ).html();
+		var tag = $(this).closest( '.parent_row' ).attr( "title" );
 		/*******************************************************
 		 Gather attributes, call edit_software modal
 		*******************************************************/
@@ -625,11 +643,15 @@ function populateTable_software( results )
 	});
 
 	$( '.trash>i').on( 'click', function(){
- 		tag = $(this).closest( 'tr' ).children( '.purchaseOrder' ).html();
+		var tag = $(this).closest( '.parent_row' ).attr( "title" );
 		/*******************************************************
 		 Gather attributes, call delete_software modal
 		*******************************************************/
 		alert( "Delete " + tag );
+	});
+
+	$( '.view_equipment' ).on( 'click', function(){
+		list_equipment( $( this ).html() );
 	});
 }
 
@@ -670,6 +692,61 @@ function regformhash( form, uid, password, conf, role )
         alert( "Username must contain only letters, numbers and underscores." ); 
         form.username.focus();
         return false; 
+    }
+ 
+    // Check that the password is sufficiently long (min 6 chars)
+    // The check is duplicated below, but this is included to give more
+    // specific guidance to the user
+    if ( password.value.length < 6 )
+	{
+        alert( 'Passwords must be at least 6 characters long.  Please try again' );
+        form.password.focus();
+        return false;
+    }
+ 
+    // At least one number, one lowercase and one uppercase letter 
+    // At least six characters 
+ 
+    var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/; 
+    if ( !re.test( password.value ) )
+	{
+        alert( 'Passwords must contain at least one number, one lowercase and one uppercase letter.' );
+        return false;
+    }
+ 
+    // Check password and confirmation are the same
+    if ( password.value != conf.value )
+	{
+        alert( 'Passwords do not match!' );
+        form.password.focus();
+        return false;
+    }
+ 
+    // Create a new element input, this will be our hashed password field. 
+    var p = document.createElement( "input" );
+ 
+    // Add the new element to our form. 
+    form.appendChild( p );
+    p.name = "p";
+    p.type = "hidden";
+    p.value = hex_sha512( password.value );
+ 
+    // Make sure the plaintext password doesn't get sent. 
+    password.value = "";
+    conf.value = "";
+ 
+    // Finally submit the form. 
+    form.submit();
+    return true;
+}
+
+function pwdformhash( form, password, conf )
+{
+    // Check each field has a value
+    if ( password.value == '' ||  conf.value == '' )
+	{ 
+        alert( 'You must provide all the requested details.' );
+        return false;
     }
  
     // Check that the password is sufficiently long (min 6 chars)

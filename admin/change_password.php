@@ -5,36 +5,18 @@ $mysqli = login_db_connect();
  
 sec_session_start();
 
+$logged = login_check( $mysqli );
+
+if ( !( $logged ) )
+	header( 'Location: ../login.php' );
+
 $error_msg = "";
  
-if ( isset( $_POST['username'], $_POST['p'], $_POST['role'] ) ) 
+if ( isset( $_POST['p'], $_SESSION['username'] ) ) 
 {
-    // Sanitize and validate the data passed in
-    $username = filter_input( INPUT_POST, 'username', FILTER_SANITIZE_STRING );
     $password = filter_input( INPUT_POST, 'p', FILTER_SANITIZE_STRING );
-	$role = $_POST['role'];
+	$username = $_SESSION['username'];
 
-    if ( strlen( $password ) != 128 )
-        $error_msg .= '<p class="error">Invalid password configuration.</p>';
-
-    $prep_stmt = "SELECT id FROM users WHERE username = ? LIMIT 1";
-    $stmt = $mysqli->prepare( $prep_stmt );
- 
-    if ( $stmt ) 
-	{
-        $stmt->bind_param( 's', $username );
-        $stmt->execute();
-        $stmt->store_result();
- 
-        if ( $stmt->num_rows == 1 )
-            $error_msg .= '<p class="error">A user with this username already exists.</p>';
-    }
-
-	else
-        $error_msg .= '<p class="error">Database error!!</p>';
- 
-    if ( empty( $error_msg ) )
-	{
         // Create a random salt
         $random_salt = hash('sha512', uniqid( openssl_random_pseudo_bytes( 16 ), TRUE ) );
  
@@ -42,17 +24,16 @@ if ( isset( $_POST['username'], $_POST['p'], $_POST['role'] ) )
         $password = hash( 'sha512', $password . $random_salt );
  
         // Insert the new user into the database 
-        if ( $insert_stmt = $mysqli->prepare( "INSERT INTO users ( username, password, salt, role ) VALUES (?,?, ?, ?)" ) )
+        if ( $changepwd_stmt = $mysqli->prepare( "UPDATE users SET password = ?, salt = ? WHERE username = ?" ) )
 		{
-            $insert_stmt->bind_param( 'ssss', $username, $password, $random_salt, $role );
+            $changepwd_stmt->bind_param( 'sss', $password, $random_salt, $username );
 
 			// Execute the prepared query.
-            if ( !$insert_stmt->execute() )
+            if ( !$changepwd_stmt->execute() )
                 header( 'Location: register_error.php?err=Registration failure: INSERT' );
         }
 
-        header( 'Location: ../portal.php?event=register_success' );
-    }
+        header( 'Location: ../portal.php' );
 }
 
 ?>
@@ -90,25 +71,17 @@ if ( isset( $_POST['username'], $_POST['p'], $_POST['role'] ) )
         <form action="<?php echo esc_url( $_SERVER['PHP_SELF'] ); ?>" 
               method="post" 
               name="registration_form">
-            Username: <input type='text'
-							 name='username'
-							 id='username' /><br>
             Password: <input type="password"
                              name="password" 
                              id="password"/><br>
             Confirm password: <input type="password" 
                                      name="confirmpwd" 
                                      id="confirmpwd" /><br>
-			Role: <input type="number"
-						 name="role"
-						 id="role" /><br>
             <input type="button" 
                    value="Register" 
-                   onclick="return regformhash( this.form,
-                                   				this.form.username,
+                   onclick="return pwdformhash( this.form,
                                    				this.form.password,
-                                   				this.form.confirmpwd,
-												this.form.role );" /> 
+                                   				this.form.confirmpwd );" /> 
         </form>
         <p>Return to the <a href="../index.php">login page</a>.</p>
     </body>

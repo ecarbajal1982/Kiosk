@@ -96,36 +96,6 @@ else if ( $_POST['query'] == '_printers' )
 						n.tag_num = e.tag_num
 			  ORDER BY 	pr.hostname ASC";
 
-else if ( $_POST['filter'] == 'hassoftware' )
-	$query = "SELECT		e.tag_num, 
-											e.serial, 
-											CONCAT( e.make, ' ', e.model ),
-											c.os,
-											c.hostname,
-											e.department,
-											e.location,
-											CONCAT( e.building, ' ', e.room_num ), 	
-											p.purchase_order,
-											p.purchase_date,
-											p.purchased_by,
-											n.mac,
-											n.wmac,
-											n.ip
-						FROM 			equipment e,
-											computer c,
-											eq_network n,
-											purchase p, 
-											software s,
-											licensed_to l
-						WHERE	 		c.computer_tag = e.tag_num AND
-											e.purchase_id = p.purchase_id AND
-											n.tag_num = e.tag_num AND
-											e.tag_num = l.tag_num AND
-											l.software_id = s.software_id AND
-											s.software_name LIKE ?
-						GROUP BY 	e.tag_num
-						ORDER BY 	e.tag_num DESC";
-
 else
 	$query = "SELECT		e.tag_num, 
 											e.serial, 
@@ -144,12 +114,8 @@ else
 						FROM 			equipment e,
 											computer c,
 											eq_network n,
-											purchase p, 
-											user u,
-											uses us
+											purchase p
 						WHERE	 		c.computer_tag = e.tag_num AND
-											us.tag_num = e.tag_num AND
-											us.user_id = u.user_id AND 
 											e.purchase_id = p.purchase_id AND
 											n.tag_num = e.tag_num AND
 											( e.tag_num LIKE ? OR
@@ -173,13 +139,7 @@ if ( $stmt = $mysqli->prepare( $query ) )
 {
 	unset( $results );
 
-	if ( $_POST['filter'] == "hassoftware" )
-	{
-		$word = '%' . $_POST['query'] . '%';
-		$stmt->bind_param( "s", $word );
-	}
-
-	else if ( $_POST['query'] != "_computers" or $query != "_labs" or $query != "_printers" )
+	if ( $_POST['query'] != "_computers" or $query != "_labs" or $query != "_printers" )
 	{
 		$word = '%' . $_POST['query'] . '%';
 		$stmt->bind_param( "sssssssssssss", $word, $word, $word, $word, $word, $word, $word, $word, $word, $word, $word, $word, $word );
@@ -210,8 +170,8 @@ if ( $stmt = $mysqli->prepare( $query ) )
 			$location = "Off Campus";
 				
 		$get_printer_from_tag = "SELECT p.printer
-								 				 		 FROM 	eq_printer p
-														 WHERE 	p.tag_num = ?";
+								 FROM 	eq_printer p
+								 WHERE 	p.tag_num = ?";
 
 		// Query printer for current record
 		if ( $stmt2 = $mysqli->prepare( $get_printer_from_tag ) )
@@ -228,8 +188,8 @@ if ( $stmt = $mysqli->prepare( $query ) )
 		}
 
 		$get_notes_from_tag = "SELECT	n.notes
-					   							 FROM 	eq_notes n
-					  							 WHERE 	n.tag_num = ?";
+					   		   FROM 	eq_notes n
+					  		   WHERE 	n.tag_num = ?";
 
 		// Query notes for current record
 		if ( $stmt3 = $mysqli->prepare( $get_notes_from_tag ) )
@@ -245,12 +205,9 @@ if ( $stmt = $mysqli->prepare( $query ) )
 			$stmt3->close();
 		}
 
-		$get_users_from_tag = "SELECT u.f_name,
-																	u.l_name
-											 		 FROM 	user u,
-																	uses us
-								  		 		 WHERE 	u.user_id = us.user_id AND
-																	us.tag_num = ?";
+		$get_users_from_tag = "SELECT	u.user_id, u.f_name, u.l_name
+							   FROM 	user u, uses us
+							   WHERE 	u.user_id = us.user_id AND us.tag_num = ?";
 
 		// Query users for current record
 		if ( $stmt4 = $mysqli->prepare( $get_users_from_tag ) )
@@ -258,20 +215,17 @@ if ( $stmt = $mysqli->prepare( $query ) )
 			$stmt4->bind_param( "s", $tag );
 			$stmt4->execute();
 			$stmt4->store_result();
-			$stmt4->bind_result( $firstname, $lastname );
+			$stmt4->bind_result( $user_id, $firstname, $lastname );
 
 			while ( $stmt4->fetch() )
-				$users[] = array( "firstname" => $firstname, "lastname" => $lastname );
+				$users[] = array( "userid" => $user_id, "firstname" => $firstname, "lastname" => $lastname );
 
 			$stmt4->close();
 		}	
 
-		$get_software_from_tag = "SELECT 	s.software_name,
-																			s.license_type
-															FROM 		software s,
-																			licensed_to l
-															WHERE 	s.software_id = l.software_id AND
-																			l.computer_tag = ?";
+		$get_software_from_tag = "SELECT 	s.software_name, s.license_type
+								  FROM 		software s, licensed_to l
+								  WHERE 	s.software_id = l.software_id AND l.computer_tag = ?";
 
 		// Query software for current record
 		if ( $stmt5 = $mysqli->prepare( $get_software_from_tag ) )
