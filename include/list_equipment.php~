@@ -96,18 +96,127 @@ else if ( $_POST['query'] == '_printers' )
 						n.tag_num = e.tag_num
 			  ORDER BY 	pr.hostname ASC";
 
-else
-{
-// create query here based on user input
+else if ( $_POST['filter'] == 'hassoftware' )
+	$query = "SELECT		e.tag_num, 
+											e.serial, 
+											CONCAT( e.make, ' ', e.model ),
+											c.os,
+											c.hostname,
+											e.department,
+											e.location,
+											CONCAT( e.building, ' ', e.room_num ), 	
+											p.purchase_order,
+											p.purchase_date,
+											p.purchased_by,
+											n.mac,
+											n.wmac,
+											n.ip
+						FROM 			equipment e,
+											computer c,
+											eq_network n,
+											purchase p, 
+											software s,
+											licensed_to l
+						WHERE	 		c.computer_tag = e.tag_num AND
+											e.purchase_id = p.purchase_id AND
+											n.tag_num = e.tag_num AND
+											e.tag_num = l.tag_num AND
+											l.software_id = s.software_id AND
+											s.software_name LIKE ?
+						GROUP BY 	e.tag_num
+						ORDER BY 	e.tag_num DESC";
 
-}
+else if ( $_POST['filter'] == 'department' )
+	$query = "SELECT		e.tag_num, 
+											e.serial, 
+											CONCAT( e.make, ' ', e.model ),
+											c.os,
+											c.hostname,
+											e.department,
+											e.location,
+											CONCAT( e.building, ' ', e.room_num ), 	
+											p.purchase_order,
+											p.purchase_date,
+											p.purchased_by,
+											n.mac,
+											n.wmac,
+											n.ip
+						FROM 			equipment e,
+											computer c,
+											eq_network n,
+											purchase p 
+						WHERE	 		c.computer_tag = e.tag_num AND
+											e.purchase_id = p.purchase_id AND
+											n.tag_num = e.tag_num AND
+											e.department LIKE ?
+						GROUP BY 	e.tag_num
+						ORDER BY 	e.tag_num DESC";
+
+else
+	$query = "SELECT		e.tag_num, 
+											e.serial, 
+											CONCAT( e.make, ' ', e.model ),
+											c.os,
+											c.hostname,
+											e.department,
+											e.location,
+											CONCAT( e.building, ' ', e.room_num ), 	
+											p.purchase_order,
+											p.purchase_date,
+											p.purchased_by,
+											n.mac,
+											n.wmac,
+											n.ip
+						FROM 			equipment e,
+											computer c,
+											eq_network n,
+											purchase p, 
+											user u,
+											uses us
+						WHERE	 		c.computer_tag = e.tag_num AND
+											us.tag_num = e.tag_num AND
+											us.user_id = u.user_id AND 
+											e.purchase_id = p.purchase_id AND
+											n.tag_num = e.tag_num AND
+											( e.tag_num LIKE ? OR
+												e.serial LIKE ? OR
+												e.make LIKE ? OR 
+												e.model LIKE ? OR 
+												c.os LIKE ? OR 
+												c.hostname LIKE ? OR 
+												e.department LIKE ? OR 
+												p.purchase_order LIKE ? OR 
+												p.purchase_date LIKE ? OR 
+												p.purchased_by LIKE ? OR 
+												n.mac LIKE ? OR 
+												n.wmac LIKE ? OR 
+												n.ip LIKE ? )
+						GROUP BY 	e.tag_num
+						ORDER BY 	e.tag_num DESC";
+
 
 if ( $stmt = $mysqli->prepare( $query ) ) 
 {
 	unset( $results );
 
-	if ( $query != "_computers" or $query != "_labs" or $query != "_printers" )
-		$stmt->bind_param( "ssss", $query );
+	if ( $_POST['filter'] == "hassoftware" )
+	{
+		$word = '%' . $_POST['query'] . '%';
+		$stmt->bind_param( "s", $word );
+	}
+
+	if ( $_POST['filter'] == "department" )
+	{
+		$word = '%' . $_POST['query'] . '%';
+		$stmt->bind_param( "s", $word );
+	}
+
+	else if ( $_POST['query'] != "_computers" or $query != "_labs" or $query != "_printers" )
+	{
+		$word = '%' . $_POST['query'] . '%';
+		$stmt->bind_param( "sssssssssssss", $word, $word, $word, $word, $word, $word, $word, $word, $word, $word, $word, $word, $word );
+	}
+
  	$stmt->execute();
 	$stmt->store_result();
 	$stmt->bind_result( $tag,

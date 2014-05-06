@@ -1,4 +1,4 @@
-<?php
+ <?php
 include_once 'common.php';
 
 $mysqli = login_db_connect();
@@ -22,13 +22,25 @@ if ( $_POST['query'] == "_all" )
 						ORDER BY	p.purchase_date DESC";
 
 else
-{
-// write query here based on user input
-}
+	$query = "SELECT	 	p.purchase_id,
+											p.purchase_order,
+											p.purchase_date,
+											p.purchased_by
+						FROM			purchase p
+						WHERE			p.purchase_order LIKE ? OR
+											p.purchase_date LIKE ? OR
+											p.purchased_by LIKE ?
+						ORDER BY	p.purchase_date DESC";
 
 if ( $stmt = $mysqli->prepare( $query ) ) 
 {
 	unset( $results );
+
+	if ( $_POST['query'] != "_all" )
+	{
+		$word = '%' . $_POST['query'] . '%';
+		$stmt->bind_param( "sss", $word, $word, $word );
+	}
 
  	$stmt->execute();
 	$stmt->store_result();
@@ -39,7 +51,7 @@ if ( $stmt = $mysqli->prepare( $query ) )
 
 	while ( $stmt->fetch() )
 	{
-		unset( $equipment );			
+		unset( $equipment, $software );			
 
 		$get_equipment_from_purchase_id = "SELECT 	e.tag_num,
 																								e.serial,
@@ -47,12 +59,10 @@ if ( $stmt = $mysqli->prepare( $query ) )
 																								e.location,
 																								CONCAT( e.building, ' ', e.room_num ),
 																								e.department
-																				FROM		equipment e,
-																								purchase p
-																				WHERE		e.purchase_id = p.purchase_id AND
-																								p.purchase_id = ?";
+																				FROM		equipment e
+																				WHERE		e.purchase_id = ?";
 
-		// Query equipment for current user
+		// Query equipment for current purchase
 		if ( $stmt2 = $mysqli->prepare( $get_equipment_from_purchase_id ) )
 		{
 			$stmt2->bind_param( "s", $purchase_id );
@@ -80,12 +90,38 @@ if ( $stmt = $mysqli->prepare( $query ) )
 			$stmt2->close();
 		}
 
+		$get_software_from_purchase_id = "SELECT 	s.software_name,
+																							s.license_type,
+																							s.number_of_licenses
+																			FROM		software s
+																			WHERE		s.purchase_id = ?";
+
+		// Query software for current purchase
+		if ( $stmt3 = $mysqli->prepare( $get_software_from_purchase_id ) )
+		{
+			$stmt3->bind_param( "s", $purchase_id );
+			$stmt3->execute();
+			$stmt3->store_result();
+			$stmt3->bind_result( $software_name,
+													 $license_type,
+													 $number_of_licenses );
+
+			while ( $stmt3->fetch() )
+			{
+				$software[] = array( "name" => $software_name,
+									  					"type" => $license_type,
+															"quantity" => $number_of_licenses );
+			}
+
+			$stmt3->close();
+		}
 		// Set results and headers arrays
 		$results[] = array( "purchaseid" => $purchase_id,
 												"purchaseorder" => $purchase_order, 
 	 											"purchasedate" => $purchase_date,
 												"purchasedby" => $purchased_by,
-												"equipment" => $equipment, );
+												"equipment" => $equipment,
+												"software" => $software, );
 	}
 }
 echo json_encode( $results );

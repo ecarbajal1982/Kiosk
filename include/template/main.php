@@ -9,9 +9,9 @@
 						<div class="input-group">
       				<div class="input-group-btn">
         				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-									Equipment <span class="caret"></span>
+									<span id="searchtype">Equipment</span> <span class="caret"></span>
 								</button>
-        				<ul class="dropdown-menu">
+        				<ul id="searchmenu" class="dropdown-menu">
           				<li><a href="#">Equipment</a></li>
           				<li><a href="#">Users</a></li>
           				<li><a href="#">Purchases</a></li>
@@ -20,87 +20,35 @@
 									<?php endif; ?>
         				</ul>
 							</div><!-- btn-group -->
-      				<input type="text" class="form-control" placeholder="Search">
+      				<input id="searchinput" type="text" class="form-control" placeholder="Search">
 							<span class="input-group-btn">
-        				<button class="btn btn-primary" type="button">
+        				<button id="executesearch" class="btn btn-primary" type="button">
 									<i class="fa fa-search"></i>
 								</button>
       				</span>
 						</div><!-- input-group -->
 						<span class="help-block">Select type of search and enter keywords</span>
+						<p> For purchase dates, please use the following format: YYYY-MM-DD</p>
 					</div><!-- col-xs-5 -->
 				</div><!-- row -->
-				<div class="row">
-					<div class="col-xs-12">
-						<h4>Additional search options:</h4>
-						<div id="equipment_options" class="form-inline">
-							<div class="btn-group">
- 						 		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-    							Location <span class="caret"></span>
-  							</button>
-  							<ul id='location' class="dropdown-menu" role="menu">
-									<li><a href="#">University Hall</a></li>
-									<li><a href="#">Performing Arts</a></li>
-									<li><a href="#">Visual Arts</a></li>
-									<li><a href="#">College of Education</a></li>
-									<li><a href="#">Faculty Offices</a></li>
-									<li><a href="#">Pfau Library</a></li>
-									<li><a href="#">RAFFMA</a></li>
-								</ul>
-							</div>
-							<div class="btn-group">
- 						 		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-    							Department <span class="caret"></span>
-  							</button>
-  							<ul id='location' class="dropdown-menu" role="menu">
-									<li><a href="#">College of Arts & Letters</a></li>
-									<li><a href="#">Communications</a></li>
-									<li><a href="#">English</a></li>
-									<li><a href="#">Art</a></li>
-									<li><a href="#">Theatre</a></li>
-									<li><a href="#">Philosophy</a></li>
-									<li><a href="#">Music</a></li>
-									<li><a href="#">World Languages</a></li>
-									<li><a href="#">RAFFMA</a></li>
-								</ul>
-							</div>
-							<div class="btn-group">
- 						 		<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-    							Has Licensed Software <span class="caret"></span>
-  							</button>
-  							<ul id='hassoftware' class="dropdown-menu" role="menu"></ul>
-							</div>							
-
-						</div>
-
-
-						<div id="users_options">
-							users choices
-						</div>
-						<div id="purchases_options">
-							purchases choices
-						</div>
-						<div id="software_options">
-							software choices
-						</div>
-					</div><!-- col-xs-4 -->
-				</div><!-- row -->
 				<script>
-					$( '#users_options, #purchases_options, #software_options' ).hide(); 
-					$(".dropdown-menu>li>a").on( 'click', function(){
+					$("#searchmenu>li>a").on( 'click', function(){
 						var choice = $( this ).text();
-
-  					$(this).parents('.input-group-btn').find('.dropdown-toggle').html( choice +' <span class="caret"></span>');
-						$( '#equipment_options, #users_options, #purchases_options, #software_options' ).hide();
-						if ( choice == "Equipment" )
-							$( '#equipment_options' ).show();
-						if ( choice == "Users" )
-							$( '#users_options' ).show();
-						if ( choice == "Purchases" )
-							$( '#purchases_options' ).show();
-						if ( choice == "Software" )
-							$( '#software_options' ).show();
+  					$( '#searchtype').html( choice );
 					});
+
+					$( '#executesearch' ).on( 'click', function(){
+						var choice = $( '#searchtype' ).text();
+						if ( choice == 'Equipment' )
+							list_equipment( $( '#searchinput' ).val() );
+						if ( choice == 'Users' )
+							list_users( $( '#searchinput' ).val() );
+						if ( choice == 'Purchases' )
+							list_purchases( $( '#searchinput' ).val() );
+						if ( choice == 'Software' )
+							list_software( $( '#searchinput' ).val() );
+					});
+
 				</script>
 			</div><!-- panel-body -->
 		</div><!-- #search_panel -->

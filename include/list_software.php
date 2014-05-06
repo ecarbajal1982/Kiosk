@@ -23,13 +23,28 @@ if ( $_POST['query'] == "_all" )
 						ORDER BY	s.software_name ASC";
 
 else
-{
-// write query here based on user input
-}
+	$query = "SELECT	 	s.software_id,
+											s.software_name,
+											s.license_num,
+											s.license_type,
+											s.number_of_licenses,
+											s.notes
+						FROM			purchase s
+						WHERE			s.software_name LIKE ? OR
+											s.license_num LIKE ? OR
+											s.license_type LIKE ? OR
+											s.notes LIKE ?
+						ORDER BY	s.software_name ASC";
 
 if ( $stmt = $mysqli->prepare( $query ) ) 
 {
 	unset( $results );
+
+	if ( $_POST['query'] != '_all' )
+	{
+		$word = '%' . $_POST['query'] . '%';
+		$stmt->bind_param( "ssss", $word, $word, $word, $word );
+	}
 
  	$stmt->execute();
 	$stmt->store_result();

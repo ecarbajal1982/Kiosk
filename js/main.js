@@ -104,7 +104,7 @@ function list_purchases( query )
 	});
 }
 
-function list_software()
+function list_software( query )
 {
 	headers = [ "Software Name", "License Number", "License Type", "License Quantity", "Notes" ];
 
@@ -112,6 +112,7 @@ function list_software()
 	$.ajax({
 		type: "POST",
 		url: "include/list_software.php",
+		data: { query: query },
 		success: function( result ) {
 			var role = checkRole();
 
@@ -221,7 +222,7 @@ function setupTablesorter( role )
 		$( '.tablesorter-childRow td' ).hide();
 	});
 
-	$( '#results_table' ).on( 'mouseover', function(){
+	$( '#results_table>tbody' ).on( 'mouseover', function(){
 		$( '#search_panel:visible, #report_panel:visible' ).collapse( 'hide' );
 	});
 
@@ -500,6 +501,8 @@ function populateTable_purchases( results )
 		if ( role > 2 )
 			row += "<td class='trash' rowspan='2'><i class='fa fa-trash-o'></i></td>";
 
+		if ( !this.purchaseorder )
+			this.purchaseorder = "N/A";
 		row += "<td>" + this.purchaseorder + "</td>";
 		row += "<td>" + this.purchasedate + "</td>";
 		row += "<td>" + this.purchasedby + "</td>";
@@ -522,6 +525,18 @@ function populateTable_purchases( results )
 			});
 		}		
 		
+		if ( this.software )
+		{
+			$.each( this.software, function( i ){
+				row += "<div class='panel panel-default' style='padding: 5px'>";
+				row += "&nbsp;&nbsp;&nbsp;<b>Software Name: </b>" + this.s_name;
+				row += "<b> / License Type: </b>" + this.type;
+				row += "<b> / License Quantity: </b>" + this.quantity;
+				row += "</div>";
+				if ( this.count >= i )
+					row += "<br>";
+			});
+		}		
 		row += '</div></td></tr>';
 
 		tableRows.push( row );		

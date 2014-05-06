@@ -23,40 +23,62 @@ if ( $_POST['query'] == "_all" )
 						ORDER BY	s.software_name ASC";
 
 else
-{
-// write query here based on user input
-}
+	$query = "SELECT	 	s.software_id,
+											s.software_name,
+											s.license_num,
+											s.license_type,
+											s.number_of_licenses,
+											s.notes
+						FROM			purchase s
+						WHERE			s.software_name LIKE ? OR
+											s.license_num LIKE ? OR
+											s.license_type LIKE ? OR
+											s.notes LIKE ?
+						ORDER BY	s.software_name ASC";
 
 if ( $stmt = $mysqli->prepare( $query ) ) 
 {
 	unset( $results );
 
+	if ( $_POST['query'] != '_all' )
+	{
+		$word = '%' . $_POST['query'] . '%';
+		$stmt->bind_param( "ssss", $word, $word, $word, $word );
+	}
+
  	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result( $purchase_id,
-						$purchase_order,
-						$purchase_date,
-						$purchased_by );
+	$stmt->bind_result( $software_id,
+											$software_name,
+											$license_num,
+											$license_type,
+											$number_of_licenses,
+											$notes );
 
 	while ( $stmt->fetch() )
 	{
 		unset( $equipment );			
 
-		$get_equipment_from_purchase_id = "SELECT 	e.tag_num,
-																								e.serial,
-																								CONCAT( e.make, ' ', e.model ),
-																								e.location,
-																								CONCAT( e.building, ' ', e.room_num ),
-																								e.department
-																				FROM		equipment e,
-																								purchase p
-																				WHERE		e.purchase_id = p.purchase_id AND
-																								p.purchase_id = ?";
+		$get_computers_from_software_id = "SELECT	e.tag_num,
+																							e.serial,
+																							CONCAT( e.make, ' ', e.model ),
+																							e.location,
+																							CONCAT( e.building, ' ', e.room_num ),
+																							e.department
+																			FROM		equipment e,
+																							computer c,
+																							licensed_to l
+																			WHERE		e.tag_num = c.computer_tag AND
+																							c.computer_tag = l.computer_tag AND
+																							l.software_id = ?";
 
-		// Query equipment for current user
-		if ( $stmt2 = $mysqli->prepare( $get_equipment_from_purchase_id ) )
+
+
+		// Query equipment for current software
+
+		if ( $stmt2 = $mysqli->prepare( $get_equipment_from_software_id ) )
 		{
-			$stmt2->bind_param( "s", $purchase_id );
+			$stmt2->bind_param( "s", $software_id );
 			$stmt2->execute();
 			$stmt2->store_result();
 			$stmt2->bind_result( $tag,
@@ -82,10 +104,12 @@ if ( $stmt = $mysqli->prepare( $query ) )
 		}
 
 		// Set results and headers arrays
-		$results[] = array( "purchaseid" => $purchase_id,
-												"purchaseorder" => $purchase_order, 
-	 											"purchasedate" => $purchase_date,
-												"purchasedby" => $purchased_by,
+		$results[] = array( "softwareid" => $software_id,
+												"softwarename" => $software_name, 
+	 											"licensenumber" => $license_num,
+												"licensetype" => $license_type,
+												"licensequantity" => $number_of_licenses,
+												"licensenotes" => $notes,
 												"equipment" => $equipment, );
 	}
 }

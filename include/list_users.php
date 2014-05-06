@@ -15,22 +15,36 @@ $mysqli = inventory_db_connect();
 
 if ( $_POST['query'] == "_all" )
 	$query = "SELECT	u.user_id, 
-						u.f_name, 
-						u.l_name,
-						u.email,
-						u.department
-			  FROM		user u
-			  WHERE		u.l_name IS NOT NULL
-			  ORDER BY	u.l_name ASC";
+										u.f_name, 
+										u.l_name,
+										u.email,
+										u.department
+			  		FROM		user u
+			  		WHERE		u.l_name IS NOT NULL
+			  		ORDER BY	u.l_name ASC";
 
 else
-{
-// write query here based on user input
-}
+	$query = "SELECT	u.user_id, 
+										u.f_name, 
+										u.l_name,
+										u.email,
+										u.department
+			  		FROM		user u
+			  		WHERE		u.f_name LIKE ? OR
+										u.l_name LIKE ? OR
+										u.email LIKE ? OR
+										u.department LIKE ?
+			  		ORDER BY	u.l_name ASC";
 
 if ( $stmt = $mysqli->prepare( $query ) ) 
 {
 	unset( $results );
+
+	if ( $_POST['query'] != '_all' )
+	{
+		$word = '%' . $_POST['query'] . '%';
+		$stmt->bind_param( "ssss", $word, $word, $word, $word );
+	}
 
  	$stmt->execute();
 	$stmt->store_result();

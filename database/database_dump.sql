@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.35, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.37, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: inventory
 -- ------------------------------------------------------
--- Server version	5.5.35-0ubuntu0.12.04.2
+-- Server version	5.5.37-0ubuntu0.13.10.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,14 +14,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Current Database: `inventory`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `inventory` /*!40100 DEFAULT CHARACTER SET latin1 */;
-
-USE `inventory`;
 
 --
 -- Table structure for table `computer`
@@ -184,9 +176,13 @@ DROP TABLE IF EXISTS `licensed_to`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `licensed_to` (
-  `software_name` varchar(45) NOT NULL,
+  `software_id` int(11) NOT NULL,
   `computer_tag` char(5) NOT NULL,
-  PRIMARY KEY (`software_name`,`computer_tag`)
+  PRIMARY KEY (`software_id`,`computer_tag`),
+  KEY `fk_licensed_to_software_id_idx` (`software_id`),
+  KEY `fk_licensed_to_computer_tag_idx` (`computer_tag`),
+  CONSTRAINT `fk_licensed_to_computer_tag` FOREIGN KEY (`computer_tag`) REFERENCES `computer` (`computer_tag`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_licensed_to_software_id` FOREIGN KEY (`software_id`) REFERENCES `software` (`software_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -296,12 +292,14 @@ DROP TABLE IF EXISTS `software`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `software` (
+  `software_id` int(11) NOT NULL AUTO_INCREMENT,
   `software_name` varchar(45) NOT NULL,
   `license_num` varchar(45) NOT NULL,
   `license_type` varchar(15) NOT NULL,
   `number_of_licenses` int(3) NOT NULL,
   `notes` text,
-  PRIMARY KEY (`software_name`)
+  `purchase_id` int(11) NOT NULL,
+  PRIMARY KEY (`software_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -325,6 +323,8 @@ CREATE TABLE `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `f_name` varchar(45) NOT NULL,
   `l_name` varchar(45) DEFAULT NULL,
+  `email` varchar(90) DEFAULT NULL,
+  `department` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -335,7 +335,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Ewelina','Nowakowska'),(2,'Matthew','Richardson'),(3,'Mo','Bahk'),(4,'Ruth','Burke'),(5,'Astrid','Sheil'),(6,'Luz Elena','Ramirez'),(7,'Juan','Delgado'),(8,'Karen','Rowan'),(9,'Glen','Hirshberg'),(10,'Coyote Chronicle',NULL),(11,'Chad','Luck'),(12,'Jessica','Luck'),(13,'Lab',NULL),(14,'Jennifer','Keys'),(15,'Claudia','Velasco'),(16,'Joel','Harris'),(17,'Jacqueline','Wilcoxen'),(18,'Kimberly','Miller'),(19,'Moises','Hernandez'),(20,'Andy','Tufano'),(21,'Robert','Leo'),(22,'Fred','Gravatt'),(23,'Fred','Jandt'),(24,'Jean','Delgado'),(25,'Risa','Dickson'),(26,'Paul','Pai'),(27,'Mary Ann','McGuire'),(28,'Part Time',NULL),(29,'Tony','Roy'),(30,'David','Garcia'),(31,'Lou','Reich'),(32,'Beverly','Gallo'),(33,'Tom','Moody'),(34,'Felipe','Leon'),(35,'Jeremy','Hustwit'),(36,'Arash','Naraghi'),(37,'Karen','Sperry'),(38,'Fidel','Arnecillo'),(39,'Darcy','Otto'),(40,'Susan','Finsen'),(41,'Chris','Naticchia'),(42,'Storage Room',NULL),(43,'Kareen','Gervasi'),(44,'Rafael','Correa'),(45,'Carmen','Jany'),(46,'Dan','Whitaker'),(47,'Smart Classroom',NULL),(48,'Philip','Page'),(49,'David','Carlson'),(50,'Holly','Henry'),(51,'Margaret','Doane'),(52,'Ron','Chen'),(53,'Julie','Paegle'),(54,'Joy','Barta'),(55,'Caroline','Vickers'),(56,'Parastou','Feiz'),(57,'Pacific Review',NULL),(58,'Joe','Sanders'),(59,'Marsha','Schuh'),(60,'Ted','Ruml'),(61,'Suzanne','Arakawa'),(62,'Cindy','Cotter'),(63,'Renee','Pigeon'),(64,'Ellen','Gil Gomez'),(65,'Kimberly','Costino'),(66,'Sunny','Hyon'),(67,'Jackie','Rhodes'),(68,'Bruce','Golden'),(69,'Helen','Pilinovsky'),(70,'Salaam','Yousif'),(71,'Wendy','Smith'),(72,'James','Brown'),(73,'David','Marshall'),(74,'Rachel','Siordia'),(75,'Peter','Schroeder'),(76,'Arturo','Fernandez Gibert'),(77,'Ana','Deloera Moll'),(78,'Mirta','Gonzalez'),(79,'Valerie','Morgan'),(80,'Antonieta','Gallegos Ruiz'),(81,'Liz','Martin'),(82,'David','Jerez Gomez'),(83,'Aurora','Wolfgang'),(84,'Myung','Choi'),(85,'Khamla','Dhouti'),(86,'FLAGS',NULL),(87,'Donna','Gotch'),(88,'Nathan','Carter'),(89,'Scott','Rodriguez'),(90,'Jo Anna','Grant'),(91,'Robin','Larsen'),(92,'Rueyling','Chuang'),(93,'Rod','Metts'),(94,'Heather','Hundley'),(95,'Mihaela','Popescu'),(96,'Brian','Heisterkamp'),(97,'Kent','Rogers'),(98,'Matthew','Davidson'),(99,'Dottie','Cartwright'),(100,'Ece','Algan'),(101,'Sant','Khalsa'),(102,'Andrew','Castillo'),(103,'Mary','Fong'),(104,'Jennifer','Andersen'),(105,'Ahlam','Muhtaseb'),(106,'Linda','Sand'),(107,'Alicia','Trujillo'),(108,'Martha','Diaz Granados'),(109,'Leo','Connolly'),(110,'Eri','Yasuhara'),(111,'Jill','Buroker'),(112,'Parri','King'),(113,'Tiffany','Talavera'),(114,'Museum','General'),(115,'Yvette','Menacho'),(116,'Andrea','Callahan'),(117,'Candace','Parks'),(118,'Natasha','Richardson'),(119,'Lisa','DeMarco Ryden'),(120,'Piano Lab',NULL),(121,'Rebecca','Tomlinson'),(122,'Nancy','Glen'),(123,'Michelle','Ebert Freire '),(124,'Lee','Lyons'),(125,'Johanna','Smith'),(126,'Todd','Johnson'),(127,'Andre','Harrington'),(128,'PALS',NULL),(129,'Katherine','Thomerson'),(130,'Jerrold','Pritchard'),(131,'Marianna','Bencomo Jasso'),(132,'Kevin','Moffett'),(133,'Brenda','Glascott'),(134,'David','Kreitz'),(135,'Charmaine','Boucher'),(136,'Kim','Costino'),(137,'Server Room',NULL),(138,'Christi','Rucker'),(139,'TV','Lab'),(140,'Cynthia','Moss'),(141,'Richard','Jarvis'),(142,'Erika','Quinonez'),(143,'Mary','Boland'),(144,'Margaret','Perry'),(145,'TV Studio',NULL),(146,'Tom','Provenzano'),(147,'Terry','Smith'),(148,'Music Library',NULL),(149,'Instrument Room',NULL),(150,'Inventory Room',NULL),(151,'Dan','Robinson'),(152,'Sound Room',NULL),(153,'Organ Room',NULL),(154,'Catherine','Erickson'),(155,'Costume Shop',NULL),(156,'James','Radomski'),(157,'Andrew','Crane'),(158,'Robert','Knop'),(159,'Larry','McFatter'),(160,'Stacey','Fraser'),(161,'Music Society',NULL),(162,'Sara','Flis'),(163,'Suharu','Ogawa'),(164,'VRC',NULL),(165,'John','Fleeman'),(166,'Harlan','Jeglin'),(167,'Randy','Hodges'),(168,'Jon','Usher'),(169,'Jeffrey','Boeckman'),(170,'Kathy','Ervin'),(171,'Christ','Naticchia'),(172,'Terri','Nelson'),(173,'Rong','Chen'),(174,'Beth','Steffel'),(175,'Katherine','Gray'),(176,'Jiong','Li'),(177,'Allen','Menton'),(178,'Kurt','Collins'),(179,'Brad','Spence'),(180,'Eva','Kirsch'),(181,'Rita','Schneider'),(182,'Alison','Petty'),(183,'Alysha','Timmons'),(184,'Bervely','Gallo'),(185,'Araib','Mango'),(186,'Erik ','Jester'),(187,'Annie','Buckley'),(188,'Kosta','Popovic'),(189,'Ali','Miremadi'),(190,'Brad','Owen'),(191,'Stephanie','MacLean'),(192,'Ken','Han'),(193,'Chad','Sweeney'),(194,'Bradley','Hampton'),(195,'Rigo','Solorio'),(196,'Paige','Taylor'),(197,'George','McGinnis'),(198,'Jennifer','Anderson'),(199,'Thomas','McGovern'),(200,'Michael','Salvador'),(201,'Heather','Lowe'),(202,'Reyes','Diana'),(203,'Choeun','Lee'),(204,'John','Mumma'),(205,'Richard ','Johnston'),(206,'Ericka','Quinonez'),(207,'Jenifer','Andersen'),(208,'Lisa','DeMarco'),(209,'Crystal','Escalrea'),(210,'Patrick','Nicholson'),(211,'Karen','Eastman'),(212,'Garry','Fish'),(213,'Nate','Dubbs'),(214,'Deshea','Rushing'),(215,'Cynthia','Cotter'),(216,'Treadwell','Ruml'),(217,'Martha','DiazGranados'),(218,'Stephanie','Cardenas'),(219,'Natasha','Hemmings'),(220,'Terry','Ballman'),(221,'Jane','Chin Davidson'),(222,'John','Russell'),(223,'Felicia','Lemus'),(224,'Bibiana','Diaz Rodriguez'),(225,'Maria','Garcia Puente'),(226,'May Lee','Chai');
+INSERT INTO `user` VALUES (1,'Ewelina','Nowakowska',NULL,NULL),(2,'Matthew','Richardson',NULL,NULL),(3,'Mo','Bahk',NULL,NULL),(4,'Ruth','Burke',NULL,NULL),(5,'Astrid','Sheil',NULL,NULL),(6,'Luz Elena','Ramirez',NULL,NULL),(7,'Juan','Delgado',NULL,NULL),(8,'Karen','Rowan',NULL,NULL),(9,'Glen','Hirshberg',NULL,NULL),(10,'Coyote Chronicle',NULL,NULL,NULL),(11,'Chad','Luck',NULL,NULL),(12,'Jessica','Luck',NULL,NULL),(13,'Lab',NULL,NULL,NULL),(14,'Jennifer','Keys',NULL,NULL),(15,'Claudia','Velasco',NULL,NULL),(16,'Joel','Harris',NULL,NULL),(17,'Jacqueline','Wilcoxen',NULL,NULL),(18,'Kimberly','Miller',NULL,NULL),(19,'Moises','Hernandez',NULL,NULL),(20,'Andy','Tufano',NULL,NULL),(21,'Robert','Leo',NULL,NULL),(22,'Fred','Gravatt',NULL,NULL),(23,'Fred','Jandt',NULL,NULL),(24,'Jean','Delgado',NULL,NULL),(25,'Risa','Dickson',NULL,NULL),(26,'Paul','Pai',NULL,NULL),(27,'Mary Ann','McGuire',NULL,NULL),(28,'Part Time',NULL,NULL,NULL),(29,'Tony','Roy',NULL,NULL),(30,'David','Garcia',NULL,NULL),(31,'Lou','Reich',NULL,NULL),(32,'Beverly','Gallo',NULL,NULL),(33,'Tom','Moody',NULL,NULL),(34,'Felipe','Leon',NULL,NULL),(35,'Jeremy','Hustwit',NULL,NULL),(36,'Arash','Naraghi',NULL,NULL),(37,'Karen','Sperry',NULL,NULL),(38,'Fidel','Arnecillo',NULL,NULL),(39,'Darcy','Otto',NULL,NULL),(40,'Susan','Finsen',NULL,NULL),(41,'Chris','Naticchia',NULL,NULL),(42,'Storage Room',NULL,NULL,NULL),(43,'Kareen','Gervasi',NULL,NULL),(44,'Rafael','Correa',NULL,NULL),(45,'Carmen','Jany',NULL,NULL),(46,'Dan','Whitaker',NULL,NULL),(47,'Smart Classroom',NULL,NULL,NULL),(48,'Philip','Page',NULL,NULL),(49,'David','Carlson',NULL,NULL),(50,'Holly','Henry',NULL,NULL),(51,'Margaret','Doane',NULL,NULL),(52,'Ron','Chen',NULL,NULL),(53,'Julie','Paegle',NULL,NULL),(54,'Joy','Barta',NULL,NULL),(55,'Caroline','Vickers',NULL,NULL),(56,'Parastou','Feiz',NULL,NULL),(57,'Pacific Review',NULL,NULL,NULL),(58,'Joe','Sanders',NULL,NULL),(59,'Marsha','Schuh',NULL,NULL),(60,'Ted','Ruml',NULL,NULL),(61,'Suzanne','Arakawa',NULL,NULL),(62,'Cindy','Cotter',NULL,NULL),(63,'Renee','Pigeon',NULL,NULL),(64,'Ellen','Gil Gomez',NULL,NULL),(65,'Kimberly','Costino',NULL,NULL),(66,'Sunny','Hyon',NULL,NULL),(67,'Jackie','Rhodes',NULL,NULL),(68,'Bruce','Golden',NULL,NULL),(69,'Helen','Pilinovsky',NULL,NULL),(70,'Salaam','Yousif',NULL,NULL),(71,'Wendy','Smith',NULL,NULL),(72,'James','Brown',NULL,NULL),(73,'David','Marshall',NULL,NULL),(74,'Rachel','Siordia',NULL,NULL),(75,'Peter','Schroeder',NULL,NULL),(76,'Arturo','Fernandez Gibert',NULL,NULL),(77,'Ana','Deloera Moll',NULL,NULL),(78,'Mirta','Gonzalez',NULL,NULL),(79,'Valerie','Morgan',NULL,NULL),(80,'Antonieta','Gallegos Ruiz',NULL,NULL),(81,'Liz','Martin',NULL,NULL),(82,'David','Jerez Gomez',NULL,NULL),(83,'Aurora','Wolfgang',NULL,NULL),(84,'Myung','Choi',NULL,NULL),(85,'Khamla','Dhouti',NULL,NULL),(86,'FLAGS',NULL,NULL,NULL),(87,'Donna','Gotch',NULL,NULL),(88,'Nathan','Carter',NULL,NULL),(89,'Scott','Rodriguez',NULL,NULL),(90,'Jo Anna','Grant',NULL,NULL),(91,'Robin','Larsen',NULL,NULL),(92,'Rueyling','Chuang',NULL,NULL),(93,'Rod','Metts',NULL,NULL),(94,'Heather','Hundley',NULL,NULL),(95,'Mihaela','Popescu',NULL,NULL),(96,'Brian','Heisterkamp',NULL,NULL),(97,'Kent','Rogers',NULL,NULL),(98,'Matthew','Davidson',NULL,NULL),(99,'Dottie','Cartwright',NULL,NULL),(100,'Ece','Algan',NULL,NULL),(101,'Sant','Khalsa',NULL,NULL),(102,'Andrew','Castillo',NULL,NULL),(103,'Mary','Fong',NULL,NULL),(104,'Jennifer','Andersen',NULL,NULL),(105,'Ahlam','Muhtaseb',NULL,NULL),(106,'Linda','Sand',NULL,NULL),(107,'Alicia','Trujillo',NULL,NULL),(108,'Martha','Diaz Granados',NULL,NULL),(109,'Leo','Connolly',NULL,NULL),(110,'Eri','Yasuhara',NULL,NULL),(111,'Jill','Buroker',NULL,NULL),(112,'Parri','King',NULL,NULL),(113,'Tiffany','Talavera',NULL,NULL),(114,'Museum','General',NULL,NULL),(115,'Yvette','Menacho',NULL,NULL),(116,'Andrea','Callahan',NULL,NULL),(117,'Candace','Parks',NULL,NULL),(118,'Natasha','Richardson',NULL,NULL),(119,'Lisa','DeMarco Ryden',NULL,NULL),(120,'Piano Lab',NULL,NULL,NULL),(121,'Rebecca','Tomlinson',NULL,NULL),(122,'Nancy','Glen',NULL,NULL),(123,'Michelle','Ebert Freire ',NULL,NULL),(124,'Lee','Lyons',NULL,NULL),(125,'Johanna','Smith',NULL,NULL),(126,'Todd','Johnson',NULL,NULL),(127,'Andre','Harrington',NULL,NULL),(128,'PALS',NULL,NULL,NULL),(129,'Katherine','Thomerson',NULL,NULL),(130,'Jerrold','Pritchard',NULL,NULL),(131,'Marianna','Bencomo Jasso',NULL,NULL),(132,'Kevin','Moffett',NULL,NULL),(133,'Brenda','Glascott',NULL,NULL),(134,'David','Kreitz',NULL,NULL),(135,'Charmaine','Boucher',NULL,NULL),(136,'Kim','Costino',NULL,NULL),(137,'Server Room',NULL,NULL,NULL),(138,'Christi','Rucker',NULL,NULL),(139,'TV','Lab',NULL,NULL),(140,'Cynthia','Moss',NULL,NULL),(141,'Richard','Jarvis',NULL,NULL),(142,'Erika','Quinonez',NULL,NULL),(143,'Mary','Boland',NULL,NULL),(144,'Margaret','Perry',NULL,NULL),(145,'TV Studio',NULL,NULL,NULL),(146,'Tom','Provenzano',NULL,NULL),(147,'Terry','Smith',NULL,NULL),(148,'Music Library',NULL,NULL,NULL),(149,'Instrument Room',NULL,NULL,NULL),(150,'Inventory Room',NULL,NULL,NULL),(151,'Dan','Robinson',NULL,NULL),(152,'Sound Room',NULL,NULL,NULL),(153,'Organ Room',NULL,NULL,NULL),(154,'Catherine','Erickson',NULL,NULL),(155,'Costume Shop',NULL,NULL,NULL),(156,'James','Radomski',NULL,NULL),(157,'Andrew','Crane',NULL,NULL),(158,'Robert','Knop',NULL,NULL),(159,'Larry','McFatter',NULL,NULL),(160,'Stacey','Fraser',NULL,NULL),(161,'Music Society',NULL,NULL,NULL),(162,'Sara','Flis',NULL,NULL),(163,'Suharu','Ogawa',NULL,NULL),(164,'VRC',NULL,NULL,NULL),(165,'John','Fleeman',NULL,NULL),(166,'Harlan','Jeglin',NULL,NULL),(167,'Randy','Hodges',NULL,NULL),(168,'Jon','Usher',NULL,NULL),(169,'Jeffrey','Boeckman',NULL,NULL),(170,'Kathy','Ervin',NULL,NULL),(171,'Christ','Naticchia',NULL,NULL),(172,'Terri','Nelson',NULL,NULL),(173,'Rong','Chen',NULL,NULL),(174,'Beth','Steffel',NULL,NULL),(175,'Katherine','Gray',NULL,NULL),(176,'Jiong','Li',NULL,NULL),(177,'Allen','Menton',NULL,NULL),(178,'Kurt','Collins',NULL,NULL),(179,'Brad','Spence',NULL,NULL),(180,'Eva','Kirsch',NULL,NULL),(181,'Rita','Schneider',NULL,NULL),(182,'Alison','Petty',NULL,NULL),(183,'Alysha','Timmons',NULL,NULL),(184,'Bervely','Gallo',NULL,NULL),(185,'Araib','Mango',NULL,NULL),(186,'Erik ','Jester',NULL,NULL),(187,'Annie','Buckley',NULL,NULL),(188,'Kosta','Popovic',NULL,NULL),(189,'Ali','Miremadi',NULL,NULL),(190,'Brad','Owen',NULL,NULL),(191,'Stephanie','MacLean',NULL,NULL),(192,'Ken','Han',NULL,NULL),(193,'Chad','Sweeney',NULL,NULL),(194,'Bradley','Hampton',NULL,NULL),(195,'Rigo','Solorio',NULL,NULL),(196,'Paige','Taylor',NULL,NULL),(197,'George','McGinnis',NULL,NULL),(198,'Jennifer','Anderson',NULL,NULL),(199,'Thomas','McGovern',NULL,NULL),(200,'Michael','Salvador',NULL,NULL),(201,'Heather','Lowe',NULL,NULL),(202,'Reyes','Diana',NULL,NULL),(203,'Choeun','Lee',NULL,NULL),(204,'John','Mumma',NULL,NULL),(205,'Richard ','Johnston',NULL,NULL),(206,'Ericka','Quinonez',NULL,NULL),(207,'Jenifer','Andersen',NULL,NULL),(208,'Lisa','DeMarco',NULL,NULL),(209,'Crystal','Escalrea',NULL,NULL),(210,'Patrick','Nicholson',NULL,NULL),(211,'Karen','Eastman',NULL,NULL),(212,'Garry','Fish',NULL,NULL),(213,'Nate','Dubbs',NULL,NULL),(214,'Deshea','Rushing',NULL,NULL),(215,'Cynthia','Cotter',NULL,NULL),(216,'Treadwell','Ruml',NULL,NULL),(217,'Martha','DiazGranados',NULL,NULL),(218,'Stephanie','Cardenas',NULL,NULL),(219,'Natasha','Hemmings',NULL,NULL),(220,'Terry','Ballman',NULL,NULL),(221,'Jane','Chin Davidson',NULL,NULL),(222,'John','Russell',NULL,NULL),(223,'Felicia','Lemus',NULL,NULL),(224,'Bibiana','Diaz Rodriguez',NULL,NULL),(225,'Maria','Garcia Puente',NULL,NULL),(226,'May Lee','Chai',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -362,63 +362,6 @@ LOCK TABLES `uses` WRITE;
 INSERT INTO `uses` VALUES (149,'10919'),(149,'10946'),(149,'10947'),(149,'11560'),(149,'11587'),(155,'11588'),(149,'11817'),(149,'11818'),(149,'11819'),(156,'13093'),(153,'13115'),(149,'13387'),(149,'13388'),(149,'13389'),(149,'13991'),(149,'14158'),(149,'14320'),(156,'14321'),(164,'14655'),(149,'14699'),(155,'15074'),(149,'15086'),(149,'16170'),(149,'16171'),(152,'17496'),(149,'17551'),(13,'18460'),(149,'18470'),(164,'18764'),(149,'19704'),(155,'20037'),(149,'20046'),(152,'20149'),(150,'20343'),(149,'21041'),(145,'21062'),(152,'21166'),(149,'21459'),(149,'21573'),(149,'21574'),(152,'21602'),(152,'22289'),(152,'22486'),(145,'22616'),(145,'22619'),(13,'23792'),(13,'24124'),(13,'24126'),(19,'24347'),(42,'24751'),(152,'25391'),(153,'25570'),(153,'25738'),(149,'25742'),(13,'25916'),(13,'25917'),(13,'27415'),(150,'28063'),(151,'28495'),(120,'28841'),(120,'28842'),(120,'28843'),(120,'28844'),(120,'28846'),(120,'28847'),(120,'28848'),(120,'28849'),(120,'28850'),(13,'29049'),(164,'29116'),(164,'29126'),(164,'29127'),(164,'30480'),(164,'30529'),(13,'30629'),(149,'3090'),(164,'30989'),(49,'31047'),(201,'32034'),(155,'33124'),(145,'33135'),(152,'33191'),(149,'33329'),(13,'33337'),(151,'33463'),(152,'33469'),(152,'33470'),(13,'33471'),(149,'33525'),(164,'33551'),(151,'33597'),(149,'33603'),(153,'33912'),(153,'33961'),(124,'33964'),(6,'34009'),(13,'34343'),(13,'34530'),(19,'34702'),(19,'34705'),(137,'34731'),(137,'34732'),(164,'34779'),(164,'34828'),(151,'34843'),(153,'34849'),(137,'34868'),(13,'34874'),(13,'34930'),(137,'35063'),(164,'35115'),(164,'35116'),(128,'35431'),(153,'35724'),(155,'35833'),(151,'35933'),(151,'35934'),(151,'35937'),(161,'35945'),(151,'35959'),(153,'36013'),(149,'36157'),(51,'36166'),(28,'36405'),(152,'36406'),(28,'36413'),(137,'36418'),(3,'36745'),(23,'37434'),(164,'37492'),(153,'37635'),(153,'37636'),(149,'37637'),(13,'37866'),(153,'37946'),(166,'38305'),(13,'38306'),(28,'38307'),(28,'38308'),(25,'38309'),(162,'38310'),(13,'38311'),(6,'38312'),(128,'38313'),(28,'38315'),(13,'38316'),(13,'38317'),(13,'38318'),(37,'38320'),(151,'38321'),(151,'38322'),(105,'38323'),(21,'38324'),(28,'38325'),(28,'38328'),(28,'38329'),(49,'38330'),(28,'38331'),(28,'38332'),(146,'38333'),(28,'38334'),(86,'38340'),(28,'38342'),(17,'38343'),(28,'38344'),(59,'38345'),(14,'38348'),(61,'38350'),(28,'38351'),(15,'38352'),(18,'38353'),(31,'38354'),(28,'38357'),(38,'38358'),(138,'38359'),(20,'38360'),(28,'38367'),(97,'38369'),(54,'38370'),(28,'38371'),(13,'38373'),(28,'38374'),(28,'38375'),(13,'38376'),(28,'38389'),(16,'38390'),(13,'38391'),(10,'38392'),(154,'38393'),(28,'38394'),(28,'38395'),(129,'38396'),(30,'38398'),(86,'38399'),(143,'38402'),(13,'38485'),(93,'38665'),(34,'38666'),(111,'38668'),(13,'39001'),(13,'39002'),(13,'39003'),(13,'39005'),(13,'39008'),(13,'39009'),(13,'39010'),(13,'39011'),(13,'39012'),(13,'39014'),(13,'39015'),(13,'39017'),(13,'39018'),(13,'39023'),(13,'39027'),(13,'39032'),(13,'39036'),(13,'39037'),(13,'39038'),(13,'39040'),(13,'39041'),(13,'39043'),(13,'39044'),(13,'39047'),(13,'39048'),(106,'39144'),(122,'39145'),(121,'39146'),(10,'39158'),(57,'39159'),(168,'39160'),(35,'39161'),(28,'39164'),(28,'39165'),(48,'39166'),(123,'39167'),(33,'39266'),(46,'39515'),(94,'39721'),(50,'39833'),(55,'40159'),(74,'40160'),(74,'40161'),(13,'40254'),(50,'40358'),(137,'40391'),(137,'40392'),(137,'40393'),(137,'40394'),(137,'40395'),(137,'40396'),(13,'40558'),(164,'40598'),(164,'40606'),(153,'40626'),(153,'40627'),(4,'40681'),(51,'40755'),(119,'40756'),(63,'40758'),(72,'40759'),(113,'40760'),(144,'40761'),(128,'40762'),(140,'40765'),(164,'40780'),(10,'40787'),(10,'40788'),(39,'40803'),(39,'40805'),(10,'40813'),(10,'40814'),(10,'40815'),(10,'40816'),(10,'40817'),(71,'40839'),(151,'40841'),(128,'40842'),(60,'40844'),(118,'40845'),(158,'40948'),(137,'41034'),(32,'41057'),(66,'41070'),(166,'41088'),(128,'41118'),(137,'41144'),(149,'41191'),(120,'41220'),(13,'41284'),(164,'41351'),(164,'41352'),(204,'42039'),(10,'42129'),(114,'42294'),(114,'42295'),(85,'42428'),(83,'42429'),(75,'42508'),(28,'42520'),(124,'42527'),(131,'42528'),(52,'42628'),(84,'42890'),(69,'42891'),(107,'42892'),(157,'42893'),(62,'42894'),(112,'42895'),(13,'43076'),(13,'43077'),(13,'43078'),(13,'43079'),(13,'43080'),(13,'43261'),(13,'43262'),(13,'43263'),(13,'43264'),(13,'43265'),(13,'43266'),(13,'43267'),(13,'43268'),(13,'43269'),(13,'43270'),(13,'43271'),(13,'43272'),(13,'43273'),(13,'43274'),(13,'43275'),(13,'43276'),(13,'43277'),(13,'43278'),(13,'43279'),(13,'43280'),(13,'43281'),(87,'43283'),(24,'43284'),(159,'43345'),(89,'43346'),(96,'43347'),(115,'43348'),(88,'43349'),(142,'43350'),(80,'43351'),(28,'43352'),(116,'43407'),(117,'43408'),(13,'43409'),(145,'43787'),(145,'43788'),(99,'43829'),(145,'44016'),(148,'44124'),(152,'44125'),(120,'44127'),(164,'44128'),(164,'44129'),(164,'44131'),(164,'44134'),(164,'44135'),(163,'44160'),(164,'44166'),(156,'44171'),(151,'44334'),(92,'44343'),(91,'44344'),(111,'44401'),(147,'44542'),(179,'44578'),(13,'44579'),(13,'44580'),(13,'44607'),(13,'44608'),(13,'44609'),(13,'44610'),(13,'44611'),(13,'44612'),(13,'44613'),(13,'44614'),(13,'44615'),(13,'44616'),(13,'44617'),(13,'44618'),(109,'44620'),(13,'44713'),(13,'44714'),(13,'44715'),(13,'44716'),(13,'44717'),(13,'44718'),(13,'44719'),(13,'44720'),(13,'44721'),(13,'44722'),(13,'44723'),(13,'44724'),(13,'44737'),(13,'44738'),(13,'44739'),(13,'44740'),(13,'44741'),(13,'44742'),(13,'44743'),(13,'44744'),(13,'44745'),(13,'44746'),(13,'44747'),(13,'44748'),(110,'44749'),(99,'44758'),(164,'44810'),(95,'44881'),(53,'44882'),(127,'44884'),(127,'44885'),(36,'44887'),(108,'44888'),(82,'44889'),(43,'44890'),(2,'44891'),(102,'44892'),(137,'44931'),(137,'45028'),(165,'45269'),(120,'45528'),(130,'45538'),(137,'45553'),(137,'45554'),(137,'45555'),(137,'45556'),(137,'45557'),(13,'45558'),(74,'45562'),(13,'45600'),(78,'45603'),(139,'45604'),(70,'45643'),(139,'45657'),(13,'45685'),(41,'45686'),(126,'45694'),(41,'45706'),(42,'45707'),(40,'45708'),(13,'45709'),(13,'45710'),(13,'45711'),(13,'45712'),(13,'45713'),(13,'45714'),(13,'45715'),(13,'45716'),(152,'45717'),(104,'45718'),(1,'45720'),(120,'45751'),(155,'45753'),(155,'45754'),(169,'45805'),(76,'45808'),(19,'45809'),(22,'45810'),(4,'45812'),(99,'45813'),(100,'45814'),(125,'45815'),(125,'45816'),(13,'45901'),(13,'45902'),(13,'45903'),(13,'45904'),(13,'45905'),(13,'45906'),(13,'45907'),(13,'45908'),(13,'45909'),(13,'45910'),(13,'45911'),(13,'45912'),(13,'45913'),(13,'45961'),(13,'45962'),(13,'45963'),(13,'45964'),(13,'45965'),(13,'45966'),(13,'45969'),(13,'45970'),(13,'45971'),(19,'45972'),(29,'46057'),(70,'46064'),(77,'46079'),(28,'46081'),(79,'46082'),(27,'46083'),(28,'46084'),(28,'46085'),(26,'46086'),(95,'46088'),(55,'46089'),(101,'46090'),(7,'46091'),(8,'46092'),(44,'46093'),(10,'46101'),(13,'46177'),(13,'46178'),(47,'46179'),(160,'46188'),(98,'46321'),(176,'46357'),(175,'46359'),(81,'46360'),(174,'46367'),(73,'46369'),(45,'46370'),(58,'46371'),(56,'46372'),(70,'46373'),(132,'46380'),(141,'46383'),(9,'46384'),(5,'46385'),(1,'46386'),(90,'46387'),(67,'46388'),(103,'46389'),(105,'46391'),(134,'46392'),(13,'46393'),(13,'46394'),(13,'46395'),(13,'46396'),(13,'46397'),(13,'46398'),(13,'46399'),(13,'46400'),(124,'46401'),(152,'46402'),(40,'46403'),(64,'46404'),(135,'46405'),(136,'46406'),(137,'46407'),(171,'46410'),(164,'46411'),(111,'46412'),(164,'46413'),(164,'46414'),(164,'46415'),(164,'46416'),(149,'46423'),(149,'46424'),(120,'46441'),(120,'46442'),(120,'46443'),(120,'46444'),(120,'46445'),(120,'46446'),(120,'46447'),(120,'46448'),(120,'46449'),(120,'46450'),(120,'46451'),(120,'46453'),(120,'46454'),(120,'46455'),(149,'46482'),(133,'46485'),(120,'46489'),(120,'46490'),(65,'46649'),(68,'46650'),(152,'47372'),(153,'47373'),(160,'47394'),(164,'47423'),(67,'47515'),(12,'47545'),(11,'47546'),(10,'47547'),(10,'47548'),(157,'47702'),(3,'47773'),(164,'48782'),(172,'48949'),(173,'48961'),(126,'48963'),(165,'48964'),(177,'48971'),(70,'48972'),(108,'48973'),(74,'48979'),(205,'48980'),(141,'48981'),(206,'48982'),(207,'48983'),(102,'48984'),(167,'49515'),(147,'49601'),(170,'49602'),(164,'49603'),(178,'49604'),(191,'49605'),(133,'49606'),(13,'49607'),(13,'49608'),(125,'49749'),(125,'49948'),(140,'50170'),(179,'50276'),(182,'50277'),(44,'50331'),(180,'50589'),(181,'50592'),(180,'50630'),(117,'50631'),(188,'50801'),(95,'50804'),(96,'50806'),(129,'50827'),(115,'50833'),(184,'51287'),(189,'51348'),(185,'51349'),(101,'51394'),(187,'51395'),(173,'51396'),(10,'51397'),(190,'51398'),(110,'51399'),(105,'51400'),(53,'51401'),(50,'51402'),(203,'51403'),(197,'51404'),(127,'51405'),(195,'51406'),(100,'51420'),(33,'51421'),(29,'51422'),(92,'51423'),(40,'51424'),(183,'51425'),(186,'51426'),(186,'51427'),(5,'51428'),(98,'51429'),(187,'51430'),(133,'51786'),(128,'51961'),(128,'51962'),(86,'51963'),(192,'52032'),(198,'52045'),(199,'52046'),(200,'52047'),(101,'52048'),(201,'52049'),(166,'52050'),(183,'52051'),(41,'52053'),(156,'52055'),(202,'52056'),(13,'52057'),(13,'52058'),(13,'52059'),(13,'52060'),(13,'52061'),(13,'52062'),(192,'52064'),(166,'52065'),(158,'52068'),(193,'52069'),(74,'52240'),(196,'52426'),(183,'52429'),(63,'52431'),(168,'52432'),(194,'52433'),(218,'52625'),(70,'52627'),(217,'52628'),(115,'52876'),(106,'52877'),(210,'52878'),(208,'52879'),(209,'52880'),(140,'52881'),(211,'52905'),(212,'52906'),(213,'52907'),(129,'52934'),(210,'52935'),(129,'52936'),(210,'52937'),(221,'52938'),(103,'52939'),(56,'52940'),(94,'53230'),(214,'53231'),(106,'53233'),(215,'53235'),(7,'53236'),(72,'53237'),(216,'53239'),(73,'53241'),(6,'53297'),(41,'53373'),(29,'53374'),(204,'53375'),(98,'53376'),(218,'53377'),(219,'53378'),(87,'53379'),(111,'53380'),(220,'53381'),(220,'53382'),(220,'53383'),(13,'53425'),(13,'53426'),(13,'53427'),(13,'53428'),(13,'53429'),(13,'53430'),(13,'53431'),(226,'53432'),(222,'53438'),(223,'53439'),(224,'53540'),(225,'53541'),(71,'62033');
 /*!40000 ALTER TABLE `uses` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Current Database: `login`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `login` /*!40100 DEFAULT CHARACTER SET latin1 */;
-
-USE `login`;
-
---
--- Table structure for table `login_attempts`
---
-
-DROP TABLE IF EXISTS `login_attempts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `login_attempts` (
-  `user_id` int(11) NOT NULL,
-  `time` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `login_attempts`
---
-
-LOCK TABLES `login_attempts` WRITE;
-/*!40000 ALTER TABLE `login_attempts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `login_attempts` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `users`
---
-
-DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(40) NOT NULL,
-  `password` char(128) NOT NULL,
-  `salt` char(128) NOT NULL,
-  `role` int(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `users`
---
-
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','e1a8f7fa79cc23d4fba1c77c51283118c6e632cd41a61c6ccb1f02b79834d167d1d1771f9e93c99341b21345853f6dc8e8f2ece3f79ba1abac42a7781f7cff8a','19092cdc4707768c539c8664831da991119cfcfcabe9788dd4c877ac43fa078d6d7147ad68dac15d71a552537a3808796b6db5bcfb1d9449727f2903573d8743',4),(2,'level1','0947a185cb98e32a638872dbdd690ce0a4b1fdafffa0a6da9f3ed66ac934e9ade9828c26108c0dbf5e648d5f3516e7e4c141efd054f339ea97cba53e76cb2c57','95ebdd9d7fdf702bdbc320e200c43bffc103ff3ddffd23a1cdce463178cf032a0bb8f9062558ec7dc1287f26245bd7d8094cc8c9ed6ee85c3516828e116d445f',1),(3,'level2','dcf1d1b7692bb319892a67f3f1c3cee2a4935d3523aed459c88b22447b04581bab7963d46fd96b4484fcaae33925eae8dfc7d50262e3d0797607641b98863ffe','e05cd25608b13eeb1875c3f7b6ecfc8a463488d670ac74f6f868dd909df27a15096c1b56596394896ed73e45400b0960b83c50f893606dcffcddab5a88bf15db',2),(4,'level3','c602a22cc362bfbc8bfcc705b608a5bed750372794042617d9d94b649957bc1019bf24662728ab9356355ce2931c386b1e32de73093795838e59f7270b85200c','82c75878859d791299cf003680432413c118ed40e2d8faeddc6f0606899f22c9892245d8ce2a987d0cf91f87e4991eb121e1e980f5f941ed8cf330b47454f810',3);
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -429,10 +372,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-CREATE USER 'login'@'localhost' IDENTIFIED BY 'eKcGZr59zAa2BEWU';
-GRANT SELECT, INSERT, UPDATE, DELETE ON `login`.* TO 'login'@'localhost';
-
-CREATE USER 'inventory'@'localhost' IDENTIFIED BY 'Z9fx8SE9dxX232dq';
-GRANT SELECT, INSERT, UPDATE, DELETE ON `inventory`.* TO 'inventory'@'localhost';
-
--- Dump completed on 2014-04-08 10:23:11
+-- Dump completed on 2014-05-05 17:03:49
