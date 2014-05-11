@@ -1,0 +1,115 @@
+<?php
+
+include_once '../include/common.php';
+
+$mysqli = login_db_connect();
+
+sec_session_start();
+
+
+$logged = login_check( $mysqli );
+date_default_timezone_set("America/Los_Angeles");
+if(! $logged )
+	header( 'Location: login.php' );
+
+?>
+
+
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://getbootstrap.com/examples/jumbotron-narrow/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../img/t.ico">
+
+    <title>Paid-In</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+   <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0-rc-1/pure-min.css">
+  </head>
+
+  <body background="../img/g_1.jpg">
+
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="../kiosk.php">Cookie Jar</a></li>
+        </ul>
+        <h3 class="text-muted">Cookie Crumbs</h3>
+      </div>
+
+      <div class="jumbotron">
+        <h1 class="header">Paid-In</h1>
+	
+
+
+	<!-- PUll values for time and date -->
+		<?php 
+			$date = date("m-d-Y");
+			$time = date("h:i:sa");
+			$user = $_SESSION['username'];
+
+		?>
+
+
+	
+		<div>
+			<form role="form " class="pure-form pure-form-aligned">
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">Employee</label>
+			    <input type="hidden" class="form-control" id="<?php echo $user;?>"  name="user">
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputPassword1">Password</label>
+			    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+			  </div>
+
+
+        <div class="pure-control-group">
+            <label for="name">Date</label>
+            <input id="name" type="hidden" placeholder="" name="date" value="<?php echo $date;?>">
+        </div>
+
+        <div class="pure-control-group">
+            <label for="password">Time</label>
+            <input id="password" type="password" placeholder="Password">
+        </div>
+
+        <div class="pure-control-group">
+            <label for="email">Shift</label>
+            <input id="email" type="text" value="" >
+        </div>
+
+        <div class="pure-control-group">
+            <label for="foo">Paid-in Amount</label>
+            <input id="foo" type="text" placeholder="$$$$$$$$$$">
+        </div><br>
+
+			<input type="submit" value="Paid-In Submit" class="btn btn-lg btn-primary btn-block">
+			</form>	
+		</div><!-- END OF FORM DIV -->
+
+      </div><!-- End of Jumbotron div -->
+
+  
+
+      <div class="footer">
+	<center> <p>ecarb &copy 2014</p></center>
+      </div>
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+  
+
+</body></html>

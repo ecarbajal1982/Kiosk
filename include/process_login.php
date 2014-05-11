@@ -13,7 +13,7 @@ if ( isset( $_POST['user'], $_POST['p'] ) )
 	$login_status = login( $user, $password, $mysqli );
 
     if ( $login_status == 'success' )
-        header( 'Location: ../portal.php' );
+        header( 'Location: ../kiosk.php' );
 	
 	else
 	{

@@ -1,13 +1,13 @@
 <?php
 
 // Database Configuration 
-define("HOST", "localhost");
+define("HOST", "db523980898.db.1and1.com");
 
 
 // For Login Database
-define("L_USER", "login");
-define("L_PASSWORD", "eKcGZr59zAa2BEWU");
-define("L_DATABASE", "login");
+define("L_USER", "dbo523980898");
+define("L_PASSWORD", "Kiosk_db_enrique01");
+define("L_DATABASE", "db523980898");
 
 // For Inventory Database
 define("I_USER", "inventory");

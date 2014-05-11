@@ -23,12 +23,12 @@ if ( isset( $_GET['error'] ) )
 else
 {
 	if ( $logged )
-		header( 'Location: portal.php' );
+		header( 'Location: kiosk.php' );
 
 	else
 		header( 'Location: login.php' );
 }
 
 ?>
-<link rel="shortcut icon" href="http://www.csusb.edu/images/favicon.ico">
+<link rel="shortcut icon" href="t.ico">
 

@@ -17,6 +17,7 @@ function inventory_db_connect()
 
 function sec_session_start()
 {
+	
     $session_name = 'inventory_session';
     $secure = SECURE;
     $httponly = true;
@@ -37,6 +38,8 @@ function sec_session_start()
 
     session_name( $session_name );
     session_start();
+	//This is to grab the session user to display it in the welcome screen
+	$_SESSION['user'] = $_POST['user'];
     session_regenerate_id();
 
 	if ( isset( $_SESSION['last_activity'] ) && ( time() - $_SESSION['last_activity'] > 1800 ) )
