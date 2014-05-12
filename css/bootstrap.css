@@ -84,6 +84,7 @@ html {
 }
 body {
   margin: 0;
+	
 }
 article,
 aside,
@@ -344,7 +345,7 @@ html {
 }
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.42857143;
   color: #555555;
   background-color: #ffffff;
@@ -1761,9 +1762,9 @@ output {
 .form-control {
   display: block;
   width: 100%;
-  height: 38px;
+  height: 30px;
   padding: 8px 12px;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.42857143;
   color: #555555;
   background-color: #ffffff;
@@ -1812,7 +1813,9 @@ input[type="date"] {
   line-height: 38px;
 }
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 1px;
+  margin-top: -5px;
+  size:5px;
 }
 .radio,
 .checkbox {
@@ -4459,7 +4462,7 @@ a.list-group-item.active > .badge,
 }
 @media screen and (min-width: 768px) {
   .jumbotron {
-    padding-top: 48px;
+    padding-top: 25px;
     padding-bottom: 48px;
   }
   .container .jumbotron {
@@ -4468,7 +4471,7 @@ a.list-group-item.active > .badge,
   }
   .jumbotron h1,
   .jumbotron .h1 {
-    font-size: 63px;
+    font-size: 40px;
   }
 }
 .thumbnail {

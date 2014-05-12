@@ -67,7 +67,7 @@ if ( !( $logged ) )
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-			<li><a href="kiosk/paid-in.php">Paid-in/Paid-out</a></li>
+			<li><a href="kiosk/paid-in.php">Paid-In </a></li>
             <li><a href="kiosk/inventory.php">Inventory</a></li>
             <li><a href="kiosk/cassettes.php">Cassettes</a></li>
             <li><a href="kiosk/kiosks.php">Kiosks</a></li>
