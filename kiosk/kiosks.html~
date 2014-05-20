@@ -11,7 +11,7 @@ $logged = login_check( $mysqli );
 if(! $logged )
 	header( 'Location: ../login.php' );
 
-?>
+
 <!DOCTYPE html>
 <!-- saved from url=(0044)http://getbootstrap.com/examples/dashboard/# -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -85,8 +85,8 @@ if(! $logged )
 		  <th>Start Balance Time</th>
                   <th>End Balance Date</th>
 		  <th>End Balance Time</th>
-		  <th>Shift</th>
-                  <th>Last Variance</th>
+		  <th>Last Variance</th>
+                  <th>Shift</th>
                 </tr>
               </thead>
               <tbody>
@@ -95,21 +95,15 @@ if(! $logged )
 
 	$results = mysqli_query($mysqli ,"SELECT * FROM `kiosk_table` WHERE `kiosk_id`");
 
-	while($row = mysqli_fetch_array($results)) {
+	while($row = mysqli_fetch_array($result)) {
 		 echo "<tr>";
 		 echo "<td>" . $row['kiosk_id'] . "</td>";
 		 echo "<td>" . $row['location'] . "</td>";
 		 echo "<td>" . $row['start_balance_date']."</td>";
-		 echo "<td>" . $row['start_balance_time']."</td>";
-		 echo "<td>" . $row['end_balance_date']."</td>";
-		 echo "<td>" . $row['end_balance_time']."</td>";
-		 echo "<td>" . $row['shift']."</td>";
-      	  	 echo "<td>" . $row['last_variance']."</td>";
-		 echo "</tr>";
  	 
 
 }
-?> 
+?php> 
 
 
 		
@@ -129,3 +123,5 @@ if(! $logged )
   
 
 </body></html>
+
+?>
