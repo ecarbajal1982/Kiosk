@@ -211,11 +211,11 @@ if(! $logged )
 </div><hr>
 
 <div class="form-group">
-   <label for="kiosk" class="col-xs-2 control-label">ATM</label>
+   <label for="kiosk" class="col-xs-2 control-label">$1</label>
    <div class="col-xs-3">
      <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
    </div>
-   <label for="kiosk" class="col-xs-2 control-label">ATM Reversals</label>
+   <label for="kiosk" class="col-xs-2 control-label">$5</label>
    <div class="col-xs-3">
      <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
    </div>
