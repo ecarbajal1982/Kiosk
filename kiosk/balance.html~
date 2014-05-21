@@ -211,11 +211,11 @@ if(! $logged )
 </div><hr>
 
 <div class="form-group">
-   <label for="kiosk" class="col-xs-2 control-label">$1</label>
+   <label for="kiosk" class="col-xs-2 control-label">ATM</label>
    <div class="col-xs-3">
      <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
    </div>
-   <label for="kiosk" class="col-xs-2 control-label">$5</label>
+   <label for="kiosk" class="col-xs-2 control-label">ATM Reversals</label>
    <div class="col-xs-3">
      <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
    </div>
@@ -224,14 +224,38 @@ if(! $logged )
 
 
 
+  <div class="form-group">
+    <div class="">
+      <input type="button" onclick="calculate()" class="btn btn-danger btn-block" value="Calculate">
+    </div>
+	
+  </div><hr/>
 
+  <div class="form-group">
 
+    <label for="kiosk" class="col-xs-2 control-label">Total</label>
+    <div class="col-xs-3">
+      <input type="text" class="form-control">
+    </div>
+    <label for="kiosk" class="col-xs-2 control-label">Over/Short</label>
+    <div class="col-xs-3">
+      <input type="text" class="form-control">
+    </div>	
+  </div><hr/>
 
+  <div class="form-group">
+
+    <label for="kiosk" class="col-xs-2 control-label">Comments</laobel>
+    <div class="col-xs-10">
+      <input type="text" class="form-control">
+    </div>
+	
+  </div><br>
 
 
 	
   <div class="form-group">
-    <div class="col-sm-8">
+    <div class="">
       <input type="submit" class="btn btn-info btn-block">
     </div>
   </div>
