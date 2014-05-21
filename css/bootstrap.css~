@@ -6,6 +6,77 @@
  * Based on Bootstrap
 */
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
+
+.myside {
+	font-weight: 25px;
+	color:black;
+	float:left;
+	padding: 5px 5px 25px 5px;
+	font-size: 25px;
+	width: 50%;
+	border: 1px solid black;
+	text-align: center;
+	background-color:#E8E8E8;
+	vertical-align: text-bottom;
+
+}
+
+h3.mine {
+
+background-color:white;
+font-size:25px;
+color:#1990d5;
+
+}
+
+
+
+
+p.myLeft{
+	float :left;
+	color:red;
+	size:15px;
+	margin: 5px, 55px , 25px, 4px;
+	background-color: purple;
+
+}
+p.myRight{
+
+	background-color:red;
+
+}
+/*
+  Hide radio button (the round disc)
+  we will use just the label to create pushbutton effect
+*/
+input[type=radio] {
+    display:none; 
+    margin:10px;
+}
+ 
+/*
+  Change the look'n'feel of labels (which are adjacent to radiobuttons).
+  Add some margin, padding to label
+*/
+input[type=radio] + label {
+    display:inline-block;
+    margin: 1px;
+    padding: 15px 30px;
+    background-color:#A0A0A0 ;
+    border-color:black;
+	color:white;
+	border-radius:4px;
+}
+/*
+ Change background color for label next to checked radio button
+ to make it look like highlighted button
+*/
+input[type=radio]:checked + label { 
+   background-image: none;
+    background-color: #2fa4e7;
+}
+
+
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -13,6 +84,7 @@ html {
 }
 body {
   margin: 0;
+	
 }
 article,
 aside,
@@ -113,9 +185,11 @@ input,
 optgroup,
 select,
 textarea {
-  color: inherit;
+  color: blue;
   font: inherit;
-  margin: 0;
+  margin: 10px;
+ size:20px;
+ width:200px;
 }
 button {
   overflow: visible;
@@ -273,7 +347,7 @@ html {
 }
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.42857143;
   color: #555555;
   background-color: #ffffff;
@@ -544,7 +618,7 @@ a.bg-success:hover {
   background-color: #c1e2b3;
 }
 .bg-info {
-  background-color: #d9edf7;
+  background-color: purple;
 }
 a.bg-info:hover {
   background-color: #afd9ee;
@@ -1671,7 +1745,8 @@ input[type="range"] {
 }
 select[multiple],
 select[size] {
-  height: auto;
+  height: 5px;
+  
 }
 input[type="file"]:focus,
 input[type="radio"]:focus,
@@ -1690,9 +1765,9 @@ output {
 .form-control {
   display: block;
   width: 100%;
-  height: 38px;
+  height: 30px;
   padding: 8px 12px;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.42857143;
   color: #555555;
   background-color: #ffffff;
@@ -1724,9 +1799,13 @@ output {
 .form-control[readonly],
 fieldset[disabled] .form-control {
   cursor: not-allowed;
-  background-color: #eeeeee;
-  opacity: 1;
+  background-color:white;
+  opacity: 5;
+  color:black;
+  font-weight:bold;
+  text-align:center;
 }
+
 textarea.form-control {
   height: auto;
 }
@@ -1737,7 +1816,9 @@ input[type="date"] {
   line-height: 38px;
 }
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 1px;
+  margin-top: -5px;
+  size:5px;
 }
 .radio,
 .checkbox {
@@ -2017,7 +2098,7 @@ select[multiple].input-lg {
 }
 .btn:hover,
 .btn:focus {
-  color: #555555;
+  color: green;
   text-decoration: none;
 }
 .btn:active,
@@ -2162,8 +2243,8 @@ fieldset[disabled] .btn-success.active {
 }
 .btn-info {
   color: #ffffff;
-  background-color: #033c73;
-  border-color: #033c73;
+  background-color: #2fa4e7;
+  border-color:#2fa4e7;
 }
 .btn-info:hover,
 .btn-info:focus,
@@ -2171,8 +2252,8 @@ fieldset[disabled] .btn-success.active {
 .btn-info.active,
 .open .dropdown-toggle.btn-info {
   color: #ffffff;
-  background-color: #02274b;
-  border-color: #011d37;
+  background-color:green;
+  border-color: #2fa4e7;
 }
 .btn-info:active,
 .btn-info.active,
@@ -2368,7 +2449,7 @@ input[type="button"].btn-block {
 .collapsing {
   position: relative;
   height: 0;
-  overflow: visible;
+  overflow: hidden;
   -webkit-transition: height 0.35s ease;
   transition: height 0.35s ease;
 }
@@ -3461,7 +3542,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #eeeeee;
+  background-color: green;
 }
 .nav > li.disabled > a {
   color: #999999;
@@ -3569,8 +3650,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
-  color: #ffffff;
-  background-color: #2fa4e7;
+  color: white;
+  background-color: #1990d5;
 }
 .nav-stacked > li {
   float: none;
@@ -4362,10 +4443,10 @@ a.list-group-item.active > .badge,
   margin-left: 3px;
 }
 .jumbotron {
-  padding: 30px;
-  margin-bottom: 30px;
-  color: inherit;
-  background-color: #eeeeee;
+  padding: 20px;
+  margin-bottom: 25px;
+  color: black;
+  background-color: #C0C0C0  ;
 }
 .jumbotron h1,
 .jumbotron .h1 {
@@ -4384,7 +4465,7 @@ a.list-group-item.active > .badge,
 }
 @media screen and (min-width: 768px) {
   .jumbotron {
-    padding-top: 48px;
+    padding-top: 25px;
     padding-bottom: 48px;
   }
   .container .jumbotron {
@@ -4393,7 +4474,7 @@ a.list-group-item.active > .badge,
   }
   .jumbotron h1,
   .jumbotron .h1 {
-    font-size: 63px;
+    font-size: 40px;
   }
 }
 .thumbnail {

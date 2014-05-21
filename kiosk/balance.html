@@ -29,8 +29,12 @@ if(! $logged )
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet">   
-	<!-- Bootstrap core JavaScript  ================================================== -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="../css/select/bootstrap-select.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/select/bootstrap-select.css">
+
+
+  <!-- Bootstrap core JavaScript  ================================================== -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
     <!-- Custom styles for this template -->
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
@@ -39,7 +43,6 @@ if(! $logged )
 
 
 </style>
-
 
   </head>
 
@@ -119,14 +122,28 @@ if(! $logged )
   </div><hr>
 
   <div class="form-group">
-   		 <label for="user_show" class="col-xs-2 control-label">Kiosk</label>
-   <div class="col-xs-3">
-   	   <input type="text" class="form-control" id="user_show" name="user_show" disabled value="<?php echo $user;?>">
+   	 <label for="user_show" class="col-xs-2 control-label">Kiosk</label>
+   <div >
+   	  <select>
+		<option value="701">701</option>
+		<option value="702">702</option>
+		<option value="703">703</option>
+		<option value="704">704</option>
+		<option value="705">705</option>
+		<option value="706">706</option>
+		<option value="707">707</option>
+		<option value="708">708</option>
+		<option value="709">709</option>
+		<option value="710">710</option>
+		<option value="711">711</option>
+		<option value="712">712</option>
+		<option value="713">713</option>
+		<option value="714">714</option>
+		<option value="715">715</option>
+		<option value="716">716</option>
+	</select>
    	 </div>
-  	  <label for="time_show" class="col-xs-2 control-label">Time</label>
-	 <div class="col-xs-3">
-   	    <input type="text" class="form-control" id="time_show" name="time_show" disabled value="<?php echo $time;?>">
-   	 </div>
+
 
 
   </div><hr>
@@ -146,125 +163,155 @@ if(! $logged )
 </div><hr>
 
 <div class="form-group">
-   <label for="kiosk" class="col-xs-2 control-label">$1</label>
+   <label for="ones" class="col-xs-2 control-label">$1</label>
    <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
+     <input type="text" class="form-control" id="ones" placeholder="Washingtons" name="ones" >
    </div>
-   <label for="kiosk" class="col-xs-2 control-label">$5</label>
+   <label for="fives" class="col-xs-2 control-label">$5</label>
    <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
-   </div>
-</div><hr>
-
-<div class="form-group">
-   <label for="kiosk" class="col-xs-2 control-label">$10</label>
-   <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
-   </div>
-   <label for="kiosk" class="col-xs-2 control-label">$20</label>
-   <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
+     <input type="text" class="form-control" id="fives" placeholder="Abes'" name="fives" >
    </div>
 </div><hr>
 
 <div class="form-group">
-   <label for="kiosk" class="col-xs-2 control-label">$50</label>
+   <label for="tens" class="col-xs-2 control-label">$10</label>
    <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
+     <input type="text" class="form-control" id="tens" placeholder="Hamiltons" name="tens" >
    </div>
-   <label for="kiosk" class="col-xs-2 control-label">$100</label>
+   <label for="twenty" class="col-xs-2 control-label">$20</label>
    <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
-   </div>
-</div><hr>
-
-<div class="form-group">
-   <label for="kiosk" class="col-xs-2 control-label">Ticket</label>
-   <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
-   </div>
-   <label for="kiosk" class="col-xs-2 control-label">Stacker</label>
-   <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
-   </div>
-</div><hr>
-<div class="form-group">
-   <label for="kiosk" class="col-xs-2 control-label">Cash Paid-In</label>
-   <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
-   </div>
-   <label for="kiosk" class="col-xs-2 control-label">Reject Paid-In</label>
-   <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
+     <input type="text" class="form-control" id="twenty" placeholder="Jacksons" name="twenty" >
    </div>
 </div><hr>
 
 <div class="form-group">
-   <label for="kiosk" class="col-xs-2 control-label">Cash Paid-Out</label>
+   <label for="fifty" class="col-xs-2 control-label">$50</label>
    <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
+     <input type="text" class="form-control" id="fifty" placeholder="Grants" name="fifty" >
    </div>
-   <label for="kiosk" class="col-xs-2 control-label">Coin Paid-Out</label>
+   <label for="hundred" class="col-xs-2 control-label">$100</label>
    <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
+     <input type="text" class="form-control" id="hundred" placeholder="Hundos" name="hundred" >
    </div>
 </div><hr>
 
 <div class="form-group">
-   <label for="kiosk" class="col-xs-2 control-label">ATM</label>
+   <label for="ticket_total" class="col-xs-2 control-label">Ticket</label>
    <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
+     <input type="text" class="form-control" id="ticket_total" placeholder="Tickets" name="ticket_total" >
    </div>
-   <label for="kiosk" class="col-xs-2 control-label">ATM Reversals</label>
+   <label for="stacker_total" class="col-xs-2 control-label">Stacker</label>
    <div class="col-xs-3">
-     <input type="text" class="form-control" id="kiosk" placeholder="Kiosk Number" name="kiosk" >
+     <input type="text" class="form-control" id="stacker_total" placeholder="" name="stacker_total" >
+   </div>
+</div><hr>
+<div class="form-group">
+   <label for="cash_paid_ins" class="col-xs-2 control-label">Cash Paid-Ins</label>
+   <div class="col-xs-3">
+     <input type="text" class="form-control" id="cash_paid_ins" placeholder="" name="cash_paid_ins" >
+   </div>
+   <label for="reject_paid_ins" class="col-xs-2 control-label">Reject Paid-Ins</label>
+   <div class="col-xs-3">
+     <input type="text" class="form-control" id="reject_paid_ins" placeholder="" name="reject_paid_ins" >
    </div>
 </div><hr>
 
+<div class="form-group">
+   <label for="cash_paid_outs" class="col-xs-2 control-label">Cash Paid-Outs</label>
+   <div class="col-xs-3">
+     <input type="text" class="form-control" id="cash_paid_outs" placeholder="" name="cash_paid_outs" >
+   </div>
+   <label for="coin_paid_outs" class="col-xs-2 control-label">Coin Paid-Outs</label>
+   <div class="col-xs-3">
+     <input type="text" class="form-control" id="coin_paid_outs" placeholder="" name="coin_paid_outs" >
+   </div>
+</div><hr/>
+
+<div class="form-group">
+   <label for="atm_net_amount" class="col-xs-2 control-label">ATM Net </label>
+   <div class="col-xs-3">
+     <input type="text" class="form-control" id="atm_net_amount" placeholder="" name="atm_net_amount" >
+   </div>
+   <label for="atm_fill_number" class="col-xs-2 control-label">ATM Fill Number</label>
+   <div class="col-xs-3">
+     <input type="text" class="form-control" id="atm_fill_number" placeholder="" name="atm_fill_number">
+   </div>
+</div><hr>
 
 
 
   <div class="form-group">
-    <div class="">
-      <input type="button" onclick="calculate()" class="btn btn-danger btn-block" value="Calculate">
-    </div>
-	
-  </div><hr/>
 
-  <div class="form-group">
-
-    <label for="kiosk" class="col-xs-2 control-label">Total</label>
-    <div class="col-xs-3">
-      <input type="text" class="form-control">
-    </div>
-    <label for="kiosk" class="col-xs-2 control-label">Over/Short</label>
-    <div class="col-xs-3">
-      <input type="text" class="form-control">
-    </div>	
-  </div><hr/>
-
-  <div class="form-group">
-
-    <label for="kiosk" class="col-xs-2 control-label">Comments</label>
+    <label for="comments" class="col-xs-2 control-label">Comments</label>
     <div class="col-xs-10">
-      <input type="text" class="form-control">
-    </div>
-	
-  </div><br>
-
-
-	
+      <input type="text" id="comments" class="form-control" name="comments">
+    </div>	
+  </div><br>	
   <div class="form-group">
     <div class="">
       <input type="submit" class="btn btn-info btn-block">
     </div>
   </div>
 </form>
-		</div><!-- END OF FORM DIV -->
+</div><!-- END OF FORM DIV -->
+<hr>
 
+
+<div class="form-group">
+<button onclick="myFunction()" class="btn btn-danger btn-block">Calculate </button>
+</div>
+<hr>
+
+  <div class="row">
+		<div class="col-sm-2"> 
+ 			 <p>Total</p>
+    	</div>
+		<div class="col-sm-2">
+     	 <p id="demo"> </p>
+   		</div>
+		<div class="col-sm-3">
+			<p>Over/Short</p>
+		</div>
+		<div class="col-sm-3">
+			<p id="demo1"></p>
+		</div>
+		
+  </div><br>
+
+<script>
+function myFunction() {
+
+
+    var ones =  parseInt (document.getElementById("ones").value) ;
+    var fives = parseInt (document.getElementById("fives").value );
+    var tens = parseInt( document.getElementById("tens").value) ;
+    var twenty = parseInt( document.getElementById("twenty").value) ;
+    var fifty = parseInt( document.getElementById("fifty").value) ;
+    var hundred = parseInt( document.getElementById("hundred").value) ;
+	var ticket_total = parseFloat (document.getElementById("ticket_total").value);
+	var stacker_total = parseFloat (document.getElementById("stacker_total").value);
+    var cash_paid_ins = parseInt( document.getElementById("cash_paid_ins").value) ;
+    var reject_paid_ins = parseInt( document.getElementById("reject_paid_ins").value) ;
+    var cash_paid_outs = parseInt( document.getElementById("cash_paid_outs").value) ;
+	var coin_paid_outs = parseFloat (document.getElementById("coin_paid_outs").value);
+    var atm_net_amount = parseInt( document.getElementById("atm_net_amount").value) ;
+
+    var total  = ones  + fives + tens + twenty + fifty + hundred + ticket_total 
+        + stacker_total + cash_paid_ins + reject_paid_ins - cash_paid_outs  - coin_paid_outs + atm_net_amount;
+	var twofloat = parseFloat( total).toFixed(2);
+
+	//Compute the over/short
+	var over_short = twofloat - 219000;
+	var float_over_short = parseFloat(over_short).toFixed(2);
+    document.getElementById("demo").innerHTML = twofloat;
+    document.getElementById("demo1").innerHTML = float_over_short;
+}
+</script>
+
+</div>
       </div><!-- End of Jumbotron div -->
 
-  
+ 
 
       <div class="footer">
 	<center><span style="color:#1990d5"> <p>ecarb &copy 2014</span></p></center>
@@ -273,15 +320,8 @@ if(! $logged )
     </div> <!-- /container -->
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
-     <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./Carousel Template for Bootstrap_files/jquery.min.js"></script>
-    <script src="./Carousel Template for Bootstrap_files/bootstrap.min.js"></script>
-    <script src="./Carousel Template for Bootstrap_files/docs.min.js"></script>
+
+
 
 </body></html>

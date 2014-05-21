@@ -185,9 +185,12 @@ input,
 optgroup,
 select,
 textarea {
-  color: inherit;
+  color: blue;
   font: inherit;
-  margin: 0;
+  margin: 10px;
+ size:20px;
+ width:200px;
+ text-align:center;
 }
 button {
   overflow: visible;
@@ -1743,7 +1746,8 @@ input[type="range"] {
 }
 select[multiple],
 select[size] {
-  height: auto;
+  height: 5px;
+  
 }
 input[type="file"]:focus,
 input[type="radio"]:focus,

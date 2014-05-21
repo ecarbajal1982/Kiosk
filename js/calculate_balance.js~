@@ -1,0 +1,19 @@
+//This will calculate the total for the kiosk machine and place the value into 
+//the appropriate field along with the amount over or short
+
+function calculate_total(){
+
+	
+	
+	var e = "Test";
+	return e;
+
+
+}
+
+
+$(document).ready ( function() {
+	var f = calculate_total();
+	var g = document.getElementById('dummy');
+	g.innerHTML = f;
+});
