@@ -11,7 +11,7 @@ $logged = login_check( $mysqli );
 if(! $logged )
 	header( 'Location: ../login.php' );
 
-if ( isset( $_POST['user'] , $_POST['balance_id'], $_POST['date'] ) ) 
+if ( isset( $_POST['user'] , $_POST['balance_id'] ) ) 
 {   
 
 

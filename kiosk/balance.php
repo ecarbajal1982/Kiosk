@@ -70,37 +70,33 @@ if(! $logged )
 
 			        //Grabs the last element in the paid_in_column
         if ( $insert_stmt = $mysqli->prepare(
-									 "SELECT stacker_number FROM stackers
-									  ORDER BY stacker_number DESC
+									 "SELECT balance_id FROM balance
+									  ORDER BY balance_id DESC
 									  LIMIT 1" ) )
 			
 			
         		// Execute the prepared query.
            $insert_stmt->execute();
 			  $insert_stmt->store_result();
-			  $insert_stmt->bind_result( $next_stacker);
-			  $insert_stmt->fetch();
-	
-				
-			
-
+			  $insert_stmt->bind_result( $next_balance);
+			  $insert_stmt->fetch();	
 		?>
-
-
 	
-		<div>
-	<form class="form-horizontal" role="form" action="insert_stackers.php" method='post'>
+	<div>
+	<form class="form-horizontal" role="form" action="insert_balance.php" method='post'>
 
 		<!-- Hidden inputs not shown to the user -->
 	<input type="hidden" id="user" value="<?php echo $user;?>" name="user">
 	<input type="hidden" id="date" value="<?php echo $date;?>" name="date">
 	<input type="hidden" id="time" value="<?php echo $time;?>" name="time">
-	<input type="hidden" id="stacker_number" name="stacker_number" value="" >
+	<input type="hidden" id="balance_id" name="balance_id" value="" >
+	<input type="hidden" id="balance_total" name="balance_total" value="">
+	<input type="hidden" id="balance_over_short" name="balance_over_short" value="">
 
 		  <div class="form-group">
    		 <label for="stacker_number_show" class="col-xs-2 control-label">Balance Number</label>
    	 <div class="col-xs-3">
-   	   <input type="text" class="form-control" id="stacker_number_show" name="stacker_number_show" disabled value="<?php echo $next_stacker + 1;?>">
+   	   <input type="text" class="form-control" id="stacker_number_show" name="balance_number_show" disabled value="<?php echo $next_balance + 1;?>">
    	 </div>
     <label for="date_show" class="col-xs-2 control-label">Date</label>
     <div class="col-xs-3">
@@ -124,7 +120,7 @@ if(! $logged )
   <div class="form-group">
    	 <label for="user_show" class="col-xs-2 control-label">Kiosk</label>
    <div >
-   	  <select>
+   	  <select id="kiosk">
 		<option value="701">701</option>
 		<option value="702">702</option>
 		<option value="703">703</option>
@@ -143,9 +139,6 @@ if(! $logged )
 		<option value="716">716</option>
 	</select>
    	 </div>
-
-
-
   </div><hr>
 
 
@@ -305,6 +298,8 @@ function myFunction() {
 	var float_over_short = parseFloat(over_short).toFixed(2);
     document.getElementById("demo").innerHTML = twofloat;
     document.getElementById("demo1").innerHTML = float_over_short;
+    document.getElementById("balance_total").innerHTML = twofloat;
+    document.getElementById("balance_over_short").innerHTML = float_over_short;
 }
 </script>
 
