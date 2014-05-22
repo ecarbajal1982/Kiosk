@@ -120,7 +120,7 @@ if(! $logged )
   <div class="form-group">
    	 <label for="user_show" class="col-xs-2 control-label">Kiosk</label>
    <div >
-   	  <select id="kiosk">
+   	  <select id="kiosk" name="kiosk">
 		<option value="701">701</option>
 		<option value="702">702</option>
 		<option value="703">703</option>

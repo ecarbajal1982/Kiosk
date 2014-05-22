@@ -11,7 +11,13 @@ $logged = login_check( $mysqli );
 if(! $logged )
 	header( 'Location: ../login.php' );
 
-if ( isset( $_POST['user'] , $_POST['balance_id'] ) ) 
+if ( isset( $_POST['user'] , $_POST['balance_id'], $_POST['date'], $_POST['time'],$_POST['shift'],
+	$_POST['ones'],$_POST['fives'],$_POST['tens'],$_POST['twenty'],$_POST['fifty'],
+	$_POST['hundred'],$_POST['ticket_total'],$_POST['stacker_total'],$_POST['cash_paid_ins'],
+	$_POST['reject_paid_ins'],$_POST['cash_paid_outs'],$_POST['coin_paid_outs'],
+	$_POST['atm_net_amount'],$_POST['atm_fill_number'],$_POST['balance_total'],
+	$_POST['balance_over_short'],$_POST['comments']
+	  ) )
 {   
 
 
