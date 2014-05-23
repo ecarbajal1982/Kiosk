@@ -76,22 +76,22 @@ if(! $logged )
 			
 			
         		// Execute the prepared query.
-           $insert_stmt->execute();
+          	  $insert_stmt->execute();
 			  $insert_stmt->store_result();
 			  $insert_stmt->bind_result( $next_balance);
 			  $insert_stmt->fetch();	
 		?>
 	
 	<div>
-	<form class="form-horizontal" role="form" action="insert_balance.php" method='post'>
+	<form class="form-horizontal" role="form" action="insert_balance.php" method='post' name="myform">
 
 		<!-- Hidden inputs not shown to the user -->
 	<input type="hidden" id="user" value="<?php echo $user;?>" name="user">
 	<input type="hidden" id="date" value="<?php echo $date;?>" name="date">
 	<input type="hidden" id="time" value="<?php echo $time;?>" name="time">
 	<input type="hidden" id="balance_id" name="balance_id" value="" >
-	<input type="hidden" id="balance_total" name="balance_total" value="">
-	<input type="hidden" id="balance_over_short" name="balance_over_short" value="">
+	<input type="hidden" id="balance_total" name="balance_total">
+	<input type="hidden" id="balance_over_short" name="balance_over_short">
 
 		  <div class="form-group">
    		 <label for="stacker_number_show" class="col-xs-2 control-label">Balance Number</label>
@@ -298,8 +298,8 @@ function myFunction() {
 	var float_over_short = parseFloat(over_short).toFixed(2);
     document.getElementById("demo").innerHTML = twofloat;
     document.getElementById("demo1").innerHTML = float_over_short;
-    document.getElementById("balance_total").innerHTML = twofloat;
-    document.getElementById("balance_over_short").innerHTML = float_over_short;
+	document.myform.balance_total.value = twofloat;
+	document.myform.balance_over_short.value = float_over_short;
 }
 </script>
 
