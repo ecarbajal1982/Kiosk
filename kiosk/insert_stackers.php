@@ -16,7 +16,7 @@ if ( isset( $_POST['stacker_number'],  $_POST['user'] , $_POST['date'], $_POST['
 				$_POST['stacker_total']) ) 
 {
 	$username = filter_input( INPUT_POST, 'user', FILTER_SANITIZE_STRING );
-        $stacker_number= filter_input( INPUT_POST, 'stacker_number', FILTER_SANITIZE_STRING );
+    $stacker_number= filter_input( INPUT_POST, 'stacker_number', FILTER_SANITIZE_STRING );
 	$date = filter_input( INPUT_POST, 'date', FILTER_SANITIZE_STRING );
 	$shift = filter_input( INPUT_POST, 'shift', FILTER_SANITIZE_STRING );
 	$kiosk = filter_input( INPUT_POST, 'kiosk', FILTER_SANITIZE_STRING );	

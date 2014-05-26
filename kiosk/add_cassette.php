@@ -62,16 +62,20 @@ if(! $logged )
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="./Dashboard Template for Bootstrap_files/Dashboard Template for Bootstrap.html">Home</a></li>
-            <li><a href="./add_cassette.php">Add Cassette</a></li>
+            <li class="active"><a href="../kiosk.php">Home</a></li>
+            <li><a href="./inventory.php">Inventory</a></li>
             <li><a href="./delete_cassette.php">Delete Cassette</a></li>
             <li><a href="./update_cassette.php">Update Cassette</a></li>
           </ul>
 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Cassette Inventory</h1>          
+          <h1 class="page-header">Add New Cassette to Inventory</h1>  
+
+
+        
           <div class="table-responsive">
+				<form method="POST" name="add_cassette" action="insert_cassette.php">
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -82,27 +86,19 @@ if(! $logged )
                 </tr>
               </thead>
               <tbody>
-
-<?php
-
-	$results = mysqli_query($mysqli ,"SELECT * FROM `inventory_table` WHERE `cassette_id`");
-
-	while($row = mysqli_fetch_array($results)) {
-		 echo "<tr>";
-		 echo "<td>" . $row['prefix'] . "</td>";
-		 echo "<td>" . $row['number']."</td>";
-	     echo "<td>" . $row['denom']."</td>";
-		 echo "<td>" . $row['location']."</td>";
-		 echo "</tr>";
- 	 
-
-}
-?> 
-
+				<tr>
+					<td><input type="text" name="prefix" id="prefix"></td>
+					<td><input type="text" name="number" id="number"></td>
+					<td><input type="text" name = "denom" id="denom"></td>
+					<td><input type="text" name="location" id="location"></td>
+					  <input type="text" name="cassette_id" id="cassette_id" hidden value="">
+				</tr>
 
 		
              </tbody>
             </table>
+		<input type="submit" value="Add Cassette" name="add_cassette" id="add_cassette">
+		  </form>
           </div>
         </div>
       </div>

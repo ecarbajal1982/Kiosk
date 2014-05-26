@@ -62,21 +62,25 @@ if(! $logged )
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="./Dashboard Template for Bootstrap_files/Dashboard Template for Bootstrap.html">Home</a></li>
+            <li class="active"><a href="../kiosk.php">Home</a></li>
             <li><a href="./add_cassette.php">Add Cassette</a></li>
-            <li><a href="./delete_cassette.php">Delete Cassette</a></li>
-            <li><a href="./update_cassette.php">Update Cassette</a></li>
+            <li><a href="./update_cassette_inventory.php">Update Cassette</a></li>
+		    <li><a href="./inventory.php">Cassette Inventory</a></li>
           </ul>
 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Cassette Inventory</h1>          
+          <h1 class="page-header">Update Cassette</h1>          
           <div class="table-responsive">
+
+		<form action="delete_cassette.php" method="POST" name="delete_form">
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>Prefix</th>
-                  <th>Number</th>
+				  <th>Check</th>
+				  <th>Cassette_id<th>
+                  <th>Prefix</th>       
+				  <th>Number</th>
 				  <th>Denomination</th>
 				  <th>Location</th>
                 </tr>
@@ -86,23 +90,29 @@ if(! $logged )
 <?php
 
 	$results = mysqli_query($mysqli ,"SELECT * FROM `inventory_table` WHERE `cassette_id`");
+	$count  = mysql_num_rows($results);
+
 
 	while($row = mysqli_fetch_array($results)) {
-		 echo "<tr>";
-		 echo "<td>" . $row['prefix'] . "</td>";
-		 echo "<td>" . $row['number']."</td>";
-	     echo "<td>" . $row['denom']."</td>";
-		 echo "<td>" . $row['location']."</td>";
-		 echo "</tr>";
+?>
+		
+		<tr>
+         	<td><input type="checkbox" name="checkbox[]" value ="<? echo $row['cassette_id'];?>" id= "checkbox[]" ></td>
+		 	<td><?echo $row['cassette_id'];?></td>
+		 	<td><?echo $row['prefix'];?></td>
+		 	<td><?echo $row['number'];?></td>
+	     	<td><? echo $row['denom'];?></td>
+		 	<td><? echo $row['location'];?></td>
+		 </tr>
  	 
-
+<?php
 }
 ?> 
-
-
-		
              </tbody>
             </table>
+			<!-- Name of the post variable will be the name in the input -->
+		<input type="submit" value="Delete" name="delete" id="delete">
+			</form>
           </div>
         </div>
       </div>

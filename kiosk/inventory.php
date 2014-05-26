@@ -49,7 +49,7 @@ if(! $logged )
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
 
-            <li><a href="../nclude/process_logout.php">Logout</a></li>
+            <li><a href="../include/process_logout.php">Logout</a></li>
           </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
@@ -62,10 +62,10 @@ if(! $logged )
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="./Dashboard Template for Bootstrap_files/Dashboard Template for Bootstrap.html">Home</a></li>
-            <li><a href="./Dashboard Template for Bootstrap_files/Dashboard Template for Bootstrap.html">Add Cassette</a></li>
-            <li><a href="./Dashboard Template for Bootstrap_files/Dashboard Template for Bootstrap.html">Delete Cassette</a></li>
-            <li><a href="./Dashboard Template for Bootstrap_files/Dashboard Template for Bootstrap.html">Update Cassette</a></li>
+            <li class="active"><a href="../kiosk.php">Home</a></li>
+            <li><a href="./add_cassette.php">Add Cassette</a></li>
+            <li><a href="./delete_cassette.php">Delete Cassette</a></li>
+            <li><a href="./update_cassette.php">Update Cassette</a></li>
           </ul>
 
         </div>
@@ -75,7 +75,6 @@ if(! $logged )
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>Cassette ID</th>
                   <th>Prefix</th>
                   <th>Number</th>
 				  <th>Denomination</th>
@@ -90,7 +89,6 @@ if(! $logged )
 
 	while($row = mysqli_fetch_array($results)) {
 		 echo "<tr>";
-		 echo "<td>" . $row['cassette_id'] . "</td>";
 		 echo "<td>" . $row['prefix'] . "</td>";
 		 echo "<td>" . $row['number']."</td>";
 	     echo "<td>" . $row['denom']."</td>";

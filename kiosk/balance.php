@@ -313,10 +313,4 @@ function myFunction() {
       </div>
 
     </div> <!-- /container -->
-
-
-
-
-
-
 </body></html>
