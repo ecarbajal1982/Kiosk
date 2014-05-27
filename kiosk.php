@@ -1,3 +1,6 @@
+<!-- This is the file that will be the inception of the projcet. From here, we will be able
+to make all the selections for the kiosks. THIS IS KIOSK.PHP  -->
+
 <?php
 
 include_once 'include/common.php';
@@ -30,14 +33,6 @@ if ( !( $logged ) )
     <!-- Custom styles for this template -->
     <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
 
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
   <style id="holderjs-style" type="text/css"></style></head>
 
   <body style="">
@@ -67,15 +62,15 @@ if ( !( $logged ) )
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-			<li><a href="kiosk/paid-in.php">Paid-In </a></li>
-            <li><a href="kiosk/inventory.php">Cassette Inventory</a></li>
+			<li><a href="./paid_in_out/paid-in.php">Paid-In / Paid-Out </a></li>
+            <li><a href="./cassette/cassette_inventory_page.php">Cassette Inventory</a></li>
           
-            <li><a href="kiosk/kiosks.php">Kiosks</a></li>
-			<li><a href="kiosk/atm_paid_out">ATM Paid-Out</a><li>
-			<li><a href="kiosk/stakers.php">Stacker</a></li>
+            <li><a href="./kiosk_list/kiosk_list.php">Kiosks</a></li>
+			<li><a href="atm/atm_paid_out.php">ATM Paid-Out</a><li>
+			<li><a href="./stackers/stakers.php">Stackers</a></li>
 			<li><a href="kiosk/check-out.php">Check-Out</a></li>
 			<li><a href="kiosk/check-in.php">Check-In</a></li>
-			<li><a href="kiosk/balance.php">Balance Kiosk</a></li>
+			<li><a href="./balance/balance.php">Balance Kiosk</a></li>
           </ul>
 		<div style="background-image: url(img/pechanga_seal.jpg); height: 100px; width: 65%;"></div>
 		

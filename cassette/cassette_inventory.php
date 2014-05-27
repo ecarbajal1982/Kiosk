@@ -1,19 +1,16 @@
-<!-- This is the file that will be the inception of the projcet. From here, we will be able
-to make all the selections for the kiosks. THIS IS KIOSK.PHP  -->
-
 <?php
 
-include_once 'include/common.php';
- 
-$mysqli = login_db_connect();
+include_once '../include/common.php';
+
+$mysqli = login_db_connect() or die("Insert_stacker.php. Cannot connect to DB");
 
 sec_session_start();
+date_default_timezone_set("America/Los_Angeles");
 
 $logged = login_check( $mysqli );
+if(! $logged )
+	header( 'Location: ../login.php' );
 
-if ( !( $logged ) )
-	header( 'Location: login.php' );
-	
 ?>
 <!DOCTYPE html>
 <!-- saved from url=(0044)http://getbootstrap.com/examples/dashboard/# -->
@@ -23,15 +20,16 @@ if ( !( $logged ) )
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="img/c.ico">
+    <link rel="shortcut icon" href="../img/c.ico">
 
-    <title>Home</title>
+    <title>Cassette Inventory</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+
 
   <style id="holderjs-style" type="text/css"></style></head>
 
@@ -45,11 +43,13 @@ if ( !( $logged ) )
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          
+          </button>
+          <a class="navbar-brand" href="../kiosk.php">CookieCrumbs</a>
         </div>
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">        
-            <li><a href="include/process_logout.phpl">Logout</a></li>
+          <ul class="nav navbar-nav navbar-right">
+
+            <li><a href="../include/process_logout.php">Logout</a></li>
           </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
@@ -62,35 +62,48 @@ if ( !( $logged ) )
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-			<li><a href="kiosk/paid-in.php">Paid-In / Paid-Out </a></li>
-            <li><a href="kiosk/inventory.php">Cassette Inventory</a></li>
-          
-            <li><a href="kiosk/kiosks.php">Kiosks</a></li>
-			<li><a href="kiosk/atm_paid_out">ATM Paid-Out</a><li>
-			<li><a href="kiosk/stakers.php">Stackers</a></li>
-			<li><a href="kiosk/check-out.php">Check-Out</a></li>
-			<li><a href="kiosk/check-in.php">Check-In</a></li>
-			<li><a href="kiosk/balance.php">Balance Kiosk</a></li>
+            <li class="active"><a href="../kiosk.php">Home</a></li>
+            <li><a href="./add_cassette_page.php">Add Cassette</a></li>
+            <li><a href="./delete_cassette_page.php">Delete Cassette</a></li>
+            <li><a href="./update_cassette_page.php">Update Cassette</a></li>
           </ul>
-		<div style="background-image: url(img/pechanga_seal.jpg); height: 100px; width: 65%;"></div>
-		
-		</div>
 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header"><?php echo "Welcome ". $_SESSION['username']  ." to " ?> CookieCrumbs</h1>
+          <h1 class="page-header">Cassette Inventory</h1>          
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Prefix</th>
+                  <th>Number</th>
+				  <th>Denomination</th>
+				  <th>Location</th>
+                </tr>
+              </thead>
+              <tbody>
 
-          <div class="row placeholders"  style=" background:img/water_1.jpg">
-  				<div style="background-image: url(img/water_1.jpg); height: 500px; width: 100%;">	
-				</div>
-				<footer>
-					<center><h5><font color="gray">ecarb &copy 2014</h5></center>
-				</footer>
+<?php
+
+	$results = mysqli_query($mysqli ,"SELECT * FROM `inventory_table` WHERE `cassette_id`");
+
+	while($row = mysqli_fetch_array($results)) {
+		 echo "<tr>";
+		 echo "<td>" . $row['prefix'] . "</td>";
+		 echo "<td>" . $row['number']."</td>";
+	     echo "<td>" . $row['denom']."</td>";
+		 echo "<td>" . $row['location']."</td>";
+		 echo "</tr>";
+ 	 
+
+}
+?> 		
+             </tbody>
+            </table>
           </div>
-
-  
-            
- 
+        </div>
+      </div>
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
