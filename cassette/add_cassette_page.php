@@ -62,10 +62,9 @@ if(! $logged )
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="../kiosk.php">Home</a></li>
-            <li><a href="./cassette_inventory_page.php">Inventory</a></li>
+            <li class="active"><a href="../kiosk.php">Home</a></li>         
             <li><a href="./delete_cassette_page.php">Delete Cassette</a></li>
-            <li><a href="./update_cassette_page.php">Update Cassette</a></li>
+		    <li><a href="./cassette_inventory_page.php">Inventory</a></li> 
           </ul>
 
         </div>

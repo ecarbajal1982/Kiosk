@@ -65,7 +65,6 @@ if(! $logged )
             <li class="active"><a href="../kiosk.php">Home</a></li>
             <li><a href="./add_cassette_page.php">Add Cassette</a></li>
             <li><a href="./delete_cassette_page.php">Delete Cassette</a></li>
-            <li><a href="./update_cassette_page.php">Update Cassette</a></li>
           </ul>
 
         </div>
@@ -75,6 +74,7 @@ if(! $logged )
             <table class="table table-striped">
               <thead>
                 <tr>
+				  <th>Cassette ID</th>
                   <th>Prefix</th>
                   <th>Number</th>
 				  <th>Denomination</th>
@@ -89,6 +89,7 @@ if(! $logged )
 
 	while($row = mysqli_fetch_array($results)) {
 		 echo "<tr>";
+		 echo"<td>".$row['cassette_id']."</td>";
 		 echo "<td>" . $row['prefix'] . "</td>";
 		 echo "<td>" . $row['number']."</td>";
 	     echo "<td>" . $row['denom']."</td>";

@@ -63,13 +63,11 @@ if ( !( $logged ) )
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
 			<li><a href="./paid_in_out/paid-in.php">Paid-In / Paid-Out </a></li>
-            <li><a href="./cassette/cassette_inventory_page.php">Cassette Inventory</a></li>
-          
+            <li><a href="./cassette/cassette_inventory_page.php">Cassette Inventory</a></li>          
             <li><a href="./kiosk_list/kiosk_list.php">Kiosks</a></li>
 			<li><a href="atm/atm_paid_out.php">ATM Paid-Out</a><li>
 			<li><a href="./stackers/stakers.php">Stackers</a></li>
-			<li><a href="kiosk/check-out.php">Check-Out</a></li>
-			<li><a href="kiosk/check-in.php">Check-In</a></li>
+			<li><a href="./check_in_out/check-out.php">Check-Out</a></li>
 			<li><a href="./balance/balance.php">Balance Kiosk</a></li>
           </ul>
 		<div style="background-image: url(img/pechanga_seal.jpg); height: 100px; width: 65%;"></div>
