@@ -1,5 +1,3 @@
-<!-- This file will show the  kiosk and will allow for the addition, deletion, and updating of the kiosk info -->
-
 <?php
 
 include_once '../include/common.php';
@@ -24,7 +22,7 @@ if(! $logged )
     <meta name="author" content="">
     <link rel="shortcut icon" href="../img/c.ico">
 
-    <title>Kiosks List</title>
+    <title>Add Kiosk</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -51,7 +49,7 @@ if(! $logged )
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
 
-            <li><a href="../nclude/process_logout.php">Logout</a></li>
+            <li><a href="../include/process_logout.php">Logout</a></li>
           </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
@@ -64,68 +62,50 @@ if(! $logged )
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="../kiosk.php">Home</a></li>
-            <li><a href="./add_kiosk_page.php">Add Kiosk</a></li>
+            <li class="active"><a href="../kiosk.php">Home</a></li>         
             <li><a href="./remove_kiosk_page.php">Remove Kiosk</a></li>
+		    <li><a href="./kiosk_list.php">Kiosk Inventory</a></li> 
           </ul>
 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Kiosk List</h1>
+          <h1 class="page-header">Add New Kiosk to Inventory</h1>  
 
 
-
-          
+        
           <div class="table-responsive">
+				<form method="POST" name="add_kiosk" action="../inserts/insert_kiosk.php">
             <table class="table table-striped">
               <thead>
-                <tr>
+                <tr>        
                   <th>Kiosk Number</th>
-                  <th>Location</th>
-                  <th>Start Balance Date</th>
-				  <th>Start Balance Time</th>
-                  <th>End Balance Date</th>
-				  <th>End Balance Time</th>
+				  <th>Location</th>
 				  <th>Shift</th>
-                  <th>Last Variance</th>
                 </tr>
               </thead>
               <tbody>
-
-<?php
-
-	$results = mysqli_query($mysqli ,"SELECT * FROM `kiosk_table` WHERE `kiosk_id`");
-
-	while($row = mysqli_fetch_array($results)) {
-		 echo "<tr>";
-		 echo "<td>" . $row['kiosk_id'] . "</td>";
-		 echo "<td>" . $row['location'] . "</td>";
-		 echo "<td>" . $row['start_balance_date']."</td>";
-		 echo "<td>" . $row['start_balance_time']."</td>";
-		 echo "<td>" . $row['end_balance_date']."</td>";
-		 echo "<td>" . $row['end_balance_time']."</td>";
-		 echo "<td>" . $row['shift']."</td>";
-      	  	 echo "<td>" . $row['last_variance']."</td>";
-		 echo "</tr>";
- 	 
-
-}
-?> 
-
+				<tr>
+					<td><input type="text" name="number" id="number"></td>
+					<td><input type="text" name="location" id="location"></td>
+					<td><input type="text" name="shift" id="shift"></td>
+				</tr>
 
 		
              </tbody>
             </table>
+		<input type="submit" value="Add Kiosk" name="add_kiosk" id="add_kiosk">
+		  </form>
           </div>
         </div>
       </div>
     </div>
 
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./Dashboard Template for Bootstrap_files/jquery.min.js"></script>
-    <script src="./Dashboard Template for Bootstrap_files/bootstrap.min.js"></script>
+    <script src="js/jquery-2.1.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="./Dashboard Template for Bootstrap_files/docs.min.js"></script>
   
 

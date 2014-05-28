@@ -78,9 +78,49 @@ if ( !( $logged ) )
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header"><?php echo "Welcome ". $_SESSION['username']  ." to " ?> CookieCrumbs</h1>
 
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="item active">
+          <img src="img/pechanga_ladies.jpg" alt="First slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Pechanga Resort and Casino</h1>
+
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="img/pechanga.jpg" alt="Second slide">
+          <div class="container">
+            <div class="carousel-caption">
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="img/pechanga_1.png" alt="Third slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Fun! Exilarating! Rewarding!</h1>
+              <p><a class="btn btn-lg btn-primary" href="http://pechanga.com" role="button">Pechanga.com</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div><!-- /.carousel -->
+
+
           <div class="row placeholders"  style=" background:img/water_1.jpg">
-  				<div style="background-image: url(img/water_1.jpg); height: 500px; width: 100%;">	
-				</div>
+  				
 				<footer>
 					<center><h5><font color="gray">ecarb &copy 2014</h5></center>
 				</footer>
@@ -93,8 +133,8 @@ if ( !( $logged ) )
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./Dashboard Template for Bootstrap_files/jquery.min.js"></script>
-    <script src="./Dashboard Template for Bootstrap_files/bootstrap.min.js"></script>
+    <script src="js/jquery-2.1.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="./Dashboard Template for Bootstrap_files/docs.min.js"></script>
   
 

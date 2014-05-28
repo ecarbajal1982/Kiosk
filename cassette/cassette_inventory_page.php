@@ -28,7 +28,10 @@ if(! $logged )
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+  <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
+  <script type="text/javascript" src="../js/jquery-2.1.0.min.js"></script>
+  <script type="text/javascript" src="../js/jquery.tablesorter.min.js"></script>
 
 
   <style id="holderjs-style" type="text/css"></style></head>
@@ -70,8 +73,8 @@ if(! $logged )
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">Cassette Inventory</h1>          
-          <div class="table-responsive">
-            <table class="table table-striped">
+          <div class="" id="wrapper">
+            <table class="tablesorter table table-striped " id="cassette_table">
               <thead>
                 <tr>
 				  <th>Cassette ID</th>
@@ -82,14 +85,13 @@ if(! $logged )
                 </tr>
               </thead>
               <tbody>
-
 <?php
 
 	$results = mysqli_query($mysqli ,"SELECT * FROM `inventory_table` WHERE `cassette_id`");
 
 	while($row = mysqli_fetch_array($results)) {
 		 echo "<tr>";
-		 echo"<td>".$row['cassette_id']."</td>";
+		 echo"<td class='lalign'>".$row['cassette_id']."</td>";
 		 echo "<td>" . $row['prefix'] . "</td>";
 		 echo "<td>" . $row['number']."</td>";
 	     echo "<td>" . $row['denom']."</td>";
@@ -106,12 +108,10 @@ if(! $logged )
       </div>
     </div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./Dashboard Template for Bootstrap_files/jquery.min.js"></script>
-    <script src="./Dashboard Template for Bootstrap_files/bootstrap.min.js"></script>
-    <script src="./Dashboard Template for Bootstrap_files/docs.min.js"></script>
-  
+<script type="text/javascript">
+$(function(){
+  $('#cassette_table').tablesorter(); 
+});
+</script>
 
 </body></html>
