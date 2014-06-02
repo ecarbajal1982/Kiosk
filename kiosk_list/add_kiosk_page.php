@@ -25,10 +25,17 @@ if(! $logged )
     <title>Add Kiosk</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+ 	  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+	  <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+   	  <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
+      <link href="http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css" rel="stylesheet">
+  
 
-    <!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+ 	 <script type="text/javascript" src="../js/jquery-2.1.0.min.js"></script>
+  	 <script type="text/javascript" src="../js/jquery.tablesorter.min.js"></script>
+     <script type="text/javasript" src="../js/oneSimpleTablePaging-1.0.js"></script>
+     <script type="text/javascript" src="http://cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
 
 
   <style id="holderjs-style" type="text/css"></style></head>
@@ -51,9 +58,6 @@ if(! $logged )
 
             <li><a href="../include/process_logout.php">Logout</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
         </div>
       </div>
     </div>
@@ -69,10 +73,7 @@ if(! $logged )
 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Add New Kiosk to Inventory</h1>  
-
-
-        
+          <h1 class="page-header">Add New Kiosk to Inventory</h1>          
           <div class="table-responsive">
 				<form method="POST" name="add_kiosk" action="../inserts/insert_kiosk.php">
             <table class="table table-striped">
@@ -85,9 +86,34 @@ if(! $logged )
               </thead>
               <tbody>
 				<tr>
-					<td><input type="text" name="number" id="number"></td>
-					<td><input type="text" name="location" id="location"></td>
-					<td><input type="text" name="shift" id="shift"></td>
+					<td>
+
+						<input type="text" name="number" id="number"></td>
+					<td>
+					<select name="location" id="location"class="btn btn-info">
+ 						 <option value="Comedy Club">Comedy Club</option>
+				  	     <option value="Main Cage">Main Cage</option>
+ 				  	     <option value="North Walkway">North Walkway</option>
+				         <option value="Cabaret">Cabaret</option>
+ 						 <option value="Oak">Oak</option>
+					     <option value="Grotto">Grotto</option>
+				         <option value="High Limit">High Limit</option>
+ 						 <option value="Kelsey">Kelsey</option>
+					     <option value="Sumac">Sumac</option>
+				         <option value="Casino Valet">Casino Valet</option>
+ 						 <option value="Bamboo">Bamboo</option>
+					     <option value="Poker">Poker</option>
+				         <option value="Mountain">Mountain</option>
+ 						 <option value="Fast Pass">Fast Pass</option>			
+			    	</select>
+					</td>
+					<td>
+						<select name="shift" id="shift" class="btn btn-warning" >
+					     <option value="Days">Days</option>
+				         <option value="Swing">Swing</option>
+ 						 <option value="Graveyard">Graveyard</option>
+						</select>
+					</td>
 				</tr>
 
 		
@@ -101,12 +127,5 @@ if(! $logged )
     </div>
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery-2.1.0.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="./Dashboard Template for Bootstrap_files/docs.min.js"></script>
-  
 
 </body></html>

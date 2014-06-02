@@ -23,14 +23,21 @@ if(! $logged )
     <link rel="shortcut icon" href="../img/c.ico">
 
     <title>Delete Kiosk</title>
-    <!-- Bootstrap core CSS -->
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-  <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
-  <script type="text/javascript" src="../js/jquery-2.1.0.min.js"></script>
-  <script type="text/javascript" src="../js/jquery.tablesorter.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
+ 	  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+	  <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+   	  <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
+      <link href="http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css" rel="stylesheet">
+  
+
+  <!-- Custom styles for this template -->
+ 	 <script type="text/javascript" src="../js/jquery-2.1.0.min.js"></script>
+  	 <script type="text/javascript" src="../js/jquery.tablesorter.min.js"></script>
+     <script type="text/javasript" src="../js/oneSimpleTablePaging-1.0.js"></script>
+     <script type="text/javascript" src="http://cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+
 
 
   <style id="holderjs-style" type="text/css"></style></head>
@@ -53,10 +60,6 @@ if(! $logged )
 
             <li><a href="../include/process_logout.php">Logout</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-
         </div>
       </div>
     </div>
@@ -115,10 +118,10 @@ if(! $logged )
     </div>
 
 
- <script type="text/javascript">
-$(function(){
-  $('#delete_kiosk_table').tablesorter(); 
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#delete_kiosk_table').dataTable();
 });
-</script> 
+</script>
 
 </body></html>

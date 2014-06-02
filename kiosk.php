@@ -51,9 +51,6 @@ if ( !( $logged ) )
           <ul class="nav navbar-nav navbar-right">        
             <li><a href="include/process_logout.phpl">Logout</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
         </div>
       </div>
     </div>
@@ -63,15 +60,16 @@ if ( !( $logged ) )
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
 			<li><a href="./paid_in_out/paid-in.php">Paid-In / Paid-Out </a></li>
+            <li><a href="./cassette/paid_in_search.php">Paid-In Search</a></li> 
+   		    <li><a href="./cassette/paid_out_search.php">Paid-Out Seach</a></li> 
             <li><a href="./cassette/cassette_inventory_page.php">Cassette Inventory</a></li>          
             <li><a href="./kiosk_list/kiosk_list.php">Kiosks</a></li>
-			<li><a href="atm/atm_paid_out.php">ATM Paid-Out</a><li>
+			<li><a href="./atm/atm_paid_out.php">ATM Paid-Out</a><li>
 			<li><a href="./stackers/stakers.php">Stackers</a></li>
 			<li><a href="./check_in_out/check-out.php">Check-Out</a></li>
 			<li><a href="./balance/balance.php">Balance Kiosk</a></li>
           </ul>
-		<div style="background-image: url(img/pechanga_seal.jpg); height: 100px; width: 65%;"></div>
-		
+			<div style="background-image: url(img/pechanga_seal.jpg); height: 100px; width: 65%;"></div>		
 		</div>
 
         </div>
@@ -99,6 +97,28 @@ if ( !( $logged ) )
         </div>
         <div class="item">
           <img src="img/pechanga.jpg" alt="Second slide">
+          <div class="container">
+            <div class="carousel-caption">
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="img/silk.jpg" alt="Second slide">
+          <div class="container">
+            <div class="carousel-caption">
+			<h1>Club Silk</h1>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="img/round_bar.jpg" alt="Second slide">
+          <div class="container">
+            <div class="carousel-caption">
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="img/journey.jpg" alt="Second slide">
           <div class="container">
             <div class="carousel-caption">
             </div>

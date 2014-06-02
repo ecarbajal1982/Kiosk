@@ -24,7 +24,7 @@ if(! $logged )
     <meta name="author" content="">
     <link rel="shortcut icon" href="../img/c.ico">
 
-    <title>Kiosks List</title>
+    <title>Paid-In Search</title>
 
     <!-- Bootstrap core CSS -->
  	  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -69,17 +69,10 @@ if(! $logged )
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="../kiosk.php">Home</a></li>
-            <li><a href="./add_kiosk_page.php">Add Kiosk</a></li>
-            <li><a href="./remove_kiosk_page.php">Remove Kiosk</a></li>
           </ul>
-
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Kiosk List</h1>
-
-
-
-          
+          <h1 class="page-header">Paid-In Search </h1>          
           <div class="table-responsive">
             <table class="table table-striped tablesorter" id="kiosk_table">
               <thead>
@@ -98,7 +91,7 @@ if(! $logged )
 
 <?php
 
-	$results = mysqli_query($mysqli ,"SELECT * FROM `kiosk_table` WHERE `kiosk_id`");
+	$results = mysqli_query($mysqli ,"SELECT * FROM `paid_in_test` WHERE `paid_in_number` " );
 
 	while($row = mysqli_fetch_array($results)) {
 		 echo "<tr>";
@@ -110,14 +103,10 @@ if(! $logged )
 		 echo "<td>" . $row['end_balance_time']."</td>";
 		 echo "<td>" . $row['shift']."</td>";
       	 echo "<td>" . $row['last_variance']."</td>";
-		 echo "</tr>";
- 	 
+		 echo "</tr>"; 	 
 
 }
-?> 
-
-
-		
+?> 		
              </tbody>
             </table>
           </div>
