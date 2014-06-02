@@ -30,7 +30,10 @@ if(! $logged )
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+  <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
+  <script type="text/javascript" src="../js/jquery-2.1.0.min.js"></script>
+  <script type="text/javascript" src="../js/jquery.tablesorter.min.js"></script>
 
 
   <style id="holderjs-style" type="text/css"></style></head>
@@ -77,7 +80,7 @@ if(! $logged )
 
           
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped tablesorter" id="kiosk_table">
               <thead>
                 <tr>
                   <th>Kiosk Number</th>
@@ -121,12 +124,11 @@ if(! $logged )
       </div>
     </div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./Dashboard Template for Bootstrap_files/jquery.min.js"></script>
-    <script src="./Dashboard Template for Bootstrap_files/bootstrap.min.js"></script>
-    <script src="./Dashboard Template for Bootstrap_files/docs.min.js"></script>
+ <script type="text/javascript">
+$(function(){
+  $('#kiosk_table').tablesorter(); 
+});
+</script> 
   
 
 </body></html>

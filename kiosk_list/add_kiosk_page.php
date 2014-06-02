@@ -93,7 +93,7 @@ if(! $logged )
 		
              </tbody>
             </table>
-		<input type="submit" value="Add Kiosk" name="add_kiosk" id="add_kiosk">
+		<input type="submit" value="Add Kiosk" name="add_kiosk" id="add_kiosk" class="btn btn-lg btn-success">
 		  </form>
           </div>
         </div>

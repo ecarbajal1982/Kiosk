@@ -22,20 +22,16 @@ if(! $logged )
     <meta name="author" content="">
     <link rel="shortcut icon" href="../img/c.ico">
 
-    <title>Cassette Inventory</title>
-
+    <title>Delete Kiosk</title>
     <!-- Bootstrap core CSS -->
- 	  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-	  <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
-   	  <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
-      <link href="http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css" rel="stylesheet">
-  
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Custom styles for this template -->
- 	 <script type="text/javascript" src="../js/jquery-2.1.0.min.js"></script>
-  	 <script type="text/javascript" src="../js/jquery.tablesorter.min.js"></script>
-     <script type="text/javasript" src="../js/oneSimpleTablePaging-1.0.js"></script>
-     <script type="text/javascript" src="http://cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+    <!-- Custom styles for this template -->
+  <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
+  <script type="text/javascript" src="../js/jquery-2.1.0.min.js"></script>
+  <script type="text/javascript" src="../js/jquery.tablesorter.min.js"></script>
+
 
   <style id="holderjs-style" type="text/css"></style></head>
 
@@ -57,6 +53,10 @@ if(! $logged )
 
             <li><a href="../include/process_logout.php">Logout</a></li>
           </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+
         </div>
       </div>
     </div>
@@ -66,24 +66,21 @@ if(! $logged )
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="../kiosk.php">Home</a></li>
-            <li><a href="./add_cassette_page.php">Add Cassette</a></li>
-			<li><a href="./cassette_inventory_page.php">Inventory</a></li>
+            <li><a href="./add_kiosk_page.php">Add Kiosk</a></li>
+			<li><a href="./kiosk_list.php">Kiosk Inventory</a></li>
           </ul>
 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Delete Cassette from Inventory</h1>          
+          <h1 class="page-header">Delete Kiosk from Inventory</h1>          
           <div class="table-responsive">
 
-		<form action="delete_cassette_script.php" method="POST" name="delete_form">
-            <table class="table table-striped tablesorter display" id="delete_cassette_table">
+		<form action="delete_kiosk_script.php" method="POST" name="delete_form">
+            <table class="table table-striped tablesorter" id="delete_kiosk_table">
               <thead>
                 <tr>
 				  <th>Check</th>
-				  <th>Cassette_id</th>
-                  <th>Prefix</th>       
-				  <th>Number</th>
-				  <th>Denomination</th>
+				  <th>Kiosk</th>   
 				  <th>Location</th>
                 </tr>
               </thead>
@@ -91,7 +88,7 @@ if(! $logged )
 
 <?php
 
-	$results = mysqli_query($mysqli ,"SELECT * FROM `inventory_table` WHERE `cassette_id`");
+	$results = mysqli_query($mysqli ,"SELECT * FROM `kiosk_table` WHERE `kiosk_id`");
 	$count  = mysql_num_rows($results);
 
 
@@ -99,11 +96,8 @@ if(! $logged )
 ?>
 		
 		<tr>
-         	<td><input type="checkbox" name="checkbox[]" value ="<? echo $row['cassette_id'];?>" id= "checkbox[]" ></td>
-		 	<td><?echo $row['cassette_id'];?></td>
-		 	<td><?echo $row['prefix'];?></td>
-		 	<td><?echo $row['number'];?></td>
-	     	<td><? echo $row['denom'];?></td>
+         	<td><input type="checkbox" name="checkbox[]" value ="<? echo $row['kiosk_id'];?>" id= "checkbox[]" ></td>
+		 	<td><?echo $row['kiosk_id'];?></td>
 		 	<td><? echo $row['location'];?></td>
 		 </tr>
  	 
@@ -113,19 +107,18 @@ if(! $logged )
              </tbody>
             </table>
 			<!-- Name of the post variable will be the name in the input -->
-		<input type="submit" value="Delete" name="delete" id="delete" class="btn btn-danger">
+		<input type="submit" value="Delete Kiosk" name="delete_kiosk" id="delete_kiosk" class="btn btn-lg btn-danger">
 			</form>
           </div>
         </div>
       </div>
     </div>
 
-<script type="text/javascript">
-$(document).ready(function(){
-    $('#delete_cassette_table').dataTable();
+
+ <script type="text/javascript">
+$(function(){
+  $('#delete_kiosk_table').tablesorter(); 
 });
-</script>
-
-
+</script> 
 
 </body></html>
